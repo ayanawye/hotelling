@@ -36,6 +36,7 @@ export const useStyles = () => {
     width: '236px',
     maxWidth: '236px',
     minWidth: '236px',
+    overflowY: 'scroll',
   };
 
   const contentWrapperStyle: CSSProperties = {
@@ -86,8 +87,8 @@ export const useStyles = () => {
     fontSize: '20px',
     fontWeight: 'bold',
     gap: '12px',
-    borderBottom: `1px solid ${token.colorBorderSecondary}`,
-    margin: '0 0 8px 12px',
+    padding: '0 0 8px 12px',
+    marginBottom: '72px',
   };
 
   /**
