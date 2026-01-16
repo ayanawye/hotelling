@@ -87,7 +87,7 @@ export const RootLayout = () => {
         theme='light'
       >
         <div style={logoStyle}>
-          <LogoIcon />
+          {!collapsed && <LogoIcon />}
           {collapsed ? 'H' : 'Hotelling'}
         </div>
         <Menu
