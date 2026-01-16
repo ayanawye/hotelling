@@ -1,0 +1,87 @@
+.ant-layout-sider {
+  max-width: 236px !important;
+  min-width: 230px !important;
+  width: 100% !important;
+}
+
+.ant-menu-title-content {
+  padding: 0 !important;
+}
+
+.ant-menu-inline .ant-menu-item {
+  margin: 8px 0 8px 28px !important;
+  width: 100%;
+  max-width: 165px !important;
+  color: var(--natural-gray);
+  padding: 9px !important;
+  overflow: visible !important;
+
+  &-selected {
+    position: relative;
+    background: rgba(229, 242, 255, 1);
+
+    &::before {
+      position: absolute;
+      content: "";
+      left: -17px !important;
+      top: 43%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      z-index: 40 !important;
+    }
+  }
+}
+
+.ant-menu-submenu-title {
+  padding: 9px !important;
+  margin: 0 !important;
+  width: 100% !important;
+
+  & > span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+}
+
+.ant-menu-submenu-open > div {
+  background: var(--primary-color) !important;
+  color: var(--white-color) !important;
+}
+
+.ant-menu-sub {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "";
+    left: 14px !important;
+    width: 2px;
+    height: 85%;
+    top: 8px !important;
+    background-color: #2f66ee;
+    opacity: 1 !important;
+    z-index: 5 !important;
+  }
+}
+
+span {
+  line-height: normal;
+}
+
+.os-scrollbar {
+  width: 13px !important;
+}
+
+.os-scrollbar-track {
+  height: 100% !important;
+  background: #E0EFFF !important;
+  border-radius: 20px !important;
+  width: 100%;
+}
+
+.os-scrollbar-vertical .os-scrollbar-handle {
+  height: 109px !important;
+}

@@ -1,0 +1,198 @@
+@import 'lib.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --primary-color: rgba(0, 108, 227, 1);
+    --white-color: #ffffff;
+    --natural-gray: rgba(95, 95, 95, 1);
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    scrollbar-gutter: stable; /* Резервируем место под скролл, чтобы контент не прыгал */
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Стили для OverlayScrollbars (Тема os-theme-custom) */
+
+/* Контейнер скроллбара */
+.os-theme-custom.os-scrollbar {
+    --os-size: 14px;
+    --os-padding-perpendicular: 0;
+    --os-padding-axis: 0;
+    --os-track-bg: transparent;
+    --os-handle-bg: #2f66ee;
+    --os-handle-bg-hover: #254ebb;
+    --os-handle-bg-active: #1d3e95;
+    --os-handle-border-radius: 10px;
+}
+
+/* Смещаем скроллбар к самому правому краю контейнера */
+.os-theme-custom.os-scrollbar-vertical {
+    right: 0 !important;
+}
+
+/* Ползунок (Handle) с эффектом отлипания */
+.os-theme-custom .os-scrollbar-handle {
+    border: 4px solid transparent !important;
+    background-clip: padding-box !important;
+}
+
+/* Добавляем визуальные стрелочки через псевдоэлементы дорожки или контейнера */
+/* Так как OverlayScrollbars не имеет нативных кнопок-стрелочек, мы имитируем их
+   с помощью декоративных элементов в начале и конце дорожки */
+
+.os-theme-custom.os-scrollbar-vertical::before,
+.os-theme-custom.os-scrollbar-vertical::after {
+    content: "";
+    display: block;
+    height: 16px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px 10px;
+    flex-shrink: 0;
+}
+
+/* Верхняя стрелочка (Chevron Up) */
+.os-theme-custom.os-scrollbar-vertical::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f66ee' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
+    background-size: 12px 12px;
+    background-position: center bottom;
+    margin-bottom: 2px;
+}
+
+/* Нижняя стрелочка (Chevron Down) */
+.os-theme-custom.os-scrollbar-vertical::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f66ee' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-size: 12px 12px;
+    background-position: center top;
+    margin-top: 2px;
+}
+
+/* Настройка флекс-контейнера для скроллбара, чтобы стрелочки встали по краям */
+.os-theme-custom.os-scrollbar-vertical .os-scrollbar-track {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.os-theme-custom.os-scrollbar {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стили для вертикальной линии во вложенных меню, как на скриншоте */
+.ant-menu-sub.ant-menu-inline {
+    position: relative;
+    overflow: hidden; /* Важно для чистоты анимации */
+}
+
+.ant-menu-sub.ant-menu-inline::before {
+    content: "";
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #2f66ee;
+    opacity: 0.2;
+    z-index: 1;
+    pointer-events: none; /* Чтобы линия не мешала кликам */
+}
+
+.ant-menu-item-selected::before {
+    opacity: 1 !important;
+}
+
+/* Удаляем внешние margin, так как теперь они управляются через ConfigProvider (itemMarginBlock) */
+.ant-menu-inline .ant-menu-item,
+.ant-menu-submenu-title {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Стили для иконок в будущем */
+.ant-menu-item .anticon,
+.ant-menu-submenu-title .anticon {
+    font-size: 18px;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+
+    a:hover {
+        color: #747bff;
+    }
+
+    button {
+        background-color: #f9f9f9;
+    }
+}
