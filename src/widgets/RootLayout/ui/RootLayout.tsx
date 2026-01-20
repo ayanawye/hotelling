@@ -3,7 +3,8 @@ import 'overlayscrollbars/overlayscrollbars.css';
 import { navigationConfig, type NavItem } from '@app/router/config/navigation';
 import type { UserRole } from '@app/router/config/types';
 import { LogoIcon } from '@shared/assets';
-import { Layout, Menu, type MenuProps } from 'antd';
+import { useTheme } from '@shared/lib/theme/useTheme';
+import { Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -16,6 +17,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 export const RootLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const {
@@ -73,6 +75,10 @@ export const RootLayout = () => {
     return [];
   }, [location.pathname]);
 
+  console.log(menuItems);
+  console.log(defaultOpenKeys);
+  console.log(location.pathname);
+
   useEffect(() => {
     navigate('/bookings/board');
   }, []);
@@ -84,14 +90,14 @@ export const RootLayout = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
         style={siderStyle}
-        theme='light'
+        theme={theme}
       >
         <div style={logoStyle}>
           {!collapsed && <LogoIcon />}
           {collapsed ? 'H' : 'Hotelling'}
         </div>
         <Menu
-          theme='light'
+          theme={theme}
           mode='inline'
           selectedKeys={[location.pathname]}
           defaultOpenKeys={defaultOpenKeys}
@@ -104,6 +110,13 @@ export const RootLayout = () => {
         <Header style={headerStyle}>
           <h4 style={headerTitleStyle}>Панель управления</h4>
           <div style={headerRightStyle}>
+            <Switch
+              checkedChildren='Dark'
+              unCheckedChildren='Light'
+              checked={theme === 'dark'}
+              onChange={toggleTheme}
+              style={{ marginRight: 16 }}
+            />
             <span>{userRole}</span>
           </div>
         </Header>
