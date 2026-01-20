@@ -28,7 +28,7 @@ export const useStyles = () => {
   const siderStyle: CSSProperties = {
     boxShadow: '2px 0 8px 0 rgba(29,35,41,.05)',
     zIndex: 10,
-    background: token.colorBgContainer,
+    background: '#fff',
     height: '100vh',
     position: 'sticky',
     top: 0,

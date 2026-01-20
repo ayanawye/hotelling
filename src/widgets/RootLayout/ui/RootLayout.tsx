@@ -75,10 +75,6 @@ export const RootLayout = () => {
     return [];
   }, [location.pathname]);
 
-  console.log(menuItems);
-  console.log(defaultOpenKeys);
-  console.log(location.pathname);
-
   useEffect(() => {
     navigate('/bookings/board');
   }, []);
@@ -90,14 +86,12 @@ export const RootLayout = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
         style={siderStyle}
-        theme={theme}
       >
         <div style={logoStyle}>
           {!collapsed && <LogoIcon />}
           {collapsed ? 'H' : 'Hotelling'}
         </div>
         <Menu
-          theme={theme}
           mode='inline'
           selectedKeys={[location.pathname]}
           defaultOpenKeys={defaultOpenKeys}

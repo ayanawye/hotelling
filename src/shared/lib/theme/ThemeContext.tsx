@@ -1,7 +1,10 @@
-import { ConfigProvider, theme as antdTheme } from 'antd';
 import { createContext, type ReactNode, useEffect, useState } from 'react';
 
-import { type Theme, THEME_LOCAL_STORAGE_KEY, type ThemeContextType, } from './types';
+import {
+  type Theme,
+  THEME_LOCAL_STORAGE_KEY,
+  type ThemeContextType,
+} from './types';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -24,32 +27,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     root.classList.add(`theme-${theme}`);
   }, [theme]);
 
-  const lightTheme = {
-    algorithm: antdTheme.defaultAlgorithm,
-    token: {
-      colorBgLayout: '#EFEFEF',
-      colorPrimary: '#2f66ee',
-      colorText: '#1A1A1A',
-      colorBgContainer: '#ffffff',
-    },
-  };
-
-  const darkTheme = {
-    algorithm: antdTheme.darkAlgorithm,
-    token: {
-      colorBgLayout: '#EFEFEF',
-      colorText: '#1A1A1A',
-      colorPrimary: '#2f66ee',
-      colorBgContainer: '#ffffff',
-      colorPrimaryBg: '#2f66ee',
-    },
-  };
-
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <ConfigProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        {children}
-      </ConfigProvider>
+      {children}
     </ThemeContext.Provider>
   );
 };
