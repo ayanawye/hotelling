@@ -11,13 +11,14 @@ export const useStyles = () => {
   const layoutStyle: CSSProperties = {
     height: '100vh',
     width: '100%',
-    background: '#EFEFEF',
+    color: token.colorText,
+    background: token.colorBgLayout,
     overflow: 'hidden',
   };
 
   const headerStyle: CSSProperties = {
     padding: '24px 22px',
-    background: '#EFEFEF',
+    background: token.colorBgLayout,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -27,7 +28,7 @@ export const useStyles = () => {
   const siderStyle: CSSProperties = {
     boxShadow: '2px 0 8px 0 rgba(29,35,41,.05)',
     zIndex: 10,
-    background: token.colorBgContainer,
+    background: '#fff',
     height: '100vh',
     position: 'sticky',
     top: 0,
@@ -43,9 +44,10 @@ export const useStyles = () => {
     flex: 1,
     overflow: 'hidden',
     padding: '0 24px 24px',
-    background: '#EFEFEF',
+    background: token.colorBgLayout,
     position: 'relative',
     display: 'flex',
+    border: 'none',
   };
 
   const scrollbarStyle: CSSProperties = {
@@ -56,7 +58,7 @@ export const useStyles = () => {
 
   const contentStyle: CSSProperties = {
     borderRadius: token.borderRadiusLG,
-    border: `1px solid ${token.colorBorderSecondary}`,
+    border: `1px solid #E5E5E5`,
     background: token.colorBgContainer,
     padding: '24px',
     minHeight: '100%',
@@ -76,6 +78,8 @@ export const useStyles = () => {
 
   const menuStyle: CSSProperties = {
     borderInlineEnd: 'none',
+    color: token.colorText,
+    background: token.colorBgContainer,
   };
 
   const logoStyle: CSSProperties = {
