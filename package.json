@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "antd": "^6.2.0",
     "overlayscrollbars": "^2.13.0",
     "overlayscrollbars-react": "^0.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-redux": "^9.2.0",
     "react-router": "^7.12.0",
     "react-router-dom": "^7.12.0",
     "scss": "^0.2.4"
