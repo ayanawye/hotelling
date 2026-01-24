@@ -9,7 +9,7 @@ export const BookingBoardPage = Loadable(
   lazy(() => import('@pages/Bookings/Board')),
 );
 export const BookingListPage = Loadable(
-  lazy(() => import('@pages/Bookings/List')),
+  lazy(() => import('@pages/Bookings/BoardList/BoardList')),
 );
 
 // Hotel

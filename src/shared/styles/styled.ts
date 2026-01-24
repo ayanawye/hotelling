@@ -57,10 +57,7 @@ export const useStyles = () => {
   };
 
   const contentStyle: CSSProperties = {
-    borderRadius: token.borderRadiusLG,
-    border: `1px solid #E5E5E5`,
-    background: token.colorBgContainer,
-    padding: '24px',
+    borderRadius: '24px',
     minHeight: '100%',
   };
 
@@ -108,6 +105,78 @@ export const useStyles = () => {
     subMenuItemBg: 'transparent',
   };
 
+  const tableStyles: CSSProperties = {
+    borderRadius: '24px',
+    overflow: 'hidden',
+    border: `1px solid ${token.colorBorderSecondary}`,
+    background: token.colorBgContainer,
+    padding: '26px 24px',
+  };
+
+  const tableHeaderStyle: CSSProperties = {
+    width: '100%',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  };
+
+  const inputField: CSSProperties = {
+    width: 300,
+    borderRadius: '24px',
+    padding: '10px 12px',
+    border: '1px solid #E5E5E5',
+  };
+
+  const tableThemeConfig = {
+    headerBg: 'transparent',
+    headerColor: '#8C8C8C',
+    borderRadius: 24,
+    padding: 12,
+    cellPaddingInlineStart: 0,
+    headerSplitColor: 'transparent',
+    borderColor: token.colorBorderSecondary,
+    titlePadding: 0,
+    footerPadding: '16px 24px',
+    borderLeft: 0,
+    cellFontSize: 16,
+  };
+
+  const emptyStyles: CSSProperties = {
+    height: 100,
+  };
+
+  const pageLoaderStyle: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    minHeight: '200px',
+  };
+
+  const restrictedStyle: CSSProperties = {
+    padding: '20px',
+    textAlign: 'center',
+  };
+
+  const themeSwitchStyle: CSSProperties = {
+    marginRight: 16,
+  };
+
+  const fullWidthStyle: CSSProperties = {
+    width: '100%',
+  };
+
+  const marginBottomStyle: CSSProperties = {
+    marginBottom: 24,
+  };
+
+  const bookingStatusTagStyle: CSSProperties = {
+    borderRadius: '32px',
+    padding: '6px 10px',
+    fontSize: 12,
+    fontWeight: 600,
+    lineHeight: '18px',
+  };
+
   return {
     layoutStyle,
     headerStyle,
@@ -120,5 +189,16 @@ export const useStyles = () => {
     menuStyle,
     logoStyle,
     menuThemeConfig,
+    tableStyles,
+    tableHeaderStyle,
+    inputField,
+    tableThemeConfig,
+    emptyStyles,
+    pageLoaderStyle,
+    restrictedStyle,
+    themeSwitchStyle,
+    fullWidthStyle,
+    marginBottomStyle,
+    bookingStatusTagStyle,
   };
 };

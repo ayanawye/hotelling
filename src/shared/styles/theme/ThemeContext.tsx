@@ -4,7 +4,7 @@ import {
   type Theme,
   THEME_LOCAL_STORAGE_KEY,
   type ThemeContextType,
-} from './types';
+} from './types.ts';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

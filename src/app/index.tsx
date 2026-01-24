@@ -1,6 +1,6 @@
 import './style/index.css';
 
-import { ThemeProvider } from '@shared/lib/theme/ThemeContext';
+import { ThemeProvider } from '@shared/styles/theme/ThemeContext';
 import { App } from 'antd';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
