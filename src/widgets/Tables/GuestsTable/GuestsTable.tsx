@@ -18,11 +18,7 @@ export const GuestsTable = () => {
 
   const TableHeader = (
     <Space style={tableHeaderStyle}>
-      <Input.Search
-        placeholder='Поиск гостей'
-        style={tableSearchStyle}
-        onSearch={(value) => console.log(value)}
-      />
+      <Input.Search placeholder='Поиск гостей' style={tableSearchStyle} />
     </Space>
   );
 

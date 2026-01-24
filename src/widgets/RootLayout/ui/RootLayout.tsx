@@ -3,13 +3,12 @@ import 'overlayscrollbars/overlayscrollbars.css';
 import { navigationConfig, type NavItem } from '@app/router/config/navigation';
 import type { UserRole } from '@app/router/config/types';
 import { LogoIcon } from '@shared/assets';
+import { useStyles } from '@shared/styles';
 import { useTheme } from '@shared/styles/theme/useTheme';
 import { Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import { useStyles } from '@shared/styles';
 
 const { Header, Sider, Content } = Layout;
 

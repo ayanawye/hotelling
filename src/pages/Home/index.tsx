@@ -1,5 +1,5 @@
-import { Card, Space, Typography } from 'antd';
 import { useStyles } from '@shared/styles';
+import { Card, Space, Typography } from 'antd';
 
 const { Title, Paragraph } = Typography;
 

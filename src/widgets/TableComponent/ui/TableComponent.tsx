@@ -1,6 +1,16 @@
 import { useStyles } from '@shared/styles';
-import { ConfigProvider, Empty, Table, type TablePaginationConfig, type TableProps, } from 'antd';
-import type { FilterValue, SorterResult, TableCurrentDataSource, } from 'antd/es/table/interface';
+import {
+  ConfigProvider,
+  Empty,
+  Table,
+  type TablePaginationConfig,
+  type TableProps,
+} from 'antd';
+import type {
+  FilterValue,
+  SorterResult,
+  TableCurrentDataSource,
+} from 'antd/es/table/interface';
 import type { SizeType } from 'antd/lib/config-provider/SizeContext';
 import type { Key } from 'antd/lib/table/interface';
 
