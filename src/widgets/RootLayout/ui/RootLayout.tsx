@@ -3,13 +3,13 @@ import 'overlayscrollbars/overlayscrollbars.css';
 import { navigationConfig, type NavItem } from '@app/router/config/navigation';
 import type { UserRole } from '@app/router/config/types';
 import { LogoIcon } from '@shared/assets';
-import { useTheme } from '@shared/lib/theme/useTheme';
+import { useTheme } from '@shared/styles/theme/useTheme';
 import { Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { useStyles } from './styled.ts';
+import { useStyles } from '@shared/styles';
 
 const { Header, Sider, Content } = Layout;
 
@@ -31,6 +31,7 @@ export const RootLayout = () => {
     scrollbarStyle,
     contentStyle,
     menuStyle,
+    themeSwitchStyle,
   } = useStyles();
 
   // В будущем будем получать роль из стора
@@ -109,7 +110,7 @@ export const RootLayout = () => {
               unCheckedChildren='Light'
               checked={theme === 'dark'}
               onChange={toggleTheme}
-              style={{ marginRight: 16 }}
+              style={themeSwitchStyle}
             />
             <span>{userRole}</span>
           </div>

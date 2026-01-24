@@ -108,6 +108,64 @@ export const useStyles = () => {
     subMenuItemBg: 'transparent',
   };
 
+  const tableStyles: CSSProperties = {
+    borderRadius: '24px',
+    overflow: 'hidden', // Чтобы скругления работали
+    border: `1px solid ${token.colorBorderSecondary}`,
+    background: token.colorBgContainer,
+  };
+
+  const tableHeaderStyle: CSSProperties = {
+    width: '100%',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  };
+
+  const tableSearchStyle: CSSProperties = {
+    width: 300,
+  };
+
+  const tableThemeConfig = {
+    headerBg: 'transparent',
+    headerColor: '#8C8C8C', // Цвет текста заголовка как на скрине
+    borderRadius: 24,
+    cellPaddingBlock: 16, // Увеличим отступы ячеек
+    cellPaddingInline: 24,
+    headerSplitColor: 'transparent', // Убираем разделители в заголовке
+    borderColor: token.colorBorderSecondary, // Цвет границ внутри таблицы
+    titlePadding: '16px 24px', // Отступы для заголовка (где будет поиск и фильтры)
+    footerPadding: '16px 24px', // Отступы для футера
+  };
+
+  const emptyStyles: CSSProperties = {
+    height: 100,
+  };
+
+  const pageLoaderStyle: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    minHeight: '200px',
+  };
+
+  const restrictedStyle: CSSProperties = {
+    padding: '20px',
+    textAlign: 'center',
+  };
+
+  const themeSwitchStyle: CSSProperties = {
+    marginRight: 16,
+  };
+
+  const fullWidthStyle: CSSProperties = {
+    width: '100%',
+  };
+
+  const marginBottomStyle: CSSProperties = {
+    marginBottom: 24,
+  };
+
   return {
     layoutStyle,
     headerStyle,
@@ -120,5 +178,15 @@ export const useStyles = () => {
     menuStyle,
     logoStyle,
     menuThemeConfig,
+    tableStyles,
+    tableHeaderStyle,
+    tableSearchStyle,
+    tableThemeConfig,
+    emptyStyles,
+    pageLoaderStyle,
+    restrictedStyle,
+    themeSwitchStyle,
+    fullWidthStyle,
+    marginBottomStyle,
   };
 };
