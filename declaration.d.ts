@@ -12,3 +12,11 @@ declare module '*.svg?react' {
 declare module '*.svg';
 declare module '*.png';
 declare module '*.jpg';
+
+interface ImportMetaEnv {
+  readonly VITE_API_MAIN_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

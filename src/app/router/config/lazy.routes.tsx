@@ -3,6 +3,7 @@ import { lazy } from 'react';
 
 // Auth & General
 export const NotFoundPage = Loadable(lazy(() => import('@pages/NotFound')));
+export const LoginPage = Loadable(lazy(() => import('@pages/Login')));
 
 // Bookings
 export const BookingBoardPage = Loadable(

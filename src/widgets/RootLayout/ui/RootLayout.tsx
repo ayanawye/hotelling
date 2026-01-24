@@ -2,10 +2,12 @@ import 'overlayscrollbars/overlayscrollbars.css';
 
 import { navigationConfig, type NavItem } from '@app/router/config/navigation';
 import type { UserRole } from '@app/router/config/types';
+import { logout } from '@entities/user/model/slice';
 import { LogoIcon } from '@shared/assets';
+import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
 import { useStyles } from '@shared/styles';
 import { useTheme } from '@shared/styles/theme/useTheme';
-import { Layout, Menu, type MenuProps, Switch } from 'antd';
+import { Button, Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -19,6 +21,8 @@ export const RootLayout = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const {
     layoutStyle,
     siderStyle,
@@ -33,8 +37,12 @@ export const RootLayout = () => {
     themeSwitchStyle,
   } = useStyles();
 
-  // В будущем будем получать роль из стора
-  const userRole: UserRole = 'RECEPTIONIST';
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
+
+  const userRole: UserRole = user?.role || 'RECEPTIONIST';
 
   const menuItems = useMemo(() => {
     const filterAndMap = (items: NavItem[]): MenuItem[] => {
@@ -76,8 +84,10 @@ export const RootLayout = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    navigate('/bookings/board');
-  }, []);
+    if (location.pathname === '/') {
+      navigate('/bookings/board');
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <Layout style={layoutStyle}>
@@ -111,7 +121,12 @@ export const RootLayout = () => {
               onChange={toggleTheme}
               style={themeSwitchStyle}
             />
-            <span>{userRole}</span>
+            <span style={{ marginRight: 16 }}>
+              {user?.username} ({userRole})
+            </span>
+            <Button onClick={handleLogout} type='link' danger>
+              Выйти
+            </Button>
           </div>
         </Header>
         <Content style={contentWrapperStyle}>
