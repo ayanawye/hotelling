@@ -1,9 +1,17 @@
+import { SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
+import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Input, Space } from 'antd';
+import { Space } from 'antd';
+import { useState } from 'react';
 
 export const GuestsTable = () => {
-  const { tableHeaderStyle, tableSearchStyle } = useStyles();
+  const { tableHeaderStyle } = useStyles();
+
+  const [filter, setFilter] = useState({
+    search: '',
+  });
+
   const data = [
     { id: 1, title: 'Guest 1', comment: 'comment 1' },
     { id: 2, title: 'Guest 2', comment: 'comment 2' },
@@ -18,19 +26,21 @@ export const GuestsTable = () => {
 
   const TableHeader = (
     <Space style={tableHeaderStyle}>
-      <Input.Search placeholder='Поиск гостей' style={tableSearchStyle} />
+      <InputTextField
+        value={filter.search}
+        onChange={(e) => setFilter({ search: e.target.value })}
+        placeholder='Поиск'
+        prefixIcon={<SearchIcon />}
+      />
     </Space>
   );
 
   return (
-    <div>
-      <TableComponent
-        title={TableHeader}
-        data={data}
-        columns={columns}
-        rowKey={(record) => record.id}
-        loading={false}
-      />
-    </div>
+    <TableComponent
+      title={TableHeader}
+      data={data}
+      columns={columns}
+      loading={false}
+    />
   );
 };

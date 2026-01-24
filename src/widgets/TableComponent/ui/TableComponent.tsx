@@ -12,12 +12,10 @@ import type {
   TableCurrentDataSource,
 } from 'antd/es/table/interface';
 import type { SizeType } from 'antd/lib/config-provider/SizeContext';
-import type { Key } from 'antd/lib/table/interface';
 
 interface ComponentProps<T> extends Omit<TableProps<T>, 'title' | 'footer'> {
   data: any | undefined;
   columns: any | null;
-  rowKey: (record: any) => Key;
   scroll?: { x?: string | number; y?: string | number } & {
     scrollToFirstRowOnChange?: boolean;
   };
@@ -38,7 +36,6 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
   const {
     columns,
     data,
-    rowKey,
     loading,
     scroll = { x: 950 },
     onChange,
@@ -78,7 +75,7 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
         onRow={(record) => ({
           onClick: () => rowClickHandler && rowClickHandler(record),
         })}
-        rowKey={rowKey}
+        rowKey='id'
         locale={locale}
         onChange={onChange}
         size={size}

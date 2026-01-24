@@ -1,4 +1,4 @@
-import { Restricted } from '@shared/ui/Restricted/Restricted.tsx';
+import { Restricted } from '@shared/ui';
 
 import type { IAccessRouteObject, UserRole } from '../config/types';
 

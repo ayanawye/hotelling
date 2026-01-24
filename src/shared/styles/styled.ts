@@ -57,10 +57,7 @@ export const useStyles = () => {
   };
 
   const contentStyle: CSSProperties = {
-    borderRadius: token.borderRadiusLG,
-    border: `1px solid #E5E5E5`,
-    background: token.colorBgContainer,
-    padding: '24px',
+    borderRadius: '24px',
     minHeight: '100%',
   };
 
@@ -110,9 +107,10 @@ export const useStyles = () => {
 
   const tableStyles: CSSProperties = {
     borderRadius: '24px',
-    overflow: 'hidden', // Чтобы скругления работали
+    overflow: 'hidden',
     border: `1px solid ${token.colorBorderSecondary}`,
     background: token.colorBgContainer,
+    padding: '26px 24px',
   };
 
   const tableHeaderStyle: CSSProperties = {
@@ -121,20 +119,25 @@ export const useStyles = () => {
     marginBottom: 16,
   };
 
-  const tableSearchStyle: CSSProperties = {
+  const inputField: CSSProperties = {
     width: 300,
+    borderRadius: '24px',
+    padding: '10px 12px',
+    border: '1px solid #E5E5E5',
   };
 
   const tableThemeConfig = {
     headerBg: 'transparent',
-    headerColor: '#8C8C8C', // Цвет текста заголовка как на скрине
+    headerColor: '#8C8C8C',
     borderRadius: 24,
-    cellPaddingBlock: 16, // Увеличим отступы ячеек
-    cellPaddingInline: 24,
-    headerSplitColor: 'transparent', // Убираем разделители в заголовке
-    borderColor: token.colorBorderSecondary, // Цвет границ внутри таблицы
-    titlePadding: '16px 24px', // Отступы для заголовка (где будет поиск и фильтры)
-    footerPadding: '16px 24px', // Отступы для футера
+    padding: 12,
+    cellPaddingInlineStart: 0,
+    headerSplitColor: 'transparent',
+    borderColor: token.colorBorderSecondary,
+    titlePadding: 0,
+    footerPadding: '16px 24px',
+    borderLeft: 0,
+    cellFontSize: 16,
   };
 
   const emptyStyles: CSSProperties = {
@@ -166,6 +169,14 @@ export const useStyles = () => {
     marginBottom: 24,
   };
 
+  const bookingStatusTagStyle: CSSProperties = {
+    borderRadius: '32px',
+    padding: '6px 10px',
+    fontSize: 12,
+    fontWeight: 600,
+    lineHeight: '18px',
+  };
+
   return {
     layoutStyle,
     headerStyle,
@@ -180,7 +191,7 @@ export const useStyles = () => {
     menuThemeConfig,
     tableStyles,
     tableHeaderStyle,
-    tableSearchStyle,
+    inputField,
     tableThemeConfig,
     emptyStyles,
     pageLoaderStyle,
@@ -188,5 +199,6 @@ export const useStyles = () => {
     themeSwitchStyle,
     fullWidthStyle,
     marginBottomStyle,
+    bookingStatusTagStyle,
   };
 };

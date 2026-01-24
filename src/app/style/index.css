@@ -1,4 +1,4 @@
-@import 'lib.scss';
+@import '@shared/styles/theme/antd.scss';
 @import "variables.scss";
 
 * {
@@ -31,6 +31,12 @@ body,
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+input::placeholder {
+    color: #8C8C8C !important;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 /* Стили для OverlayScrollbars (Тема os-theme-custom) */
@@ -105,6 +111,8 @@ body,
 /* Стили для вертикальной линии во вложенных меню, как на скриншоте */
 .ant-menu-sub.ant-menu-inline {
     position: relative;
+    margin-top: 8px;
+    background: var(--white-color) !important;
     overflow: hidden; /* Важно для чистоты анимации */
 }
 
@@ -150,7 +158,7 @@ button {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: var(--black-color);
     cursor: pointer;
     transition: border-color 0.25s;
 }
