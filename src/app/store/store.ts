@@ -1,8 +1,10 @@
+import { authReducer } from '@entities/user/model/slice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '@shared/api/baseApi';
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
+  auth: authReducer,
 });
 
 export const setupStore = () => {
