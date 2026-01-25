@@ -178,11 +178,6 @@ export const baseRoutes: IAccessRouteObject[] = [
     ],
   },
   {
-    path: '/admin',
-    element: <Pages.AdminPage />,
-    access: ['MANAGER'],
-  },
-  {
     path: '*',
     element: <Pages.NotFoundPage />,
   },

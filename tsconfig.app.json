@@ -31,7 +31,8 @@
       "@features/*": ["src/features/*"],
       "@entities/*": ["src/entities/*"],
       "@shared/*": ["src/shared/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src", "./declaration.d.ts"]
 }

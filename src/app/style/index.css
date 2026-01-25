@@ -1,29 +1,10 @@
-@import 'lib.scss';
+@import '@shared/styles/theme/antd.scss';
+@import "variables.scss";
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-:root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    --primary-color: rgba(0, 108, 227, 1);
-    --white-color: #ffffff;
-    --natural-gray: rgba(95, 95, 95, 1);
-    --black-color: #000000;
 }
 
 a {
@@ -50,6 +31,12 @@ body,
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+input::placeholder {
+    color: #8C8C8C !important;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 /* Стили для OverlayScrollbars (Тема os-theme-custom) */
@@ -124,10 +111,12 @@ body,
 /* Стили для вертикальной линии во вложенных меню, как на скриншоте */
 .ant-menu-sub.ant-menu-inline {
     position: relative;
+    margin-top: 8px;
+    background: var(--white-color) !important;
     overflow: hidden; /* Важно для чистоты анимации */
 }
 
-.ant-menu-sub.ant-menu-inline::before {
+.ant-menu-sub.ant-menu-inline:not([data-menu-id="rc-menu-uuid-/guests"])::before {
     content: "";
     position: absolute;
     left: 28px;
@@ -137,7 +126,7 @@ body,
     background-color: #2f66ee;
     opacity: 0.2;
     z-index: 1;
-    pointer-events: none; /* Чтобы линия не мешала кликам */
+    pointer-events: none;
 }
 
 .ant-menu-item-selected::before {
@@ -148,7 +137,7 @@ body,
 .ant-menu-inline .ant-menu-item,
 .ant-menu-submenu-title {
     margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 0;
 }
 
 /* Стили для иконок в будущем */
@@ -169,7 +158,7 @@ button {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: var(--black-color);
     cursor: pointer;
     transition: border-color 0.25s;
 }

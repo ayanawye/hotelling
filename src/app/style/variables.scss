@@ -1,0 +1,109 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --white-color: #ffffff;
+  --black-color: #1a1a1a;
+  --body-bg-color: #EFEFEF;
+  --text-tertiary-color: #737373;
+
+  /* Primary */
+  --primary-light-1: #006ce3;
+  --primary-light-2: #3389e9;
+  --primary-light-3: #66a7ee;
+  --primary-light-5: #b2d3f7;
+  --primary-light-6: #cce2f9;
+  --primary-dark-1: #004188;
+  --primary-dark-2: #004188;
+  --primary-dark-3: #0056b6;
+  --primary-light-4: #99c4f4;
+
+  /* Semantic - Green */
+  --semantic-green: #34C759;
+  --semantic-green-1: #71D88B;
+  --semantic-green-2: #AEE9BD;
+  --semantic-green-3: #EBFAEE;
+
+  /* Semantic – Orange */
+  --semantic-orange: #ff9500;
+  --semantic-orange-1: #FFB54C;
+  --semantic-orange-2: #ffd598;
+  --semantic-orange-3: #fff4e5;
+
+  /* Semantic – Red */
+  --semantic-red: #FF3B30;
+  --semantic-red-1: #FF746C;
+  --semantic-red-2: #FFADA8;
+  --semantic-red-3: #FFE7E5;
+
+  /* Neutral */
+  --neutral-white: #fff;
+  --neutral-gray-1: #5f5f5f;
+  --neutral-gray-2: #7d7d7d;
+  --neutral-gray-3: #9b9b9b;
+  --neutral-gray-4: #b9b9b9;
+  --neutral-gray-5: #d7d7d7;
+  --neutral-gray-6: #f2f2f2;
+  --neutral-gray-7: #f9f9f9;
+  --neutral-gray-8: #fcfcfc;
+  --neutral-black: #232323;
+
+  /* Secondary - Base custom */
+  --base: #22c36b;
+  --base-light-1: #43CC81;
+  --base-light-2: #64D597;
+  --base-light-3: #85DEAD;
+  --base-light-4: #A6E7C3;
+  --base-light-5: #C7F0D9;
+  --base-light-6: #E9FBF1;
+}
+
+:root.theme-dark {
+  --primary-light-1: #3395ff;
+  --primary-light-2: #66afff;
+  --primary-light-3: #99caff;
+  --primary-light-4: #b2d7ff;
+  --primary-light-5: #cce4ff;
+  --primary-light-6: #e5f2ff;
+  --primary-dark-1: #003166;
+  --primary-dark-2: #004999;
+  --primary-dark-3: #0062cc;
+  --primary-base: #007aff;
+
+  /* Semantic – Green */
+  --semantic-green: #30D158;
+  --semantic-green-1: #6edf8a;
+  --semantic-green-2: #ACEDBC;
+  --semantic-green-3: #EAFAEE;
+
+  /* Semantic – Orange */
+  --semantic-orange: #ff9f0a;
+  --semantic-orange-1: #ffbc53;
+  --semantic-orange-2: #ffd99c;
+  --semantic-orange-3: #fff5e5;
+
+  /* Semantic – Red */
+  --semantic-red: #FF453A;
+  --semantic-red-1: #FF7B73;
+  --semantic-red-2: #FFB1AC;
+  --semantic-red-3: #FFE7E5;
+
+  /* Secondary - Base custom */
+  --base: #45cd83;
+  --base-light-1: #61d596;
+  --base-light-2: #7ddda9;
+  --base-light-3: #99E5BC;
+  --base-light-4: #B5EDCF;
+  --base-light-5: #D1F5E2;
+  --base-light-6: #EBFAF2;
+}

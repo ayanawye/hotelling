@@ -1,16 +1,11 @@
+import { useStyles } from '@shared/styles';
 import { Spin } from 'antd';
 
 export const PageLoader = () => {
+  const { pageLoaderStyle } = useStyles();
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        minHeight: '200px',
-      }}
-    >
+    <div style={pageLoaderStyle}>
       <Spin size='large' />
     </div>
   );

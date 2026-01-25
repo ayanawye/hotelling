@@ -12,26 +12,42 @@
   margin: 8px 0 8px 28px !important;
   width: 100%;
   max-width: 165px !important;
-  color: var(--natural-gray);
+  color: var(--neutral-gray-1);
   padding: 9px !important;
   overflow: visible !important;
 
-  &-selected {
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  &.ant-menu-item-selected {
     position: relative;
     background: rgba(229, 242, 255, 1);
 
-    &::before {
+    &[data-menu-id="rc-menu-uuid-/guests"] {
+      margin-left: 0 !important;
+      width: 100%;
+      max-width: 100% !important;
+      background: var(--primary-light-1);
+      color: var(--white-color);
+    }
+
+    &:not([data-menu-id="rc-menu-uuid-/guests"])::before {
       position: absolute;
       content: "";
       left: -17px !important;
-      top: 43%;
+      top: 40%;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--primary-color);
+      background: var(--primary-light-1);
       z-index: 40 !important;
     }
   }
+}
+
+.ant-menu-submenu {
+  margin-bottom: 16px;
 }
 
 .ant-menu-submenu-title {
@@ -47,7 +63,7 @@
 }
 
 .ant-menu-submenu-open > div {
-  background: var(--primary-color) !important;
+  background: var(--primary-light-1) !important;
   color: var(--white-color) !important;
 }
 
@@ -60,17 +76,18 @@
     left: 14px !important;
     width: 2px;
     height: 85%;
-    top: 8px !important;
+    top: 2px !important;
     background-color: #2f66ee;
     opacity: 1 !important;
     z-index: 5 !important;
   }
 }
 
-.ant-menu-item-only-child[data-menu-id="rc-menu-uuid-guests"] {
+.ant-menu-item-only-child[data-menu-id="rc-menu-uuid-/guests"] {
   margin-left: 0 !important;
   color: var(--black-color);
   max-width: 100% !important;
+  margin-bottom: 16px !important;
 }
 
 .ant-layout-sider-collapsed .ant-menu-item-only-child[data-menu-id="rc-menu-uuid-guests"] > div {
@@ -104,4 +121,38 @@ span {
 
 .ant-layout-sider-trigger {
   left: 0;
+  background: transparent !important;
+
+  & svg {
+    fill: #000000 !important;
+  }
+}
+
+.ant-space-horizontal {
+  margin-bottom: 10px !important;
+}
+
+.ant-table-cell {
+  padding-left: 0 !important;
+}
+
+.ant-table-title {
+  padding: 0 !important;
+}
+
+thead > tr > th {
+  font-weight: 400 !important;
+  color: var(--text-tertiary-color) !important;
+  line-height: 24px !important;
+  border-bottom: none !important;
+}
+
+tbody > tr > td {
+  font-weight: 400 !important;
+  color: var(--black-color) !important;
+  line-height: 24px !important;
+}
+
+.ant-input-prefix {
+  margin-inline-end: 12px !important;
 }

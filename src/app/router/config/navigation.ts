@@ -46,6 +46,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'guests',
     label: 'Гости',
+    path: '/guests',
   },
   {
     key: 'rooms',
