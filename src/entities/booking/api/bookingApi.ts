@@ -1,18 +1,34 @@
 import { baseApi } from '@shared/api/baseApi';
 
+export interface Guest {
+  id: number;
+  first_name: string;
+  last_name: string;
+  middle_name?: string;
+}
+
 export interface Booking {
-  id: string;
-  roomNumber: string;
-  guestName: string;
-  startDate: string;
-  endDate: string;
+  id: number;
+  hotel: number;
+  guest: Guest;
+  organization: any | null;
+  room: number;
+  guarantee_type: string;
+  arrival_datetime: string;
+  departure_datetime: string;
+  nights: number;
+  adults: number;
+  children: number;
+  infants: number;
+  status: string;
+  group_id: string;
 }
 
 export const bookingApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchAllBookings: build.query<Booking[], void>({
       query: () => ({
-        url: '/bookings',
+        url: '/booking/reservation',
       }),
       providesTags: ['Booking'],
     }),
