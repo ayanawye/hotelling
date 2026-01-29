@@ -1,7 +1,8 @@
+import { TaxesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Taxes: FC = () => {
-  return <div>Taxes Page</div>;
+  return <TaxesTable />;
 };
 
 export default Taxes;

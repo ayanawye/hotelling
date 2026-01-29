@@ -1,7 +1,8 @@
+import { PaymentTypesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const PaymentTypes: FC = () => {
-  return <div>PaymentTypes Page</div>;
+  return <PaymentTypesTable />;
 };
 
 export default PaymentTypes;

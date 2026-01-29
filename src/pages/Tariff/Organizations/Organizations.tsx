@@ -1,7 +1,8 @@
+import { OrganizationTariffTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Organizations: FC = () => {
-  return <div>Organizations Page</div>;
+  return <OrganizationTariffTable />;
 };
 
 export default Organizations;

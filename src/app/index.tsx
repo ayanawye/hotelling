@@ -58,7 +58,7 @@ const AppContent = () => {
           backgroundColor: '#fff',
         }}
       >
-        <Spin size='large' tip='Загрузка профиля...' />
+        <Spin size='large' />
       </div>
     );
   }

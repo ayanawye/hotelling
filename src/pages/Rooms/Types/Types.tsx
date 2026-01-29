@@ -1,7 +1,8 @@
+import { RoomTypesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Types: FC = () => {
-  return <div>Types Page</div>;
+  return <RoomTypesTable />;
 };
 
 export default Types;

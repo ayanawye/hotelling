@@ -4,7 +4,7 @@ import {
 } from '@entities/user/api/authApi';
 import { setCredentials } from '@entities/user/model/slice';
 import type { LoginDto } from '@entities/user/types';
-import { loginHello, loginHotelling, loginLogo } from '@shared/assets';
+import { loginHello, LoginHelloSVG, loginLogo } from '@shared/assets';
 import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
 import { Button, Form, Input, Layout, message, Space, Typography } from 'antd';
 import { useEffect } from 'react';
@@ -65,7 +65,7 @@ export const LoginPage = () => {
   return (
     <Layout style={layoutStyle}>
       <div style={leftSideStyle}>
-        <img src={loginHotelling} alt='Hotelling' style={hotellingImgStyle} />
+        <img src={LoginHelloSVG} alt='Hotelling' style={hotellingImgStyle} />
         <img src={loginLogo} alt='Logo' style={logoImgStyle} />
         <img src={loginHello} alt='Hello' style={helloImgStyle} />
       </div>

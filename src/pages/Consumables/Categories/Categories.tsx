@@ -1,7 +1,8 @@
+import { ConsumableCategoriesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Categories: FC = () => {
-  return <div>Categories Page</div>;
+  return <ConsumableCategoriesTable />;
 };
 
 export default Categories;

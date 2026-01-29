@@ -1,7 +1,8 @@
+import { WashingsTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Washings: FC = () => {
-  return <div>Washings Page</div>;
+  return <WashingsTable />;
 };
 
 export default Washings;

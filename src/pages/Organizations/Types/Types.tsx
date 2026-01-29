@@ -1,7 +1,8 @@
+import { OrganizationTypesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Types: FC = () => {
-  return <div>Types Page</div>;
+  return <OrganizationTypesTable />;
 };
 
 export default Types;
