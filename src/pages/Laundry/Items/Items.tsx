@@ -1,7 +1,8 @@
+import { LaundryItemsTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Items: FC = () => {
-  return <div>Items Page</div>;
+  return <LaundryItemsTable />;
 };
 
 export default Items;

@@ -30,7 +30,7 @@ export const ErrorFallback: FC<ErrorFallbackProps> = ({
           <Button
             type='primary'
             key='home'
-            onClick={() => window.location.assign('/')}
+            onClick={() => window.location.assign('/bookings/board')}
           >
             На главную
           </Button>,

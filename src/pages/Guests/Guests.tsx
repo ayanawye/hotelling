@@ -1,7 +1,8 @@
 import type { FC } from 'react';
+import { GuestsTable } from '@widgets/Tables';
 
 const Guests: FC = () => {
-  return <div>Guests Page</div>;
+  return <GuestsTable />;
 };
 
 export default Guests;

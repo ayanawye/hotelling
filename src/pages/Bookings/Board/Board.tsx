@@ -1,12 +1,7 @@
-import { GuestsTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Board: FC = () => {
-  return (
-    <div>
-      <GuestsTable />
-    </div>
-  );
+  return <div>board</div>;
 };
 
 export default Board;

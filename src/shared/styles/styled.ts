@@ -33,7 +33,7 @@ export const useStyles = () => {
     position: 'sticky',
     top: 0,
     left: 0,
-    padding: '24px 18px',
+    padding: '24px 18px 80px',
     width: '236px',
     maxWidth: '236px',
     minWidth: '236px',
@@ -59,12 +59,6 @@ export const useStyles = () => {
   const contentStyle: CSSProperties = {
     borderRadius: '24px',
     minHeight: '100%',
-  };
-
-  const headerTitleStyle: CSSProperties = {
-    fontWeight: '600',
-    fontSize: '32px',
-    lineHeight: '130%',
   };
 
   const headerRightStyle: CSSProperties = {
@@ -177,6 +171,28 @@ export const useStyles = () => {
     lineHeight: '18px',
   };
 
+  const breadCrumbsStyle: CSSProperties = {
+    marginBottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    height: '48px',
+  };
+
+  const mainBreadCrumbsStyle: CSSProperties = {
+    fontSize: '32px',
+    fontWeight: 600,
+    color: '#000',
+    lineHeight: '130%',
+    marginBottom: '5px',
+  };
+
+  const secondBreadCrumbsStyle: CSSProperties = {
+    fontSize: '16px',
+    fontWeight: 400,
+    color: '#8c8c8c',
+  };
+
   return {
     layoutStyle,
     headerStyle,
@@ -184,7 +200,6 @@ export const useStyles = () => {
     contentWrapperStyle,
     scrollbarStyle,
     contentStyle,
-    headerTitleStyle,
     headerRightStyle,
     menuStyle,
     logoStyle,
@@ -200,5 +215,8 @@ export const useStyles = () => {
     fullWidthStyle,
     marginBottomStyle,
     bookingStatusTagStyle,
+    breadCrumbsStyle,
+    mainBreadCrumbsStyle,
+    secondBreadCrumbsStyle,
   };
 };

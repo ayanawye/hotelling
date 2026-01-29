@@ -1,12 +1,16 @@
 import 'overlayscrollbars/overlayscrollbars.css';
 
-import { navigationConfig, type NavItem } from '@app/router/config/navigation';
+import {
+  navigationConfig,
+  type NavItem,
+} from '@app/router/config/navigation.tsx';
 import type { UserRole } from '@app/router/config/types';
 import { logout } from '@entities/user/model/slice';
-import { LogoIcon } from '@shared/assets';
+import * as Icons from '@shared/assets';
 import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
 import { useStyles } from '@shared/styles';
 import { useTheme } from '@shared/styles/theme/useTheme';
+import { Breadcrumbs } from '@shared/ui';
 import { Button, Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -28,7 +32,6 @@ export const RootLayout = () => {
     siderStyle,
     logoStyle,
     headerStyle,
-    headerTitleStyle,
     headerRightStyle,
     contentWrapperStyle,
     scrollbarStyle,
@@ -55,7 +58,7 @@ export const RootLayout = () => {
           const mappedItem: MenuItem = {
             key: item.path || item.key,
             label: item.label,
-            icon: item.icon,
+            icon: item.icon ? item.icon : null,
           };
 
           if (item.children) {
@@ -98,7 +101,7 @@ export const RootLayout = () => {
         style={siderStyle}
       >
         <div style={logoStyle}>
-          {!collapsed && <LogoIcon />}
+          {!collapsed && <Icons.LogoIcon />}
           {collapsed ? 'H' : 'Hotelling'}
         </div>
         <Menu
@@ -112,7 +115,7 @@ export const RootLayout = () => {
       </Sider>
       <Layout>
         <Header style={headerStyle}>
-          <h4 style={headerTitleStyle}>Панель управления</h4>
+          <Breadcrumbs />
           <div style={headerRightStyle}>
             <Switch
               checkedChildren='Dark'

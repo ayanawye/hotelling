@@ -1,6 +1,11 @@
+import { useFetchAllBookingsQuery } from '@entities/booking/api/bookingApi.ts';
 import { DotsIcon, SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import type { IReservation } from '@shared/types/IBooking.ts';
+import {
+  type IReservation,
+  type IReservationStatus,
+  RESERVATION_STATUS_CONFIG,
+} from '@shared/types/IBooking.ts';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Button, Space, Tag } from 'antd';
@@ -9,38 +14,12 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 export const BoardingListTable = () => {
+  const { data } = useFetchAllBookingsQuery();
   const { tableHeaderStyle, bookingStatusTagStyle } = useStyles();
 
   const [filter, setFilter] = useState({
     search: '',
   });
-
-  const data: IReservation[] = [
-    {
-      id: 1,
-      hotel: 101,
-      guest: {
-        id: 55,
-        first_name: 'Ayana',
-        last_name: 'Kaychibekova',
-        middle_name: 'Maratovna',
-      },
-      organization: {
-        id: 10,
-        name: 'Attractor Software',
-      },
-      room: 305,
-      guarantee_type: 'type1',
-      arrival_datetime: '2026-02-01T14:00:00Z',
-      departure_datetime: '2026-02-05T12:00:00Z',
-      nights: 4,
-      adults: 2,
-      children: 0,
-      infants: 0,
-      status: 'status1',
-      group_id: '550e8400-e29b-41d4-a716-446655440000',
-    },
-  ];
 
   const reservationColumns: ColumnsType<IReservation> = [
     {
@@ -82,12 +61,21 @@ export const BoardingListTable = () => {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
-      width: '10%',
-      render: (status) => (
-        <Tag style={bookingStatusTagStyle} color='blue'>
-          {status}
-        </Tag>
-      ),
+      width: '20%',
+      render: (status: IReservationStatus) => {
+        const { label, bgColor, textColor } = RESERVATION_STATUS_CONFIG[status];
+        return (
+          <Tag
+            style={{
+              ...bookingStatusTagStyle,
+              background: bgColor,
+              color: textColor,
+            }}
+          >
+            {label}
+          </Tag>
+        );
+      },
     },
     {
       title: 'Действия',

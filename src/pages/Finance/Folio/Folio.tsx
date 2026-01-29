@@ -1,7 +1,8 @@
+import { FolioTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Folio: FC = () => {
-  return <div>Folio Page</div>;
+  return <FolioTable />;
 };
 
 export default Folio;
