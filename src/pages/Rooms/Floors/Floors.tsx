@@ -1,7 +1,8 @@
+import { FloorsTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Floors: FC = () => {
-  return <div>Floors Page</div>;
+  return <FloorsTable />;
 };
 
 export default Floors;

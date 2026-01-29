@@ -1,7 +1,8 @@
+import { EnclosuresTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Enclosures: FC = () => {
-  return <div>Enclosures Page</div>;
+  return <EnclosuresTable />;
 };
 
 export default Enclosures;

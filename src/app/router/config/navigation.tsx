@@ -1,4 +1,18 @@
 import type { UserRole } from './types';
+import React from 'react';
+import {
+  NavCalendarIcon,
+  NavConsumablesIcon,
+  NavGuestsIcon,
+  NavHotelIcon,
+  NavLaundressIcon,
+  NavOrgIcon,
+  NavRoomsIcon,
+  NavServicesIcon,
+  NavStaffIcon,
+  NavTariffIcon,
+  NavWalletIcon,
+} from '@shared/assets';
 
 export interface NavItem {
   key: string;
@@ -13,6 +27,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: '/',
     label: 'Бронирование',
+    icon: <NavCalendarIcon />,
     children: [
       {
         key: 'bookings-board',
@@ -29,6 +44,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'hotel',
     label: 'Отель',
+    icon: <NavHotelIcon />,
     children: [
       {
         key: 'hotel-rooms',
@@ -46,11 +62,13 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'guests',
     label: 'Гости',
+    icon: <NavGuestsIcon />,
     path: '/guests',
   },
   {
     key: 'rooms',
     label: 'Номера',
+    icon: <NavRoomsIcon />,
     children: [
       {
         key: 'rooms-enclosures',
@@ -82,6 +100,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'finance',
     label: 'Финансы',
+    icon: <NavWalletIcon />,
     children: [
       {
         key: 'finance-taxes',
@@ -113,6 +132,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'organizations',
     label: 'Организации',
+    icon: <NavOrgIcon />,
     children: [
       {
         key: 'organizations-types',
@@ -129,6 +149,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'tariff',
     label: 'Тарифы',
+    icon: <NavTariffIcon />,
     children: [
       {
         key: 'tariff-hotel',
@@ -145,6 +166,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'services',
     label: 'Услуги',
+    icon: <NavServicesIcon />,
     children: [
       {
         key: 'services-categories',
@@ -166,6 +188,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'consumables',
     label: 'Расходники',
+    icon: <NavConsumablesIcon />,
     children: [
       {
         key: 'consumables-categories',
@@ -192,6 +215,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'staff',
     label: 'Персонал',
+    icon: <NavStaffIcon />,
     children: [
       {
         key: 'staff-all',
@@ -208,6 +232,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'laundry',
     label: 'Прачка',
+    icon: <NavLaundressIcon />,
     children: [
       {
         key: 'laundry-washings',
@@ -229,6 +254,7 @@ export const navigationConfig: NavItem[] = [
   {
     key: 'admin',
     label: 'Администрирование',
+    icon: <NavStaffIcon />,
     path: '/admin',
     access: ['MANAGER'],
   },

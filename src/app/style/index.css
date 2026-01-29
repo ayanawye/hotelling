@@ -134,10 +134,11 @@ input::placeholder {
 }
 
 /* Удаляем внешние margin, так как теперь они управляются через ConfigProvider (itemMarginBlock) */
-.ant-menu-inline .ant-menu-item,
+.ant-menu-inline .ant-menu-item:not([data-menu-id="rc-menu-uuid-/guests"]),
 .ant-menu-submenu-title {
     margin-top: 0 !important;
     margin-bottom: 0;
+    line-height: normal !important;
 }
 
 /* Стили для иконок в будущем */

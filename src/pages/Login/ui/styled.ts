@@ -20,26 +20,27 @@ export const useStyles = () => {
     alignItems: 'center',
     color: '#fff',
     position: 'relative',
+    width: '45%',
   };
 
   const hotellingImgStyle: CSSProperties = {
     position: 'absolute',
     top: '8%',
-    right: '-5%',
+    right: '5%',
     width: '65%',
   };
 
   const logoImgStyle: CSSProperties = {
     position: 'absolute',
     top: '25%',
-    left: '10%',
+    left: '0',
     width: '60%',
   };
 
   const helloImgStyle: CSSProperties = {
     position: 'absolute',
     bottom: '0',
-    right: '-15%',
+    right: '0',
     width: '60%',
   };
 
@@ -50,6 +51,7 @@ export const useStyles = () => {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '40px',
+    width: '55%',
   };
 
   const containerStyle: CSSProperties = {

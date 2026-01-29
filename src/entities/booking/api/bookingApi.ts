@@ -12,13 +12,13 @@ export const bookingApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchAllBookings: build.query<Booking[], void>({
       query: () => ({
-        url: '/bookings',
+        url: '/booking/reservation/',
       }),
       providesTags: ['Booking'],
     }),
     createBooking: build.mutation<Booking, Partial<Booking>>({
       query: (booking) => ({
-        url: '/bookings',
+        url: '/booking/reservation/',
         method: 'POST',
         body: booking,
       }),
