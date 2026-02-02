@@ -4,16 +4,16 @@ import type { IRoomStock } from '../types';
 
 export const roomsStockApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelRoomStocks: builder.query<IRoomStock, void>({
+    getHotelRoomStocks: builder.query<IRoomStock[], void>({
       query: () => ({
-        url: 'hotel/floors/',
+        url: 'hotel/room-stocks/',
         method: 'GET',
       }),
       providesTags: ['HOTEL_ROOM_STOCK'],
     }),
     createHotelRoomStock: builder.mutation<void, IRoomStock>({
       query: (body) => ({
-        url: 'hotel/floors/',
+        url: 'hotel/room-stocks/',
         method: 'POST',
         body,
       }),
@@ -21,13 +21,13 @@ export const roomsStockApi = baseApi.injectEndpoints({
     }),
     getHotelRoomStockByID: builder.query<void, number>({
       query: (floorID) => ({
-        url: `hotel/floors/${floorID}/`,
+        url: `hotel/room-stocks/${floorID}/`,
         method: 'GET',
       }),
     }),
     patchHotelRoomStock: builder.mutation<void, IRoomStock>({
       query: (body) => ({
-        url: `hotel/floors/${body.id}/`,
+        url: `hotel/room-stocks/${body.id}/`,
         method: 'PATCH',
         body,
       }),
@@ -35,7 +35,7 @@ export const roomsStockApi = baseApi.injectEndpoints({
     }),
     deleteHotelRoomStock: builder.mutation<void, number>({
       query: (id) => ({
-        url: `hotel/floors/${id}/`,
+        url: `hotel/room-stocks/${id}/`,
         method: 'DELETE',
       }),
       invalidatesTags: ['HOTEL_ROOM_STOCK'],

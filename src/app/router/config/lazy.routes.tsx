@@ -42,31 +42,91 @@ export const RoomsEnclosuresEditPage = Loadable(
 export const RoomsFloorsPage = Loadable(
   lazy(() => import('@pages/Rooms/Floors')),
 );
+export const RoomsFloorsCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Floors/FloorsCreate')),
+);
+export const RoomsFloorsEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Floors/FloorsEdit')),
+);
 export const RoomsTypesPage = Loadable(
   lazy(() => import('@pages/Rooms/Types')),
 );
+export const RoomsTypesCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Types/TypesCreate')),
+);
+export const RoomsTypesEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Types/TypesEdit')),
+);
+
 export const RoomsStatusPage = Loadable(
   lazy(() => import('@pages/Rooms/Status')),
 );
+export const RoomsStatusCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Status/StatusCreate')),
+);
+export const RoomsStatusEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Status/StatusEdit')),
+);
+
 export const RoomsStockPage = Loadable(
   lazy(() => import('@pages/Rooms/Stock')),
+);
+export const RoomsStockCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Stock/StockCreate')),
+);
+export const RoomsStockEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Stock/StockEdit')),
 );
 
 // Finance
 export const FinanceTaxesPage = Loadable(
   lazy(() => import('@pages/Finance/Taxes')),
 );
+export const FinanceTaxesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Taxes/TaxesCreate')),
+);
+export const FinanceTaxesEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Taxes/TaxesEdit')),
+);
+
 export const FinanceCurrenciesPage = Loadable(
   lazy(() => import('@pages/Finance/Currencies')),
 );
+export const FinanceCurrenciesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Currencies/CurrenciesCreate')),
+);
+export const FinanceCurrenciesEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Currencies/CurrenciesEdit')),
+);
+
 export const FinancePaymentTypesPage = Loadable(
   lazy(() => import('@pages/Finance/PaymentTypes')),
 );
+export const FinancePaymentTypesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/PaymentTypes/PaymentTypesCreate')),
+);
+export const FinancePaymentTypesEditPage = Loadable(
+  lazy(() => import('@pages/Finance/PaymentTypes/PaymentTypesEdit')),
+);
+
 export const FinancePaymentsPage = Loadable(
   lazy(() => import('@pages/Finance/Payments')),
 );
+export const FinancePaymentsCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Payments/PaymentsCreate')),
+);
+export const FinancePaymentsEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Payments/PaymentsEdit')),
+);
+
 export const FinanceFolioPage = Loadable(
   lazy(() => import('@pages/Finance/Folio')),
+);
+export const FinanceFolioCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Folio/FolioCreate')),
+);
+export const FinanceFolioEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Folio/FolioEdit')),
 );
 
 // Organizations

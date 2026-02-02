@@ -1,158 +1,97 @@
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch } from 'antd';
+import { Button, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface ICurrency {
-  id: string;
-  code: string;
-  name: string;
-  isBase: boolean;
-  isOperational: boolean;
-  isAvailableForPayment: boolean;
-  rateToBase: string;
-  isActive: boolean;
-}
+import {
+  type IFinanceCurrency,
+  useGetFinanceCurrenciesQuery,
+} from '@entities/finance';
 
 export const CurrenciesTable = () => {
+  const { data } = useGetFinanceCurrenciesQuery();
+
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  const data: ICurrency[] = [
-    {
-      id: '1',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '2',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: true,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '3',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: false,
-      isAvailableForPayment: true,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '4',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: true,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '5',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: true,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '6',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: true,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '7',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '8',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-    {
-      id: '9',
-      code: 'INV-1001',
-      name: 'INV-1001',
-      isBase: false,
-      isOperational: false,
-      isAvailableForPayment: false,
-      rateToBase: 'INV-1001',
-      isActive: false,
-    },
-  ];
+  console.log(data);
 
-  const columns: ColumnsType<ICurrency> = [
+  const columns: ColumnsType<IFinanceCurrency> = [
     {
       title: 'Код',
       dataIndex: 'code',
       key: 'code',
+      width: '12%',
     },
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
+      width: '13%',
     },
     {
       title: 'Базовая',
-      dataIndex: 'isBase',
-      key: 'isBase',
-      render: (checked) => <Switch checked={checked} />,
+      dataIndex: 'is_base',
+      key: 'is_base',
+      width: '17%',
+      render: (checked) => (
+        <Switch
+          checked={checked}
+          style={{
+            backgroundColor: checked ? '#52C41A' : undefined,
+          }}
+        />
+      ),
     },
     {
       title: 'Операционная',
-      dataIndex: 'isOperational',
-      key: 'isOperational',
-      render: (checked) => <Switch checked={checked} />,
+      dataIndex: 'is_operational',
+      key: 'is_operational',
+      width: '17%',
+      render: (checked) => (
+        <Switch
+          checked={checked}
+          style={{
+            backgroundColor: checked ? '#52C41A' : undefined,
+          }}
+        />
+      ),
     },
     {
       title: 'Доступна для оплаты',
-      dataIndex: 'isAvailableForPayment',
-      key: 'isAvailableForPayment',
-      render: (checked) => <Switch checked={checked} />,
+      dataIndex: 'is_allowed_for_payment',
+      key: 'is_allowed_for_payment',
+      width: '17%',
+      render: (checked) => (
+        <Switch
+          checked={checked}
+          style={{
+            backgroundColor: checked ? '#52C41A' : undefined,
+          }}
+        />
+      ),
     },
     {
       title: 'Курс к базовой валюте',
-      dataIndex: 'rateToBase',
-      key: 'rateToBase',
+      dataIndex: 'rate_to_base',
+      key: 'rate_to_base',
+      width: '17%',
     },
     {
       title: 'Активна',
-      dataIndex: 'isActive',
-      key: 'isActive',
-      render: (checked) => <Switch checked={checked} />,
+      dataIndex: 'is_active',
+      key: 'is_active',
+      width: '7%',
+      render: (checked) => (
+        <Switch
+          checked={checked}
+          style={{
+            backgroundColor: checked ? '#52C41A' : undefined,
+          }}
+        />
+      ),
     },
   ];
 
@@ -167,11 +106,10 @@ export const CurrenciesTable = () => {
         />
       </div>
       <div className='table-header-filter'>
-        <Select
+        <SelectWithSearch
           placeholder='Select'
-          style={{ width: 120, height: 40 }}
-          options={[]}
-          allowClear
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
         <Button
           type='primary'

@@ -1,13 +1,10 @@
 import { SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import {
-  useDeleteHotelFloorMutation,
-  useGetHotelFloorsQuery,
-} from '@entities/rooms';
+import { useDeleteHotelFloorMutation, useGetHotelFloorsQuery, } from '@entities/rooms';
 import type { IHotelFloor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
 
@@ -71,9 +68,9 @@ export const FloorsTable = () => {
         prefixIcon={<SearchIcon />}
       />
       <div className='table-header-filter'>
-        <Select
+        <SelectWithSearch
           placeholder='Корпус'
-          style={{ width: 120, height: 40 }}
+          maxTagPlaceholder={() => 'Цвет статуса номера'}
           onChange={(value) => setFilter({ ...filter, enclosure: value })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />

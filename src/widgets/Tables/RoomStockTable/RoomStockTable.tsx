@@ -1,36 +1,26 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Tag } from 'antd';
+import { Button, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
-
-interface IRoomStock {
-  id: string;
-  roomNumber: string;
-  enclosure: string;
-  floor: string;
-  roomType: string;
-  status: string;
-}
-
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; bgColor: string }
-> = {
-  Свободен: { label: 'Свободен', color: '#00B368', bgColor: '#E6F9F0' },
-  Занят: { label: 'Занят', color: '#E11D48', bgColor: '#FEE2E2' },
-  'Требует уборки': {
-    label: 'Требует уборки',
-    color: '#D97706',
-    bgColor: '#FEF3C7',
-  },
-  Ремонт: { label: 'Ремонт', color: '#6B7280', bgColor: '#F3F4F6' },
-};
+import { useNavigate } from 'react-router-dom';
+import { TableActions } from '@widgets/TableActions';
+import {
+  type IRoomStock,
+  useDeleteHotelRoomStockMutation,
+  useGetHotelRoomStocksQuery,
+} from '@entities/rooms';
 
 export const RoomStockTable = () => {
+  const navigate = useNavigate();
+  const { data } = useGetHotelRoomStocksQuery();
+  const [deleteHotelRoomStock, { isLoading }] =
+    useDeleteHotelRoomStockMutation();
+
+  console.log(data);
+
   const [filter, setFilter] = useState({
     search: '',
     enclosure: undefined as string | undefined,
@@ -39,76 +29,27 @@ export const RoomStockTable = () => {
     status: undefined as string | undefined,
   });
 
-  const data: IRoomStock[] = [
-    {
-      id: 'INV-1001',
-      roomNumber: '101',
-      enclosure: 'Корпус 1',
-      floor: '1',
-      roomType: 'Люкс',
-      status: 'Свободен',
-    },
-    {
-      id: 'INV-1002',
-      roomNumber: '102',
-      enclosure: 'Корпус 1',
-      floor: '1',
-      roomType: 'Стандарт',
-      status: 'Занят',
-    },
-    {
-      id: 'INV-1003',
-      roomNumber: '201',
-      enclosure: 'Корпус 2',
-      floor: '2',
-      roomType: 'Делюкс',
-      status: 'Требует уборки',
-    },
-    {
-      id: 'INV-1004',
-      roomNumber: '202',
-      enclosure: 'Корпус 2',
-      floor: '2',
-      roomType: 'Стандарт',
-      status: 'Свободен',
-    },
-    {
-      id: 'INV-1005',
-      roomNumber: '301',
-      enclosure: 'Корпус 3',
-      floor: '3',
-      roomType: 'Люкс',
-      status: 'Ремонт',
-    },
-    {
-      id: 'INV-1006',
-      roomNumber: '302',
-      enclosure: 'Корпус 3',
-      floor: '3',
-      roomType: 'Стандарт',
-      status: 'Свободен',
-    },
-  ];
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedStock, setSelectedStock] = useState<IRoomStock | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteHotelRoomStock(selectedStock?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
   const columns: ColumnsType<IRoomStock> = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Номер',
-      dataIndex: 'roomNumber',
-      key: 'roomNumber',
-    },
-    {
       title: 'Корпус',
-      dataIndex: 'enclosure',
-      key: 'enclosure',
+      dataIndex: ['hull', 'name'],
+      key: 'hull',
     },
     {
       title: 'Этаж',
-      dataIndex: 'floor',
+      dataIndex: ['floor', 'floor'],
       key: 'floor',
     },
     {
@@ -117,26 +58,26 @@ export const RoomStockTable = () => {
       key: 'roomType',
     },
     {
+      title: 'Примечание',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
       render: (status) => {
-        const config = STATUS_CONFIG[status] || {
-          label: status,
-          color: '#000',
-          bgColor: '#f0f0f0',
-        };
         return (
           <Tag
             style={{
-              background: config.bgColor,
-              color: config.color,
+              background: status.color,
+              color: '#fff',
               border: 'none',
               borderRadius: '12px',
               padding: '2px 12px',
             }}
           >
-            {config.label}
+            {status.name}
           </Tag>
         );
       },
@@ -144,29 +85,13 @@ export const RoomStockTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedStock}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink='edit'
+        />
       ),
     },
   ];
@@ -200,6 +125,7 @@ export const RoomStockTable = () => {
         />
         <Button
           type='primary'
+          onClick={() => navigate('create')}
           style={{
             height: '40px',
             borderRadius: '20px',
@@ -213,34 +139,22 @@ export const RoomStockTable = () => {
     </div>
   );
 
-  const filteredData = data.filter((item) => {
-    const matchesSearch =
-      item.roomNumber.toLowerCase().includes(filter.search.toLowerCase()) ||
-      item.enclosure.toLowerCase().includes(filter.search.toLowerCase()) ||
-      item.roomType.toLowerCase().includes(filter.search.toLowerCase());
-
-    const matchesEnclosure =
-      !filter.enclosure || item.enclosure === filter.enclosure;
-    const matchesFloor = !filter.floor || item.floor === filter.floor;
-    const matchesRoomType =
-      !filter.roomType || item.roomType === filter.roomType;
-    const matchesStatus = !filter.status || item.status === filter.status;
-
-    return (
-      matchesSearch &&
-      matchesEnclosure &&
-      matchesFloor &&
-      matchesRoomType &&
-      matchesStatus
-    );
-  });
-
   return (
-    <TableComponent
-      title={TableHeader}
-      data={filteredData}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        isLoading={isLoading}
+        title='Удалить номерной фонд?'
+        description={`Номерной фонд "${selectedStock?.id}" будет удален из системы.`}
+      />
+    </>
   );
 };

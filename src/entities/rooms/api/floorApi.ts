@@ -4,7 +4,7 @@ import type { IHotelFloor } from '../types';
 
 export const floorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelFloors: builder.query<IHotelFloor, void>({
+    getHotelFloors: builder.query<IHotelFloor[], void>({
       query: () => ({
         url: 'hotel/floors/',
         method: 'GET',

@@ -5,3 +5,4 @@ export { Restricted } from './Restricted/Restricted';
 export { Button } from './Button/Button';
 export { BaseModal } from './Modal/BaseModal';
 export { DeleteModal } from './Modal/ui/DeleteModal.tsx';
+export { SelectWithSearch } from './SelectWithSearch/SelectWithSearch';

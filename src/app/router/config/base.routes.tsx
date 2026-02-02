@@ -56,16 +56,48 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.RoomsFloorsPage />,
       },
       {
+        path: 'floors/create',
+        element: <Pages.RoomsFloorsCreatePage />,
+      },
+      {
+        path: 'floors/edit/:id',
+        element: <Pages.RoomsFloorsEditPage />,
+      },
+      {
         path: 'types',
         element: <Pages.RoomsTypesPage />,
+      },
+      {
+        path: 'types/create',
+        element: <Pages.RoomsTypesCreatePage />,
+      },
+      {
+        path: 'types/edit/:id',
+        element: <Pages.RoomsTypesEditPage />,
       },
       {
         path: 'status',
         element: <Pages.RoomsStatusPage />,
       },
       {
+        path: 'status/create',
+        element: <Pages.RoomsStatusCreatePage />,
+      },
+      {
+        path: 'status/edit/:id',
+        element: <Pages.RoomsStatusEditPage />,
+      },
+      {
         path: 'stock',
         element: <Pages.RoomsStockPage />,
+      },
+      {
+        path: 'stock/create',
+        element: <Pages.RoomsStockCreatePage />,
+      },
+      {
+        path: 'stock/edit/:id',
+        element: <Pages.RoomsStockEditPage />,
       },
     ],
   },
@@ -77,20 +109,60 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.FinanceTaxesPage />,
       },
       {
+        path: 'taxes/create',
+        element: <Pages.FinanceTaxesCreatePage />,
+      },
+      {
+        path: 'taxes/edit/:id',
+        element: <Pages.FinanceTaxesEditPage />,
+      },
+      {
         path: 'currencies',
         element: <Pages.FinanceCurrenciesPage />,
+      },
+      {
+        path: 'currencies/create',
+        element: <Pages.FinanceCurrenciesCreatePage />,
+      },
+      {
+        path: 'currencies/edit/:id',
+        element: <Pages.FinanceCurrenciesEditPage />,
       },
       {
         path: 'payment-types',
         element: <Pages.FinancePaymentTypesPage />,
       },
       {
+        path: 'payment-types/create',
+        element: <Pages.FinancePaymentTypesCreatePage />,
+      },
+      {
+        path: 'payment-types/edit/:id',
+        element: <Pages.FinancePaymentTypesEditPage />,
+      },
+      {
         path: 'payments',
         element: <Pages.FinancePaymentsPage />,
       },
       {
+        path: 'payments/create',
+        element: <Pages.FinancePaymentsCreatePage />,
+      },
+      {
+        path: 'payments/edit/:id',
+        element: <Pages.FinancePaymentsEditPage />,
+      },
+      {
         path: 'folio',
         element: <Pages.FinanceFolioPage />,
+      },
+      {
+        path: 'folio/create',
+        element: <Pages.FinanceFolioCreatePage />,
+      },
+      {
+        path: 'folio/edit/:id',
+        element: <Pages.FinanceFolioEditPage />,
       },
     ],
   },

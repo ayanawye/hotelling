@@ -1,85 +1,44 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IPaymentType {
-  id: string;
-  paymentType: string;
-  code: string;
-  operationName: string;
-}
+import {
+  type IFinancePaymentType,
+  useDeleteFinancePaymentTypeMutation,
+  useGetFinancePaymentTypesQuery,
+} from '@entities/finance';
+import { TableActions } from '@widgets/TableActions';
 
 export const PaymentTypesTable = () => {
+  const { data } = useGetFinancePaymentTypesQuery();
+  const [deleteFinancePaymentType, { isLoading }] =
+    useDeleteFinancePaymentTypeMutation();
+
   const [filter, setFilter] = useState({
     search: '',
   });
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedPaymentType, setSelectedPaymentType] =
+    useState<IFinancePaymentType | null>(null);
 
-  const data: IPaymentType[] = [
-    {
-      id: '1',
-      paymentType: 'CASH',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '2',
-      paymentType: 'Transfer',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '3',
-      paymentType: 'CARD',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '4',
-      paymentType: 'Transfer',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '5',
-      paymentType: 'Transfer',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '6',
-      paymentType: 'CARD',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '7',
-      paymentType: 'CARD',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '8',
-      paymentType: 'CASH',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-    {
-      id: '9',
-      paymentType: 'Transfer',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    },
-  ];
+  const handleDelete = async () => {
+    try {
+      await deleteFinancePaymentType(selectedPaymentType?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const columns: ColumnsType<IPaymentType> = [
+  console.log(data);
+
+  const columns: ColumnsType<IFinancePaymentType> = [
     {
       title: 'Тип оплаты',
-      dataIndex: 'paymentType',
-      key: 'paymentType',
+      dataIndex: 'type',
+      key: 'type',
     },
     {
       title: 'Код',
@@ -88,35 +47,19 @@ export const PaymentTypesTable = () => {
     },
     {
       title: 'Название операции',
-      dataIndex: 'operationName',
-      key: 'operationName',
+      dataIndex: 'operation',
+      key: 'operation',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedPaymentType}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink={'edit'}
+        />
       ),
     },
   ];
@@ -129,12 +72,12 @@ export const PaymentTypesTable = () => {
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <div>
-        <Select
-          placeholder='Select'
-          style={{ width: 120, height: 40 }}
-          options={[]}
-          allowClear
+      <div className='table-header-filter'>
+        <SelectWithSearch
+          placeholder='Тип оплаты'
+          maxTagPlaceholder={() => 'Цвет статуса номера'}
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
         <Button
           type='primary'
@@ -152,11 +95,21 @@ export const PaymentTypesTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить тип оплаты?'
+        isLoading={isLoading}
+        description={`Тип оплаты "${selectedPaymentType?.type}" будет удален из системы.`}
+      />
+    </>
   );
 };

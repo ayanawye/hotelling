@@ -1,7 +1,7 @@
 import { BottomArrowIcon, SearchIcon } from '@shared/assets';
 import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Tag } from 'antd';
+import { Button, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -11,9 +11,12 @@ import {
 } from '@entities/rooms';
 import type { IRoomStatus, RoomsColor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
+
 import s from './RoomsStatusTable.module.scss';
 
 export const RoomStatusTable = () => {
+  const navigate = useNavigate();
   const { data } = useGetHotelRoomsStatusQuery();
   const [deleteHotelRoomStatus, { isLoading }] =
     useDeleteHotelRoomStatusMutation();
@@ -36,7 +39,7 @@ export const RoomStatusTable = () => {
       await deleteHotelRoomStatus(Number(selectedStatus?.id) || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error('Удаление невозможно');
     }
   };
 
@@ -108,7 +111,6 @@ export const RoomStatusTable = () => {
           maxTagPlaceholder={() => 'Цвет статуса номера'}
           allowClear
           suffixIcon={<BottomArrowIcon />}
-          className={s.filter}
           placeholder='Цвет статуса номера'
           onChange={(value) =>
             setFilter({ ...filter, color: value as string[] })
@@ -128,7 +130,7 @@ export const RoomStatusTable = () => {
         />
         <Button
           type='primary'
-          onClick={() => {}}
+          onClick={() => navigate('create')}
           style={{
             height: '40px',
             borderRadius: '20px',

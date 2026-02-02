@@ -1,9 +1,5 @@
 import type { RootState } from '@app/store/store.ts';
-import type {
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, } from '@reduxjs/toolkit/query/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Token } from '@shared/hooks/token.ts';
 import type { AuthResponse } from '@entities/user/types';
@@ -76,6 +72,13 @@ export const baseApi = createApi({
     'HOTEL_ROOMS_TYPE',
     'HOTEL_ROOM_STATUS',
     'HOTEL_ROOM_STOCK',
+    'FINANCE_TAX',
+    'FINANCE_CURRENCY',
+    'FINANCE_PAYMENT_TYPE',
+    'PAYMENT',
+    'FOLIO_TRANSACTION',
+    'ORGANIZATION',
+    'ORGANIZATION_TYPE',
   ],
   endpoints: () => ({}),
 });

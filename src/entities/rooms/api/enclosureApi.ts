@@ -4,7 +4,7 @@ import type { IHotelEnclosure } from '../types';
 
 export const enclosureApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelEnclosures: builder.query<IHotelEnclosure, void>({
+    getHotelEnclosures: builder.query<IHotelEnclosure[], void>({
       query: () => ({
         url: 'hotel/hulls/',
         method: 'GET',

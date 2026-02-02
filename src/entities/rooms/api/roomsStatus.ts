@@ -4,7 +4,7 @@ import type { IRoomStatus } from '../types';
 
 export const roomsStatus = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelRoomsStatus: builder.query<IRoomStatus, void>({
+    getHotelRoomsStatus: builder.query<IRoomStatus[], void>({
       query: () => ({
         url: 'hotel/room-statuses/',
         method: 'GET',

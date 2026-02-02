@@ -1,31 +1,40 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IOrganizationType {
-  id: string;
-  name: string;
-  code: string;
-  operationName: string;
-}
+import {
+  type IOrganizationType,
+  useDeleteOrganizationTypeMutation,
+  useGetOrganizationTypesQuery,
+} from '@entities/organizations';
+import { TableActions } from '@widgets/TableActions';
 
 export const OrganizationTypesTable = () => {
+  const { data } = useGetOrganizationTypesQuery();
+  const [deleteOrganizationType, { isLoading }] =
+    useDeleteOrganizationTypeMutation();
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  const data: IOrganizationType[] = Array(9)
-    .fill({
-      id: 'INV-1001',
-      name: 'Тур Агенство',
-      code: 'INV-1001',
-      operationName: 'INV-1001',
-    })
-    .map((item, index) => ({ ...item, id: `${item.id}-${index}` }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedOrgType, setSelectedOrgType] =
+    useState<IOrganizationType | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteOrganizationType(selectedOrgType?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns: ColumnsType<IOrganizationType> = [
     {
@@ -46,29 +55,13 @@ export const OrganizationTypesTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedOrgType}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink={'edit'}
+        />
       ),
     },
   ];
@@ -82,33 +75,32 @@ export const OrganizationTypesTable = () => {
         prefixIcon={<SearchIcon />}
       />
       <div className='table-header-filter'>
-        <Select
-          placeholder='Select'
-          style={{ width: 120, height: 40 }}
-          options={[]}
-          allowClear
+        <SelectWithSearch
+          placeholder='Search'
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
-        </Button>
+        <Button variant='primary'>Создать</Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить тип организации?'
+        isLoading={isLoading}
+        description={`Тип организации "${selectedOrgType?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

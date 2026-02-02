@@ -1,8 +1,8 @@
 import { BottomArrowIcon, SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { DeleteModal, InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, message, Select, Tag } from 'antd';
+import { Button, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -12,11 +12,13 @@ import {
 } from '@entities/rooms';
 import type { IRoomType, RoomsColor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
 
 import s from './RoomTypesTable.module.scss';
 
 export const RoomTypesTable = () => {
   const { bookingStatusTagStyle } = useStyles();
+  const navigate = useNavigate();
 
   const { data } = useGetHotelRoomsTypesQuery();
   const [deleteHotelRoomsType, { isLoading }] =
@@ -111,23 +113,33 @@ export const RoomTypesTable = () => {
         prefixIcon={<SearchIcon />}
       />
       <div className='table-header-filter'>
-        <Select
+        <SelectWithSearch
           mode='multiple'
-          maxTagCount={'responsive'}
+          maxTagCount={0}
+          maxTagPlaceholder={() => 'Цвет типа номера'}
           allowClear
           suffixIcon={<BottomArrowIcon />}
           className={s.filter}
           placeholder='Цвет типа номера'
-          defaultValue={['a10', 'c12']}
-          onChange={(value) => setFilter({ ...filter, color: value })}
+          onChange={(value) =>
+            setFilter({ ...filter, color: value as string[] })
+          }
           options={Object.entries(ROOMS_COLOR_CONFIG).map(([key, config]) => ({
             value: key,
-            label: config.label,
+            label: (
+              <div className={s.optionWrapper}>
+                <div
+                  className={s.colorDot}
+                  style={{ backgroundColor: config.backgroundColor }}
+                />
+                <span className={s.label}>{config.label}</span>
+              </div>
+            ),
           }))}
         />
         <Button
           type='primary'
-          onClick={() => {}}
+          onClick={() => navigate('create')}
           style={{
             display: 'flex',
             alignItems: 'center',

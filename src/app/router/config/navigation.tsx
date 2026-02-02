@@ -111,24 +111,80 @@ export const navigationConfig: NavItem[] = [
         label: 'Этажи',
         path: '/rooms/floors',
         menu: true,
+        children: [
+          {
+            key: 'rooms-floors/create',
+            label: 'Создать этаж',
+            path: '/rooms/floors/create',
+            menu: false,
+          },
+          {
+            key: 'rooms-floors/edit',
+            label: 'Изменить этаж',
+            path: '/rooms/floors/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'rooms-types',
         label: 'Типы номеров',
         path: '/rooms/types',
         menu: true,
+        children: [
+          {
+            key: 'rooms-types/create',
+            label: 'Создать тип номера',
+            path: '/rooms/types/create',
+            menu: false,
+          },
+          {
+            key: 'rooms-types/edit',
+            label: 'Изменить тип номера',
+            path: '/rooms/types/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'rooms-status',
         label: 'Статус номеров',
         path: '/rooms/status',
         menu: true,
+        children: [
+          {
+            key: 'rooms-status/create',
+            label: 'Создать статус',
+            path: '/rooms/status/create',
+            menu: false,
+          },
+          {
+            key: 'rooms-status/edit',
+            label: 'Изменить статус',
+            path: '/rooms/status/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'rooms-stock',
         label: 'Номерной фонд',
         path: '/rooms/stock',
         menu: true,
+        children: [
+          {
+            key: 'rooms-stock/create',
+            label: 'Создать номер',
+            path: '/rooms/stock/create',
+            menu: false,
+          },
+          {
+            key: 'rooms-stock/edit',
+            label: 'Изменить номер',
+            path: '/rooms/stock/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },
@@ -143,30 +199,100 @@ export const navigationConfig: NavItem[] = [
         label: 'Налоги',
         path: '/finance/taxes',
         menu: true,
+        children: [
+          {
+            key: 'finance-taxes/create',
+            label: 'Создать налог',
+            path: '/finance/taxes/create',
+            menu: false,
+          },
+          {
+            key: 'finance-taxes/edit',
+            label: 'Изменить налог',
+            path: '/finance/taxes/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'finance-currencies',
         label: 'Валюты',
         path: '/finance/currencies',
         menu: true,
+        children: [
+          {
+            key: 'finance-currencies/create',
+            label: 'Создать валюту',
+            path: '/finance/currencies/create',
+            menu: false,
+          },
+          {
+            key: 'finance-currencies/edit',
+            label: 'Изменить валюту',
+            path: '/finance/currencies/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'finance-payment-types',
         label: 'Типы оплаты',
         path: '/finance/payment-types',
         menu: true,
+        children: [
+          {
+            key: 'finance-payment-types/create',
+            label: 'Создать тип оплаты',
+            path: '/finance/payment-types/create',
+            menu: false,
+          },
+          {
+            key: 'finance-payment-types/edit',
+            label: 'Изменить тип оплаты',
+            path: '/finance/payment-types/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'finance-payments',
         label: 'Платежи',
         path: '/finance/payments',
         menu: true,
+        children: [
+          {
+            key: 'finance-payments/create',
+            label: 'Создать платеж',
+            path: '/finance/payments/create',
+            menu: false,
+          },
+          {
+            key: 'finance-payments/edit',
+            label: 'Изменить платеж',
+            path: '/finance/payments/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'finance-folio',
         label: 'Фолио',
         path: '/finance/folio',
         menu: true,
+        children: [
+          {
+            key: 'finance-folio/create',
+            label: 'Создать транзакцию',
+            path: '/finance/folio/create',
+            menu: false,
+          },
+          {
+            key: 'finance-folio/edit',
+            label: 'Изменить транзакцию',
+            path: '/finance/folio/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },

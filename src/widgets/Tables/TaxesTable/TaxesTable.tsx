@@ -1,96 +1,82 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch } from 'antd';
+import { Button, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface ITax {
-  id: string;
-  code: string;
-  name: string;
-  percent: string;
-  includeInPrice: boolean;
-  note: string;
-}
+import { type IFinanceTax, useDeleteFinanceTaxMutation, useGetFinanceTaxesQuery, } from '@entities/finance';
+import { TableActions } from '@widgets/TableActions';
 
 export const TaxesTable = () => {
+  const { data } = useGetFinanceTaxesQuery();
+  const [deleteFinanceTax, { isLoading }] = useDeleteFinanceTaxMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     select: undefined,
   });
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedTax, setSelectedTax] = useState<IFinanceTax | null>(null);
 
-  const data: ITax[] = Array.from({ length: 9 }).map((_, index) => ({
-    id: `INV-1001-${index}`,
-    code: 'INV-1001',
-    name: 'INV-1001',
-    percent: '7%',
-    includeInPrice: [1, 3, 4, 6].includes(index), // Имитация переключателей со скриншота
-    note: 'INV-1001',
-  }));
+  const handleDelete = async () => {
+    try {
+      await deleteFinanceTax(selectedTax?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const columns: ColumnsType<ITax> = [
+  const columns: ColumnsType<IFinanceTax> = [
     {
       title: 'Код',
       dataIndex: 'code',
       key: 'code',
+      width: '12%',
     },
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
+      width: '15%',
     },
     {
       title: 'Процент',
       dataIndex: 'percent',
       key: 'percent',
+      width: '13%',
     },
     {
       title: 'Включить в стоимость',
-      dataIndex: 'includeInPrice',
-      key: 'includeInPrice',
+      dataIndex: 'status',
+      key: 'status',
+      width: '20%',
       render: (checked) => (
         <Switch
-          checked={checked}
+          checked={checked === 'included'}
           style={{
-            backgroundColor: checked ? '#52C41A' : undefined,
+            backgroundColor: checked === 'included' ? '#52C41A' : undefined,
           }}
         />
       ),
     },
     {
       title: 'Примечание',
-      dataIndex: 'note',
-      key: 'note',
+      dataIndex: 'description',
+      key: 'description',
+      width: '20%',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-              fontWeight: 500,
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      width: '20%',
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedTax}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink={'edit'}
+        />
       ),
     },
   ];
@@ -106,15 +92,10 @@ export const TaxesTable = () => {
         />
       </div>
       <div className='table-header-filter'>
-        <Select
-          placeholder='Select'
-          style={{ width: 120, height: 40 }}
-          options={[
-            { value: 'option1', label: 'Option 1' },
-            { value: 'option2', label: 'Option 2' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, select: value })}
-          allowClear
+        <SelectWithSearch
+          placeholder='Налоги'
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
         <Button
           type='primary'
@@ -132,11 +113,21 @@ export const TaxesTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить налог?'
+        isLoading={isLoading}
+        description={`Налог с номером "${selectedTax?.id}" будет удален из системы.`}
+      />
+    </>
   );
 };
