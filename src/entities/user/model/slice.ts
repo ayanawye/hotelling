@@ -1,14 +1,16 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { User } from '../types';
+import type { AuthResponse, User } from '../types';
+import { Token } from '@shared/hooks/token.ts';
+import type { RootState } from '@app/store/store.ts';
 
 interface AuthState {
   user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
+  token?: AuthResponse | null;
+  isAuthenticated?: boolean;
 }
 
-const savedToken = localStorage.getItem('token');
+const savedToken = Token.getToken();
 
 const initialState: AuthState = {
   user: null,
@@ -20,16 +22,13 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (
-      state,
-      {
-        payload: { user, access },
-      }: PayloadAction<{ user: User; access: string }>,
-    ) => {
-      state.user = user;
-      state.token = access;
+    setCredentials: (state, { payload }: PayloadAction<AuthState>) => {
+      state.user = payload.user;
       state.isAuthenticated = true;
-      localStorage.setItem('token', access);
+    },
+    setToken: (state, { payload }: PayloadAction<AuthResponse | null>) => {
+      state.token = payload;
+      Token.setToken(payload);
     },
     logout: (state) => {
       state.user = null;
@@ -40,5 +39,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, setToken, logout } = authSlice.actions;
+export const authSelector = (state: RootState) => state.auth;
 export const authReducer = authSlice.reducer;

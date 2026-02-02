@@ -1,6 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Button, Select, Switch } from 'antd';
@@ -16,8 +15,6 @@ interface ILaundryItem {
 }
 
 export const LaundryItemsTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
   const [filter, setFilter] = useState({
     search: '',
   });
@@ -90,15 +87,7 @@ export const LaundryItemsTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}

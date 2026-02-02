@@ -102,15 +102,9 @@ export const useStyles = () => {
   const tableStyles: CSSProperties = {
     borderRadius: '24px',
     overflow: 'hidden',
-    border: `1px solid ${token.colorBorderSecondary}`,
+    border: `1px solid #E5E5E5`,
     background: token.colorBgContainer,
     padding: '26px 24px',
-  };
-
-  const tableHeaderStyle: CSSProperties = {
-    width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: 16,
   };
 
   const inputField: CSSProperties = {
@@ -127,7 +121,7 @@ export const useStyles = () => {
     padding: 12,
     cellPaddingInlineStart: 0,
     headerSplitColor: 'transparent',
-    borderColor: token.colorBorderSecondary,
+    borderColor: '#E5E5E5',
     titlePadding: 0,
     footerPadding: '16px 24px',
     borderLeft: 0,
@@ -169,6 +163,10 @@ export const useStyles = () => {
     fontSize: 12,
     fontWeight: 600,
     lineHeight: '18px',
+    maxWidth: '90%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   };
 
   const breadCrumbsStyle: CSSProperties = {
@@ -205,7 +203,6 @@ export const useStyles = () => {
     logoStyle,
     menuThemeConfig,
     tableStyles,
-    tableHeaderStyle,
     inputField,
     tableThemeConfig,
     emptyStyles,

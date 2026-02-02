@@ -1,19 +1,11 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IPayment {
-  id: string;
-  paymentType: string;
-  amount: string;
-  date: string;
-  status: 'Оплачено' | 'В ожидании' | 'Отменено';
-}
+import { type IPayment, useGetPaymentsQuery } from '@entities/finance';
 
 const STATUS_CONFIG: Record<
   string,
@@ -25,50 +17,11 @@ const STATUS_CONFIG: Record<
 };
 
 export const PaymentsTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
+  const { data } = useGetPaymentsQuery();
   const [filter, setFilter] = useState({
     search: '',
     status: undefined,
   });
-
-  const data: IPayment[] = [
-    {
-      id: 'INV-1001',
-      paymentType: 'CASH',
-      amount: '50 000 ₸',
-      date: '20.01.2024',
-      status: 'Оплачено',
-    },
-    {
-      id: 'INV-1002',
-      paymentType: 'CARD',
-      amount: '120 000 ₸',
-      date: '21.01.2024',
-      status: 'В ожидании',
-    },
-    {
-      id: 'INV-1003',
-      paymentType: 'Transfer',
-      amount: '75 000 ₸',
-      date: '22.01.2024',
-      status: 'Отменено',
-    },
-    {
-      id: 'INV-1004',
-      paymentType: 'CASH',
-      amount: '30 000 ₸',
-      date: '23.01.2024',
-      status: 'Оплачено',
-    },
-    {
-      id: 'INV-1005',
-      paymentType: 'CARD',
-      amount: '200 000 ₸',
-      date: '24.01.2024',
-      status: 'Оплачено',
-    },
-  ];
 
   const columns: ColumnsType<IPayment> = [
     {
@@ -147,15 +100,7 @@ export const PaymentsTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -164,17 +109,12 @@ export const PaymentsTable = () => {
           prefixIcon={<SearchIcon />}
         />
       </div>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <Select
-          placeholder='Select'
-          style={{ width: 200, height: 40 }}
-          options={[
-            { value: 'Оплачено', label: 'Оплачено' },
-            { value: 'В ожидании', label: 'В ожидании' },
-            { value: 'Отменено', label: 'Отменено' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, status: value })}
-          allowClear
+      <div className='table-header-filter'>
+        <SelectWithSearch
+          placeholder='Оплаты'
+          maxTagPlaceholder={() => 'Цвет статуса номера'}
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
         <Button
           type='primary'

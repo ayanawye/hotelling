@@ -1,11 +1,11 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Button, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
+import { TableActions } from '@widgets/TableActions';
 
 interface IWashings {
   id: string;
@@ -18,11 +18,16 @@ interface IWashings {
 }
 
 export const WashingsTable = () => {
-  const { tableHeaderStyle, bookingStatusTagStyle } = useStyles();
+  const { bookingStatusTagStyle } = useStyles();
 
   const [filter, setFilter] = useState({
     search: '',
   });
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedWashing, setSelectedWashing] = useState<IWashings | null>(
+    null,
+  );
 
   const data: IWashings[] = Array(9)
     .fill({
@@ -89,50 +94,26 @@ export const WashingsTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          editLink='edit'
+          setDeleteModalOpen={setDeleteModalOpen}
+          setSelectedItem={setSelectedWashing}
+        />
       ),
     },
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+      <div className='table-header-filter'>
         <Button
           style={{
             display: 'flex',
@@ -183,11 +164,23 @@ export const WashingsTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={() => {
+          console.log('Deleting:', selectedWashing);
+          setDeleteModalOpen(false);
+        }}
+        title='Удалить запись?'
+        description='Запись о стирке будет удалена из системы.'
+      />
+    </>
   );
 };
