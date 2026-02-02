@@ -1,17 +1,21 @@
 import type { RootState } from '@app/store/store.ts';
-import { logout } from '@entities/user/model/slice';
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Token } from '@shared/hooks/token.ts';
+import type { AuthResponse } from '@entities/user/types';
+import { setToken } from '@entities/user/model/slice.ts';
+
+const { VITE_API_MAIN_URL } = import.meta.env;
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_MAIN_URL || '/',
+  baseUrl: VITE_API_MAIN_URL,
   prepareHeaders: (headers, { getState }) => {
     const token =
-      (getState() as RootState).auth.token || localStorage.getItem('token');
+      (getState() as RootState).auth.token?.access || Token.getToken()?.access;
 
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
@@ -25,10 +29,38 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const result = await baseQuery(args, api, extraOptions);
+  let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    api.dispatch(logout());
+    const refreshToken = Token.getToken()?.refresh;
+    if (!refreshToken) {
+      return result;
+    }
+
+    const refreshResult = await baseQuery(
+      {
+        url: 'auth/refresh/',
+        method: 'POST',
+        body: { refresh: refreshToken },
+      },
+      api,
+      extraOptions,
+    );
+
+    if (refreshResult.data) {
+      const userType = Token.getToken();
+      const newTokens = {
+        ...userType,
+        ...(refreshResult.data as AuthResponse),
+      };
+      Token.setToken(newTokens);
+      api.dispatch(setToken(newTokens));
+
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      Token.removeToken();
+      window.location.href = '/';
+    }
   }
 
   return result;
@@ -37,6 +69,13 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Booking'],
+  tagTypes: [
+    'Booking',
+    'HOTEL_ENCLOSURE',
+    'HOTEL_FLOOR',
+    'HOTEL_ROOMS_TYPE',
+    'HOTEL_ROOM_STATUS',
+    'HOTEL_ROOM_STOCK',
+  ],
   endpoints: () => ({}),
 });

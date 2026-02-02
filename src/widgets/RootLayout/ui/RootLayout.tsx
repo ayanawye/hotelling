@@ -40,51 +40,81 @@ export const RootLayout = () => {
     themeSwitchStyle,
   } = useStyles();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
-  };
-
   const userRole: UserRole = user?.role || 'RECEPTIONIST';
 
   const menuItems = useMemo(() => {
-    const filterAndMap = (items: NavItem[]): MenuItem[] => {
-      return items
-        .filter((item) => {
-          if (!item.access) return true;
-          return item.access.includes(userRole);
-        })
+    const filterAndMap = (items: NavItem[]): MenuItem[] =>
+      items
+        .filter(
+          (item) =>
+            (!item.access || item.access.includes(userRole)) && item.menu,
+        )
         .map((item) => {
-          const mappedItem: MenuItem = {
+          const children = item.children
+            ? filterAndMap(item.children)
+            : undefined;
+          return {
             key: item.path || item.key,
             label: item.label,
-            icon: item.icon ? item.icon : null,
+            icon: item.icon || null,
+            children: children && children.length > 0 ? children : undefined,
           };
-
-          if (item.children) {
-            return {
-              ...mappedItem,
-              children: filterAndMap(item.children),
-            };
-          }
-
-          return mappedItem;
         });
-    };
 
     return filterAndMap(navigationConfig);
   }, [userRole]);
 
-  // Находим родительский ключ для раскрытия меню, если мы на дочерней странице
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
-  const defaultOpenKeys = useMemo(() => {
-    for (const item of navigationConfig) {
-      if (item.children?.some((child) => child.path === location.pathname)) {
-        return [item.key];
+  // Находим активные ключи и родительские ключи для меню
+  const { selectedKeys, openKeys } = useMemo(() => {
+    const findKeys = (
+      items: NavItem[],
+      targetPath: string,
+      parents: string[] = [],
+      lastVisiblePath?: string,
+    ): { selected: string; parents: string[] } | null => {
+      const matchPath = (path: string, targetPath: string) => {
+        if (!path) return false;
+        const cleanPath = path.replace(/:[^\/]+/g, '[^/]+');
+        const regex = new RegExp(`^${cleanPath}$`);
+        return regex.test(targetPath);
+      };
+
+      for (const item of items) {
+        const currentVisiblePath =
+          item.menu !== false ? item.path : lastVisiblePath;
+
+        if (item.path && matchPath(item.path, targetPath)) {
+          return {
+            selected: currentVisiblePath || item.path || item.key,
+            parents,
+          };
+        }
+        if (item.children) {
+          const found = findKeys(
+            item.children,
+            targetPath,
+            [...parents, item.key],
+            currentVisiblePath,
+          );
+          if (found) return found;
+        }
       }
-    }
-    return [];
+      return null;
+    };
+
+    const keys = findKeys(navigationConfig, location.pathname);
+    return {
+      selectedKeys: keys ? [keys.selected] : [],
+      openKeys: ['/bookings', ...(keys?.parents || [])].filter(
+        Boolean,
+      ) as string[],
+    };
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -106,8 +136,8 @@ export const RootLayout = () => {
         </div>
         <Menu
           mode='inline'
-          selectedKeys={[location.pathname]}
-          defaultOpenKeys={defaultOpenKeys}
+          selectedKeys={selectedKeys}
+          defaultOpenKeys={openKeys}
           items={menuItems}
           onClick={({ key }) => navigate(key)}
           style={menuStyle}

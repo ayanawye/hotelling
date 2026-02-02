@@ -1,5 +1,4 @@
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Button, Select, Switch } from 'antd';
@@ -18,8 +17,6 @@ interface ICurrency {
 }
 
 export const CurrenciesTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
   const [filter, setFilter] = useState({
     search: '',
   });
@@ -160,15 +157,7 @@ export const CurrenciesTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -177,7 +166,7 @@ export const CurrenciesTable = () => {
           prefixIcon={<SearchIcon />}
         />
       </div>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+      <div className='table-header-filter'>
         <Select
           placeholder='Select'
           style={{ width: 120, height: 40 }}

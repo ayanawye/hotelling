@@ -1,11 +1,11 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
+import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
 
 interface IRoomStock {
   id: string;
@@ -31,12 +31,12 @@ const STATUS_CONFIG: Record<
 };
 
 export const RoomStockTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
   const [filter, setFilter] = useState({
     search: '',
-    enclosure: undefined,
-    status: undefined,
+    enclosure: undefined as string | undefined,
+    floor: undefined as string | undefined,
+    roomType: undefined as string | undefined,
+    status: undefined as string | undefined,
   });
 
   const data: IRoomStock[] = [
@@ -172,15 +172,7 @@ export const RoomStockTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -188,30 +180,23 @@ export const RoomStockTable = () => {
           placeholder='Поиск'
           prefixIcon={<SearchIcon />}
         />
-        <Select
-          placeholder='Корпус'
-          style={{ width: 150, height: 40 }}
-          options={[
-            { value: 'Корпус 1', label: 'Корпус 1' },
-            { value: 'Корпус 2', label: 'Корпус 2' },
-            { value: 'Корпус 3', label: 'Корпус 3' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, enclosure: value })}
-          allowClear
-        />
       </div>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <Select
-          placeholder='Статус'
-          style={{ width: 150, height: 40 }}
-          options={[
-            { value: 'Свободен', label: 'Свободен' },
-            { value: 'Занят', label: 'Занят' },
-            { value: 'Требует уборки', label: 'Требует уборки' },
-            { value: 'Ремонт', label: 'Ремонт' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, status: value })}
-          allowClear
+      <div className='table-header-filter'>
+        <FilterRooms
+          initialFilters={{
+            enclosure: filter.enclosure,
+            floor: filter.floor,
+            roomType: filter.roomType,
+          }}
+          onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
+          onResetAll={() =>
+            setFilter({
+              ...filter,
+              enclosure: undefined,
+              floor: undefined,
+              roomType: undefined,
+            })
+          }
         />
         <Button
           type='primary'
@@ -228,10 +213,32 @@ export const RoomStockTable = () => {
     </div>
   );
 
+  const filteredData = data.filter((item) => {
+    const matchesSearch =
+      item.roomNumber.toLowerCase().includes(filter.search.toLowerCase()) ||
+      item.enclosure.toLowerCase().includes(filter.search.toLowerCase()) ||
+      item.roomType.toLowerCase().includes(filter.search.toLowerCase());
+
+    const matchesEnclosure =
+      !filter.enclosure || item.enclosure === filter.enclosure;
+    const matchesFloor = !filter.floor || item.floor === filter.floor;
+    const matchesRoomType =
+      !filter.roomType || item.roomType === filter.roomType;
+    const matchesStatus = !filter.status || item.status === filter.status;
+
+    return (
+      matchesSearch &&
+      matchesEnclosure &&
+      matchesFloor &&
+      matchesRoomType &&
+      matchesStatus
+    );
+  });
+
   return (
     <TableComponent
       title={TableHeader}
-      data={data}
+      data={filteredData}
       columns={columns}
       loading={false}
     />

@@ -13,19 +13,22 @@ export const baseRoutes: IAccessRouteObject[] = [
         path: 'list',
         element: <Pages.BookingListPage />,
       },
+      {
+        path: 'create',
+        element: <Pages.BookingCreatePage />,
+      },
+      {
+        path: 'edit/:id',
+        element: <Pages.BookingEditPage />,
+      },
     ],
   },
   {
     path: '/hotel',
     children: [
       {
-        path: 'rooms',
-        element: <Pages.HotelRoomsPage />,
-      },
-      {
-        path: 'staff',
-        element: <Pages.HotelStaffPage />,
-        access: ['MANAGER'],
+        path: 'settings',
+        element: <Pages.HotelSettingPage />,
       },
     ],
   },
@@ -39,6 +42,14 @@ export const baseRoutes: IAccessRouteObject[] = [
       {
         path: 'enclosures',
         element: <Pages.RoomsEnclosuresPage />,
+      },
+      {
+        path: 'enclosures/create',
+        element: <Pages.RoomsEnclosuresCreatePage />,
+      },
+      {
+        path: 'enclosures/edit/:id',
+        element: <Pages.RoomsEnclosuresEditPage />,
       },
       {
         path: 'floors',

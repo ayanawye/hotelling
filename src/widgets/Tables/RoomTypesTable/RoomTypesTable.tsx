@@ -1,141 +1,82 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { SearchIcon } from '@shared/assets';
+import { BottomArrowIcon, SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Space, Tag } from 'antd';
+import { Button, message, Select, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
+import {
+  ROOMS_COLOR_CONFIG,
+  useDeleteHotelRoomsTypeMutation,
+  useGetHotelRoomsTypesQuery,
+} from '@entities/rooms';
+import type { IRoomType, RoomsColor } from '@entities/rooms/types';
+import { TableActions } from '@widgets/TableActions';
 
-interface IRoomType {
-  id: string;
-  name: string;
-  code: string;
-  colorType: string;
-  description: string;
-}
-
-const COLOR_TYPE_CONFIG: Record<
-  string,
-  { label: string; color: string; bgColor: string }
-> = {
-  Люкс: { label: 'Люкс', color: '#00B368', bgColor: '#E6F9F0' },
-  Стандарт: { label: 'Стандарт', color: '#D97706', bgColor: '#FEF3C7' },
-  Делюкс: { label: 'Делюкс', color: '#E11D48', bgColor: '#FEE2E2' },
-};
+import s from './RoomTypesTable.module.scss';
 
 export const RoomTypesTable = () => {
-  const { tableHeaderStyle } = useStyles();
+  const { bookingStatusTagStyle } = useStyles();
 
-  const [filter, setFilter] = useState({
+  const { data } = useGetHotelRoomsTypesQuery();
+  const [deleteHotelRoomsType, { isLoading }] =
+    useDeleteHotelRoomsTypeMutation();
+
+  const [filter, setFilter] = useState<{
+    search: string;
+    color: string[] | null;
+  }>({
     search: '',
-    colorType: undefined,
+    color: [],
   });
 
-  const data: IRoomType[] = [
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Люкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Стандарт',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Стандарт',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-    {
-      id: 'INV-1001',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      colorType: 'Делюкс',
-      description: 'lorem ipsum',
-    },
-  ];
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState<IRoomType | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteHotelRoomsType(selectedType?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
   const columns: ColumnsType<IRoomType> = [
     {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      width: '11%',
     },
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
+      width: '15%',
     },
     {
       title: 'Код',
       dataIndex: 'code',
       key: 'code',
+      width: '14%',
     },
     {
       title: 'Цвет типа номера',
-      dataIndex: 'colorType',
-      key: 'colorType',
-      render: (type: string) => {
-        const config = COLOR_TYPE_CONFIG[type] || {
-          label: type,
-          color: '#000',
-          bgColor: '#f0f0f0',
-        };
+      dataIndex: 'color',
+      key: 'color',
+      width: '20%',
+      render: (color: RoomsColor, record) => {
+        const config = ROOMS_COLOR_CONFIG[color];
         return (
           <Tag
             style={{
-              borderRadius: '20px',
-              padding: '2px 16px',
-              border: 'none',
+              ...bookingStatusTagStyle,
               color: config.color,
-              backgroundColor: config.bgColor,
-              fontWeight: 500,
+              backgroundColor: config.backgroundColor,
             }}
           >
-            {config.label}
+            {record.name}
           </Tag>
         );
       },
@@ -144,61 +85,49 @@ export const RoomTypesTable = () => {
       title: 'Описание',
       dataIndex: 'description',
       key: 'description',
+      width: '20%',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <Space size='middle'>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Изменить
-          </Button>
-        </Space>
+      width: '20%',
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedType}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink='edit'
+        />
       ),
     },
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <Space size='middle'>
+      <div className='table-header-filter'>
         <Select
+          mode='multiple'
+          maxTagCount={'responsive'}
+          allowClear
+          suffixIcon={<BottomArrowIcon />}
+          className={s.filter}
           placeholder='Цвет типа номера'
-          style={{ width: 180, height: 40 }}
-          onChange={(value) => setFilter({ ...filter, colorType: value })}
-          options={[
-            { value: 'Люкс', label: 'Люкс' },
-            { value: 'Стандарт', label: 'Стандарт' },
-            { value: 'Делюкс', label: 'Делюкс' },
-          ]}
+          defaultValue={['a10', 'c12']}
+          onChange={(value) => setFilter({ ...filter, color: value })}
+          options={Object.entries(ROOMS_COLOR_CONFIG).map(([key, config]) => ({
+            value: key,
+            label: config.label,
+          }))}
         />
         <Button
           type='primary'
+          onClick={() => {}}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -210,17 +139,27 @@ export const RoomTypesTable = () => {
         >
           <span>Создать</span>
         </Button>
-      </Space>
+      </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-      rowKey='id'
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data as unknown as IRoomType[]}
+        columns={columns}
+        loading={false}
+        rowKey='id'
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить тип номера?'
+        isLoading={isLoading}
+        description={`Тип номера "${selectedType?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

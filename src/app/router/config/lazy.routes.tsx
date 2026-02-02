@@ -1,4 +1,4 @@
-import { Loadable } from '@shared/lib/Loadable.tsx';
+import { Loadable } from '@shared/lib';
 import { lazy } from 'react';
 
 // Auth & General
@@ -12,13 +12,17 @@ export const BookingBoardPage = Loadable(
 export const BookingListPage = Loadable(
   lazy(() => import('@pages/Bookings/BoardList/BoardList')),
 );
+export const BookingCreatePage = Loadable(
+  lazy(() => import('@pages/Bookings/CreateBooking/CreateBooking')),
+);
+
+export const BookingEditPage = Loadable(
+  lazy(() => import('@pages/Bookings/EditBooking/EditBooking')),
+);
 
 // Hotel
-export const HotelRoomsPage = Loadable(
-  lazy(() => import('@pages/Hotel/Rooms')),
-);
-export const HotelStaffPage = Loadable(
-  lazy(() => import('@pages/Hotel/Staff')),
+export const HotelSettingPage = Loadable(
+  lazy(() => import('@pages/Hotel/HotelSettings/HotelSettings')),
 );
 
 // Guests
@@ -26,8 +30,15 @@ export const GuestsPage = Loadable(lazy(() => import('@pages/Guests')));
 
 // Rooms (Settings)
 export const RoomsEnclosuresPage = Loadable(
-  lazy(() => import('@pages/Rooms/Enclosures')),
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresList')),
 );
+export const RoomsEnclosuresCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresCreate')),
+);
+export const RoomsEnclosuresEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresEdit')),
+);
+
 export const RoomsFloorsPage = Loadable(
   lazy(() => import('@pages/Rooms/Floors')),
 );

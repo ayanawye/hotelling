@@ -1,30 +1,41 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IEnclosure {
-  id: string;
-  name: string;
-}
+import {
+  useDeleteHotelEnclosureMutation,
+  useGetHotelEnclosuresQuery,
+} from '@entities/rooms';
+import { TableActions } from '@widgets/TableActions';
+import type { IHotelEnclosure } from '@entities/rooms/types';
+import { useNavigate } from 'react-router-dom';
 
 export const EnclosuresTable = () => {
-  const { tableHeaderStyle } = useStyles();
+  const navigate = useNavigate();
+
+  const { data } = useGetHotelEnclosuresQuery();
+  const [deleteHotelEnclosure, { isLoading }] =
+    useDeleteHotelEnclosureMutation();
 
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  const data: IEnclosure[] = Array.from({ length: 9 }).map((_, index) => ({
-    id: `INV-100${index + 1}`,
-    name: `INV-100${index + 1}`,
-  }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedEnclosure, setSelectedEnclosure] =
+    useState<IHotelEnclosure | null>(null);
 
-  const columns: ColumnsType<IEnclosure> = [
+  const handleDelete = async () => {
+    try {
+      await deleteHotelEnclosure(selectedEnclosure?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const columns: ColumnsType<IHotelEnclosure> = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -38,67 +49,48 @@ export const EnclosuresTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <Space size='middle'>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Изменить
-          </Button>
-        </Space>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedEnclosure}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink='edit'
+        />
       ),
     },
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <Button
-        type='primary'
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          height: '40px',
-          borderRadius: '20px',
-          padding: '0 24px',
-          backgroundColor: '#2B63D9',
-        }}
-      >
+      <Button variant='primary' onClick={() => navigate('create')}>
         <span>Создать</span>
       </Button>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-      rowKey='id'
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+        rowKey='id'
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить корпус?'
+        isLoading={isLoading}
+        description={`Корпус "${selectedEnclosure?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

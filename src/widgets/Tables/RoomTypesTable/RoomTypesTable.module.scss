@@ -1,0 +1,9 @@
+.filter {
+  max-width: 220px;
+  width: 100% !important;
+  min-width: 190px;
+  max-height: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0 16px;
+}
