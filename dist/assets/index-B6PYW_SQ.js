@@ -1,0 +1,1 @@
+import{j as o}from"./index-CbnrRa6C.js";import"./organizationTypesApi-BjGicNoR.js";import{C as r}from"./ConsumablesTable-D52pv0ps.js";import"./DeleteOutlined-CL_O8VuF.js";const e=()=>o.jsx(r,{});export{e as default};
