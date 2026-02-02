@@ -1,0 +1,157 @@
+.popoverOverlay {
+  z-index: 1050;
+
+  :global(.ant-popover-inner) {
+    padding: 0;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  :global(.ant-popover-container) {
+    padding: 13px 16px;
+    border-radius: 12px;
+    width: 320px;
+    border: 1px solid var(--white-color-200);
+    background: var(--Neutral-White, #FFF);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  :global(.ant-popover-arrow) {
+    display: none;
+  }
+}
+
+.filterContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--neutral-gray-1);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  border-bottom: 1px solid var(--neutral-gray-6);
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.divider {
+  margin: 0 !important;
+}
+
+.fieldWrapper {
+  padding: 16px 20px;
+}
+
+.fieldLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.fieldLabel {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.resetLink {
+  padding: 0;
+  height: auto;
+  font-size: 14px;
+  color: #3B82F6;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #2563EB;
+  }
+}
+
+.select {
+  width: 100% !important;
+
+  :global(.ant-select-selector) {
+    height: 48px !important;
+    border-radius: 12px !important;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.footer {
+  padding: 16px 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.resetAllBtn {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.applyBtn {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  font-weight: 500;
+  background-color: #2563EB;
+
+  &:hover {
+    background-color: #1D4ED8 !important;
+  }
+}
+
+.filterTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 20px;
+  padding: 0 12px;
+  color: #6B7280;
+  border: 1px solid #D1D5DB;
+  font-size: 14px;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}

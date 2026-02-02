@@ -159,19 +159,24 @@ button {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: var(--black-color);
     cursor: pointer;
     transition: border-color 0.25s;
 }
 
-button:hover {
-    border-color: #646cff;
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 16px;
+    height: 40px;
 }
 
-button:focus,
-button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+.table-header-filter {
+    display: flex;
+    gap: 12px;
 }
+
 
 @media (prefers-color-scheme: light) {
     :root {

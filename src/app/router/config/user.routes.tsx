@@ -1,4 +1,4 @@
-import { Loadable } from '@shared/lib/Loadable.tsx';
+import { Loadable } from '@shared/lib';
 import { lazy } from 'react';
 
 import type { IAccessRouteObject } from './types';

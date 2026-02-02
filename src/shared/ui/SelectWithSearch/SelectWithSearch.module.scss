@@ -1,0 +1,42 @@
+.filter {
+  max-width: 180px;
+  width: 100% !important;
+  min-width: 190px;
+  max-height: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0 16px;
+}
+
+.dropdownWrapper {
+  padding: 8px;
+}
+
+.searchWrapper {
+  margin-bottom: 8px;
+}
+
+.optionWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.colorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.label {
+  flex-grow: 1;
+}
+
+.searchInput {
+  :global(.ant-input-affix-wrapper) {
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+}

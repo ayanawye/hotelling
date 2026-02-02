@@ -1,25 +1,64 @@
 import { useFetchAllBookingsQuery } from '@entities/booking/api/bookingApi.ts';
-import { DotsIcon, SearchIcon } from '@shared/assets';
+import {
+  DeleteIcon,
+  DotsIcon,
+  EditIcon,
+  PlusIcon,
+  RefreshIcon,
+  SearchIcon,
+} from '@shared/assets';
 import { useStyles } from '@shared/styles';
 import {
   type IReservation,
   type IReservationStatus,
-  RESERVATION_STATUS_CONFIG,
 } from '@shared/types/IBooking.ts';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Space, Tag } from 'antd';
+import { Dropdown, type MenuProps, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { dateFormat, RESERVATION_STATUS_CONFIG } from '@shared/lib';
+
+import { useNavigate } from 'react-router-dom';
+import './BoardingListTable.scss';
 
 export const BoardingListTable = () => {
   const { data } = useFetchAllBookingsQuery();
-  const { tableHeaderStyle, bookingStatusTagStyle } = useStyles();
+  const navigate = useNavigate();
+  const { bookingStatusTagStyle } = useStyles();
 
   const [filter, setFilter] = useState({
     search: '',
   });
+
+  const getActionItems = (record: IReservation): MenuProps['items'] => [
+    {
+      key: 'add-service',
+      label: 'Добавить услугу',
+      icon: <PlusIcon />,
+      onClick: () => console.log('Add service', record),
+    },
+    {
+      key: 'laundry-order',
+      label: 'Заказ в прачку',
+      icon: <RefreshIcon />,
+      onClick: () => console.log('Laundry order', record),
+    },
+    {
+      key: 'edit',
+      label: 'Изменить',
+      icon: <EditIcon />,
+      onClick: () => navigate('/bookings/create'),
+    },
+    {
+      key: 'delete',
+      label: 'Удалить',
+      icon: <DeleteIcon />,
+      danger: true,
+      onClick: () => navigate(`/bookings/edit/${record.id}`),
+    },
+  ];
 
   const reservationColumns: ColumnsType<IReservation> = [
     {
@@ -55,7 +94,7 @@ export const BoardingListTable = () => {
       dataIndex: 'departure_datetime',
       key: 'departure_datetime',
       width: '15%',
-      render: (date) => (date ? dayjs(date).format('DD.MM.YYYY') : '—'),
+      render: (date) => (date ? dayjs(date).format(dateFormat) : '—'),
     },
     {
       title: 'Статус',
@@ -81,23 +120,27 @@ export const BoardingListTable = () => {
       title: 'Действия',
       key: 'actions',
       width: '10%',
-      render: () => (
-        <Button>
+      render: (_, record) => (
+        <Dropdown
+          menu={{ items: getActionItems(record) }}
+          placement='bottomRight'
+          trigger={['click']}
+        >
           <DotsIcon />
-        </Button>
+        </Dropdown>
       ),
     },
   ];
 
   const TableHeader = (
-    <Space style={tableHeaderStyle}>
+    <div className='table-header'>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ search: e.target.value })}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-    </Space>
+    </div>
   );
 
   return (

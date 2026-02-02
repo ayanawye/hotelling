@@ -1,0 +1,13 @@
+.modal {
+  :global {
+    .ant-modal-container {
+      border-radius: 20px;
+      padding: 24px 47px;
+    }
+
+    .ant-modal-close {
+      top: 20px;
+      right: 20px;
+    }
+  }
+}

@@ -1,97 +1,47 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { BottomArrowIcon, SearchIcon } from '@shared/assets';
+import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Tag } from 'antd';
+import { Button, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
+import {
+  ROOMS_COLOR_CONFIG,
+  useDeleteHotelRoomStatusMutation,
+  useGetHotelRoomsStatusQuery,
+} from '@entities/rooms';
+import type { IRoomStatus, RoomsColor } from '@entities/rooms/types';
+import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
 
-interface IRoomStatus {
-  id: string;
-  name: string;
-  code: string;
-  statusColor: string;
-}
-
-const STATUS_COLOR_CONFIG: Record<
-  string,
-  { label: string; color: string; bgColor: string }
-> = {
-  Свободен: { label: 'Свободен', color: '#00B368', bgColor: '#E6F9F0' },
-  'Требует уборки': {
-    label: 'Требует уборки',
-    color: '#D97706',
-    bgColor: '#FEF3C7',
-  },
-  Занят: { label: 'Занят', color: '#E11D48', bgColor: '#FEE2E2' },
-  Люкс: { label: 'Люкс', color: '#00B368', bgColor: '#E6F9F0' },
-};
+import s from './RoomsStatusTable.module.scss';
 
 export const RoomStatusTable = () => {
-  const { tableHeaderStyle } = useStyles();
+  const navigate = useNavigate();
+  const { data } = useGetHotelRoomsStatusQuery();
+  const [deleteHotelRoomStatus, { isLoading }] =
+    useDeleteHotelRoomStatusMutation();
 
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{
+    search: string;
+    color: string[] | null;
+  }>({
     search: '',
-    statusColor: undefined,
+    color: [],
   });
 
-  const data: IRoomStatus[] = [
-    {
-      id: '1',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Свободен',
-    },
-    {
-      id: '2',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Требует уборки',
-    },
-    {
-      id: '3',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Занят',
-    },
-    {
-      id: '4',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Люкс',
-    },
-    {
-      id: '5',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Занят',
-    },
-    {
-      id: '6',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Требует уборки',
-    },
-    {
-      id: '7',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Люкс',
-    },
-    {
-      id: '8',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Требует уборки',
-    },
-    {
-      id: '9',
-      name: 'INV-1001',
-      code: 'INV-1001',
-      statusColor: 'Люкс',
-    },
-  ];
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<IRoomStatus | null>(
+    null,
+  );
+
+  const handleDelete = async () => {
+    try {
+      await deleteHotelRoomStatus(Number(selectedStatus?.id) || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
   const columns: ColumnsType<IRoomStatus> = [
     {
@@ -106,22 +56,23 @@ export const RoomStatusTable = () => {
     },
     {
       title: 'Цвет статуса',
-      dataIndex: 'statusColor',
-      key: 'statusColor',
-      render: (status) => {
-        const config = STATUS_COLOR_CONFIG[status] || {
-          label: status,
+      dataIndex: 'color',
+      key: 'color',
+      render: (color: RoomsColor) => {
+        const config = ROOMS_COLOR_CONFIG[color] || {
+          label: color,
           color: '#000',
-          bgColor: '#f0f0f0',
+          backgroundColor: '#f0f0f0',
         };
         return (
           <Tag
             style={{
-              background: config.bgColor,
+              background: config.backgroundColor,
               color: config.color,
               border: 'none',
-              borderRadius: '12px',
-              padding: '2px 12px',
+              borderRadius: '20px',
+              padding: '2px 16px',
+              fontWeight: 500,
             }}
           >
             {config.label}
@@ -132,43 +83,19 @@ export const RoomStatusTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedStatus}
+          setDeleteModalOpen={setDeleteModalOpen}
+          editLink='edit'
+        />
       ),
     },
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -177,21 +104,33 @@ export const RoomStatusTable = () => {
           prefixIcon={<SearchIcon />}
         />
       </div>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <Select
-          placeholder='Цвет статуса номера'
-          style={{ width: 200, height: 40 }}
-          options={[
-            { value: 'Свободен', label: 'Свободен' },
-            { value: 'Требует уборки', label: 'Требует уборки' },
-            { value: 'Занят', label: 'Занят' },
-            { value: 'Люкс', label: 'Люкс' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, statusColor: value })}
+      <div className='table-header-filter'>
+        <SelectWithSearch
+          mode='multiple'
+          maxTagCount={0}
+          maxTagPlaceholder={() => 'Цвет статуса номера'}
           allowClear
+          suffixIcon={<BottomArrowIcon />}
+          placeholder='Цвет статуса номера'
+          onChange={(value) =>
+            setFilter({ ...filter, color: value as string[] })
+          }
+          options={Object.entries(ROOMS_COLOR_CONFIG).map(([key, config]) => ({
+            value: key,
+            label: (
+              <div className={s.optionWrapper}>
+                <div
+                  className={s.colorDot}
+                  style={{ backgroundColor: config.backgroundColor }}
+                />
+                <span className={s.label}>{config.label}</span>
+              </div>
+            ),
+          }))}
         />
         <Button
           type='primary'
+          onClick={() => navigate('create')}
           style={{
             height: '40px',
             borderRadius: '20px',
@@ -206,11 +145,22 @@ export const RoomStatusTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data as unknown as IRoomStatus[]}
+        columns={columns}
+        loading={false}
+        rowKey='id'
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить статус?'
+        isLoading={isLoading}
+        description={`Статус "${selectedStatus?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

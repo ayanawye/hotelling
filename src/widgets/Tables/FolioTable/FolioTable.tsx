@@ -1,137 +1,23 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IFolio {
-  id: string;
-  guest: string;
-  booking: string;
-  name: string;
-  serviceType: string;
-  status: 'Открыто' | 'Частично оплачен' | 'Аннулирован';
-  amount: string;
-}
-
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; bgColor: string }
-> = {
-  Открыто: { label: 'Открыто', color: '#00B368', bgColor: '#E6F9F0' },
-  'Частично оплачен': {
-    label: 'Частично оплачен',
-    color: '#D97706',
-    bgColor: '#FEF3C7',
-  },
-  Аннулирован: { label: 'Аннулирован', color: '#E11D48', bgColor: '#FEE2E2' },
-};
+import {
+  type IFolioTransaction,
+  useGetFolioTransactionsQuery,
+} from '@entities/finance';
 
 export const FolioTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
+  const { data } = useGetFolioTransactionsQuery();
   const [filter, setFilter] = useState({
     search: '',
     status: undefined,
   });
 
-  const data: IFolio[] = [
-    {
-      id: '1',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '2',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Частично оплачен',
-      amount: '2 000',
-    },
-    {
-      id: '3',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '4',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '5',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '6',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '7',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Аннулирован',
-      amount: '2 000',
-    },
-    {
-      id: '8',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '9',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-    {
-      id: '10',
-      guest: 'Асанкожоева Назми',
-      booking: 'Проживание',
-      name: 'Тайский',
-      serviceType: 'Массаж',
-      status: 'Открыто',
-      amount: '2 000',
-    },
-  ];
-
-  const columns: ColumnsType<IFolio> = [
+  const columns: ColumnsType<IFolioTransaction> = [
     {
       title: 'Гость',
       dataIndex: 'guest',
@@ -156,19 +42,16 @@ export const FolioTable = () => {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
-      render: (status: keyof typeof STATUS_CONFIG) => {
-        const config = STATUS_CONFIG[status];
+      render: (status) => {
         return (
           <Tag
             style={{
-              background: config.bgColor,
-              color: config.color,
               border: 'none',
               borderRadius: '12px',
               padding: '2px 12px',
             }}
           >
-            {config.label}
+            {status}
           </Tag>
         );
       },
@@ -209,15 +92,7 @@ export const FolioTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -226,17 +101,11 @@ export const FolioTable = () => {
           prefixIcon={<SearchIcon />}
         />
       </div>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <Select
+      <div className='table-header-filter'>
+        <SelectWithSearch
           placeholder='Select'
-          style={{ width: 120, height: 40 }}
-          options={[
-            { value: 'Открыто', label: 'Открыто' },
-            { value: 'Частично оплачен', label: 'Частично оплачен' },
-            { value: 'Аннулирован', label: 'Аннулирован' },
-          ]}
-          onChange={(value) => setFilter({ ...filter, status: value })}
-          allowClear
+          onChange={() => setFilter({ ...filter })}
+          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
         <Button
           type='primary'

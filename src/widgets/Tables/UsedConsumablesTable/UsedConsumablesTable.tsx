@@ -1,6 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { useStyles } from '@shared/styles';
 import { InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Button, Select } from 'antd';
@@ -16,8 +15,6 @@ interface IUsedConsumable {
 }
 
 export const UsedConsumablesTable = () => {
-  const { tableHeaderStyle } = useStyles();
-
   const [filter, setFilter] = useState({
     search: '',
     select: undefined,
@@ -90,22 +87,14 @@ export const UsedConsumablesTable = () => {
   ];
 
   const TableHeader = (
-    <div
-      style={{
-        ...tableHeaderStyle,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
+    <div className='table-header'>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+      <div className='table-header-filter'>
         <Select
           placeholder='Select'
           style={{ width: 120, height: 40 }}

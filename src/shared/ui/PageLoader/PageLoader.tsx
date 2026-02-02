@@ -1,11 +1,9 @@
-import { useStyles } from '@shared/styles';
 import { Spin } from 'antd';
+import './PageLoader.scss';
 
 export const PageLoader = () => {
-  const { pageLoaderStyle } = useStyles();
-
   return (
-    <div style={pageLoaderStyle}>
+    <div className='loader_center'>
       <Spin size='large' />
     </div>
   );
