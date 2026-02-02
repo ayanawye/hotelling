@@ -1,1 +1,0 @@
-import{j as r}from"./index-CbnrRa6C.js";const s=()=>r.jsxs("div",{children:[r.jsx("h1",{children:"Admin Page"}),r.jsx("p",{children:"Only for authorized users with MANAGER role."})]});export{s as default};
