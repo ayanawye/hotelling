@@ -4,7 +4,10 @@ import { TableComponent } from '@widgets/TableComponent';
 import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { useDeleteHotelFloorMutation, useGetHotelFloorsQuery, } from '@entities/rooms';
+import {
+  useDeleteHotelFloorMutation,
+  useGetHotelFloorsQuery,
+} from '@entities/rooms';
 import type { IHotelFloor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
 
@@ -53,7 +56,6 @@ export const FloorsTable = () => {
           record={record}
           setSelectedItem={setSelectedFloor}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink='edit'
         />
       ),
     },

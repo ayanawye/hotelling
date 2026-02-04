@@ -1,7 +1,11 @@
 import { SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -10,10 +14,13 @@ import {
   useGetFinancePaymentTypesQuery,
 } from '@entities/finance';
 import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
 
 export const PaymentTypesTable = () => {
-  const { data } = useGetFinancePaymentTypesQuery();
-  const [deleteFinancePaymentType, { isLoading }] =
+  const navigation = useNavigate();
+
+  const { data, isLoading } = useGetFinancePaymentTypesQuery();
+  const [deleteFinancePaymentType, { isLoading: deleteLoading }] =
     useDeleteFinancePaymentTypeMutation();
 
   const [filter, setFilter] = useState({
@@ -58,7 +65,6 @@ export const PaymentTypesTable = () => {
           record={record}
           setSelectedItem={setSelectedPaymentType}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink={'edit'}
         />
       ),
     },
@@ -79,15 +85,7 @@ export const PaymentTypesTable = () => {
           onChange={() => setFilter({ ...filter })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigation('create')}>
           Создать
         </Button>
       </div>
@@ -100,14 +98,14 @@ export const PaymentTypesTable = () => {
         title={TableHeader}
         data={data}
         columns={columns}
-        loading={false}
+        loading={isLoading}
       />
       <DeleteModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onDelete={handleDelete}
         title='Удалить тип оплаты?'
-        isLoading={isLoading}
+        isLoading={deleteLoading}
         description={`Тип оплаты "${selectedPaymentType?.type}" будет удален из системы.`}
       />
     </>

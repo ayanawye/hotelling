@@ -5,3 +5,5 @@ export {
   GUESTS_TITLE,
   GUESTS_LANGUAGE,
 } from './tableLabels';
+export { mapToOptions } from './mapToOptions';
+export { getErrorMessage } from './getErrorMessage';

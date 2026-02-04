@@ -8,10 +8,12 @@ interface Props {
   children?: ReactNode;
   variant:
     | 'primary'
+    | 'primary_big'
     | 'secondary'
     | 'no-style'
     | 'none'
     | 'outlined_modal'
+    | 'outlined_big'
     | 'danger_modal';
   onClick?: () => void;
   className?: string;

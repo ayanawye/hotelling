@@ -20,8 +20,8 @@ export const RoomTypesTable = () => {
   const { bookingStatusTagStyle } = useStyles();
   const navigate = useNavigate();
 
-  const { data } = useGetHotelRoomsTypesQuery();
-  const [deleteHotelRoomsType, { isLoading }] =
+  const { data, isLoading } = useGetHotelRoomsTypesQuery();
+  const [deleteHotelRoomsType, { isLoading: isUpdate }] =
     useDeleteHotelRoomsTypeMutation();
 
   const [filter, setFilter] = useState<{
@@ -98,7 +98,6 @@ export const RoomTypesTable = () => {
           record={record}
           setSelectedItem={setSelectedType}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink='edit'
         />
       ),
     },
@@ -120,6 +119,7 @@ export const RoomTypesTable = () => {
           allowClear
           suffixIcon={<BottomArrowIcon />}
           className={s.filter}
+          size={'large'}
           placeholder='Цвет типа номера'
           onChange={(value) =>
             setFilter({ ...filter, color: value as string[] })
@@ -161,15 +161,14 @@ export const RoomTypesTable = () => {
         title={TableHeader}
         data={data as unknown as IRoomType[]}
         columns={columns}
-        loading={false}
-        rowKey='id'
+        loading={isLoading || isUpdate}
       />
       <DeleteModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onDelete={handleDelete}
         title='Удалить тип номера?'
-        isLoading={isLoading}
+        isLoading={isUpdate}
         description={`Тип номера "${selectedType?.name}" будет удален из системы.`}
       />
     </>
