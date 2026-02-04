@@ -97,7 +97,6 @@ export const WashingsTable = () => {
       render: (_, record) => (
         <TableActions
           record={record}
-          editLink='edit'
           setDeleteModalOpen={setDeleteModalOpen}
           setSelectedItem={setSelectedWashing}
         />

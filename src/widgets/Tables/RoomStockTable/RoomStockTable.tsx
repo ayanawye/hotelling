@@ -90,7 +90,6 @@ export const RoomStockTable = () => {
           record={record}
           setSelectedItem={setSelectedStock}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink='edit'
         />
       ),
     },

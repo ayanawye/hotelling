@@ -17,29 +17,29 @@ export type IFolioGuest = Record<string, string> | null;
 
 export interface IFinanceTax {
   id: number;
-  reservation_id: number;
-  kind: ChargeKind;
-  code: string;
-  description: string;
-  hotel: string;
-  name: string;
-  percent: string;
-  status: string;
+  reservation_id?: number;
+  kind?: ChargeKind;
+  code?: string;
+  description?: string;
+  hotel?: string;
+  name?: string;
+  percent?: string;
+  status?: boolean;
 }
 
 export interface IFinanceCurrency {
   id: number;
-  hotel: string;
-  code: string;
-  name: string;
-  is_base: boolean;
-  is_operational: boolean;
-  is_allowed_for_payment: boolean;
-  rate_to_base: string;
-  is_rate_static: boolean;
-  rounding: string;
-  is_active: boolean;
-  updated_at: string;
+  hotel?: string;
+  code?: string;
+  name?: string;
+  is_base?: boolean;
+  is_operational?: boolean;
+  is_allowed_for_payment?: boolean;
+  rate_to_base?: string;
+  is_rate_static?: boolean;
+  rounding?: string;
+  is_active?: boolean;
+  updated_at?: string;
 }
 
 export interface IFinancePaymentType {

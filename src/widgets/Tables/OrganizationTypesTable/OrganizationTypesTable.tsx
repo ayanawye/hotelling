@@ -60,7 +60,6 @@ export const OrganizationTypesTable = () => {
           record={record}
           setSelectedItem={setSelectedOrgType}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink={'edit'}
         />
       ),
     },

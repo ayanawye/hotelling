@@ -54,7 +54,6 @@ export const EnclosuresTable = () => {
           setSelectedItem={setSelectedEnclosure}
           record={record}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink='edit'
         />
       ),
     },

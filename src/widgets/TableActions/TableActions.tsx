@@ -9,14 +9,12 @@ interface Props {
   record: any;
   setSelectedItem: (data: any) => void;
   setDeleteModalOpen: (isOpen: boolean) => void;
-  editLink: string;
 }
 
 export const TableActions: FC<Props> = ({
   record,
   setSelectedItem,
   setDeleteModalOpen,
-  editLink,
 }) => {
   const navigate = useNavigate();
 
@@ -35,7 +33,7 @@ export const TableActions: FC<Props> = ({
         label: 'Изменить',
         color: 'black',
         icon: <EditBlackIcon />,
-        onClick: () => navigate(`${editLink}/${record.id}`),
+        onClick: () => navigate(`edit/${record.id}`),
       },
     ],
     [],

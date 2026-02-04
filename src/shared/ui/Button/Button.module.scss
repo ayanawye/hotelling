@@ -9,12 +9,18 @@
   line-height: 18px;
   height: 100%;
 
-  &_primary {
+  &_primary, &_primary_big {
     border-radius: 24px;
     color: var(--white-color);
     background: var(--primary-light-1);
     border: 1px solid var(--primary-base);
     box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.40) inset, 0 -4px 13px 0 rgba(0, 0, 0, 0.20) inset, 0 4px 20px 0 rgba(1, 122, 255, 0.30);
+  }
+
+  &_primary_big, &_outlined_big {
+    max-height: 54px;
+    height: 54px;
+    border-radius: 32px;
   }
 
   &_danger_modal {
@@ -24,7 +30,7 @@
     border: 1px solid var(--semantic-red);
   }
 
-  &_outlined_modal {
+  &_outlined_modal, &_outlined_big {
     border-radius: 32px;
     border: 1px solid var(--border-color);
     background: inherit;
