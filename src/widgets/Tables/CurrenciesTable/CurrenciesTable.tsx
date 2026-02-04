@@ -1,22 +1,35 @@
 import { SearchIcon } from '@shared/assets';
-import { InputTextField, SelectWithSearch } from '@shared/ui';
+import { Button, InputTextField, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Switch } from 'antd';
+import { message, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
   type IFinanceCurrency,
   useGetFinanceCurrenciesQuery,
+  usePatchFinanceCurrencyMutation,
 } from '@entities/finance';
+import { useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '@shared/lib';
 
 export const CurrenciesTable = () => {
-  const { data } = useGetFinanceCurrenciesQuery();
+  const { data, isLoading } = useGetFinanceCurrenciesQuery();
+  const [patchFinanceCurrency, { isLoading: patchLoading }] =
+    usePatchFinanceCurrencyMutation();
+  const navigate = useNavigate();
 
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  console.log(data);
+  const handleUpdate = async (id: number, field: string, checked: boolean) => {
+    try {
+      await patchFinanceCurrency({ id: id, [field]: checked }).unwrap();
+      message.success('Успешно обновлено');
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<IFinanceCurrency> = [
     {
@@ -36,12 +49,10 @@ export const CurrenciesTable = () => {
       dataIndex: 'is_base',
       key: 'is_base',
       width: '17%',
-      render: (checked) => (
+      render: (checked, record) => (
         <Switch
           checked={checked}
-          style={{
-            backgroundColor: checked ? '#52C41A' : undefined,
-          }}
+          onChange={() => handleUpdate(record.id, 'is_base', !checked)}
         />
       ),
     },
@@ -50,12 +61,10 @@ export const CurrenciesTable = () => {
       dataIndex: 'is_operational',
       key: 'is_operational',
       width: '17%',
-      render: (checked) => (
+      render: (checked, record) => (
         <Switch
           checked={checked}
-          style={{
-            backgroundColor: checked ? '#52C41A' : undefined,
-          }}
+          onChange={() => handleUpdate(record.id, 'is_operational', !checked)}
         />
       ),
     },
@@ -64,12 +73,12 @@ export const CurrenciesTable = () => {
       dataIndex: 'is_allowed_for_payment',
       key: 'is_allowed_for_payment',
       width: '17%',
-      render: (checked) => (
+      render: (checked, record) => (
         <Switch
           checked={checked}
-          style={{
-            backgroundColor: checked ? '#52C41A' : undefined,
-          }}
+          onChange={() =>
+            handleUpdate(record.id, 'is_allowed_for_payment', !checked)
+          }
         />
       ),
     },
@@ -84,12 +93,10 @@ export const CurrenciesTable = () => {
       dataIndex: 'is_active',
       key: 'is_active',
       width: '7%',
-      render: (checked) => (
+      render: (checked, record) => (
         <Switch
           checked={checked}
-          style={{
-            backgroundColor: checked ? '#52C41A' : undefined,
-          }}
+          onChange={() => handleUpdate(record.id, 'is_active', !checked)}
         />
       ),
     },
@@ -111,15 +118,7 @@ export const CurrenciesTable = () => {
           onChange={() => setFilter({ ...filter })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           Создать
         </Button>
       </div>
@@ -131,7 +130,7 @@ export const CurrenciesTable = () => {
       title={TableHeader}
       data={data}
       columns={columns}
-      loading={false}
+      loading={isLoading || patchLoading}
     />
   );
 };

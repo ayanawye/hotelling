@@ -19,7 +19,7 @@ export const enclosureApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HOTEL_ENCLOSURE'],
     }),
-    getHotelEnclosureByID: builder.query<void, number>({
+    getHotelEnclosureByID: builder.query<IHotelEnclosure, number>({
       query: (floorID) => ({
         url: `hotel/hulls/${floorID}/`,
         method: 'GET',

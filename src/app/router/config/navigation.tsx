@@ -226,12 +226,6 @@ export const navigationConfig: NavItem[] = [
             path: '/finance/currencies/create',
             menu: false,
           },
-          {
-            key: 'finance-currencies/edit',
-            label: 'Изменить валюту',
-            path: '/finance/currencies/edit/:id',
-            menu: false,
-          },
         ],
       },
       {

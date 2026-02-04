@@ -95,9 +95,6 @@ export const FinanceCurrenciesPage = Loadable(
 export const FinanceCurrenciesCreatePage = Loadable(
   lazy(() => import('@pages/Finance/Currencies/CurrenciesCreate')),
 );
-export const FinanceCurrenciesEditPage = Loadable(
-  lazy(() => import('@pages/Finance/Currencies/CurrenciesEdit')),
-);
 
 export const FinancePaymentTypesPage = Loadable(
   lazy(() => import('@pages/Finance/PaymentTypes')),

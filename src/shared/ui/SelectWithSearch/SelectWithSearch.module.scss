@@ -1,42 +1,67 @@
-.filter {
-  max-width: 180px;
+.select {
   width: 100% !important;
-  min-width: 190px;
-  max-height: 40px;
+  min-width: 100px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   padding: 0 16px;
+
+  &_big {
+    min-width: 204px;
+  }
+
+  :global {
+    .ant-select-selector {
+      border-radius: 12px !important;
+      border: 1px solid #e5e5e5 !important;
+      padding: 0 12px !important;
+      transition: all 0.2s;
+      background: #fff !important;
+    }
+
+    .ant-select-focused .ant-select-selector {
+      border-color: #d9d9d9 !important;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.02) !important;
+    }
+
+    .ant-select-selection-search {
+      inset-inline-start: 12px !important;
+    }
+
+    .ant-select-selection-placeholder {
+      padding-inline-start: 0 !important;
+    }
+
+    .ant-select-arrow {
+      color: #000 !important;
+      font-size: 12px;
+    }
+  }
 }
 
-.dropdownWrapper {
-  padding: 8px;
-}
+:global {
+  .ant-select-dropdown {
+    border-radius: 12px !important;
+    padding: 4px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 
-.searchWrapper {
-  margin-bottom: 8px;
-}
+    .ant-select-item {
+      border-radius: 8px !important;
+      margin-bottom: 2px;
+      padding: 8px !important;
+      transition: background 0.2s;
 
-.optionWrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
+      &:last-child {
+        margin-bottom: 0;
+      }
 
-.colorDot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+      &-option-active {
+        background-color: #f5f5f5 !important;
+      }
 
-.label {
-  flex-grow: 1;
-}
-
-.searchInput {
-  :global(.ant-input-affix-wrapper) {
-    border-radius: 8px;
-    padding: 8px 12px;
+      &-option-selected {
+        background-color: #f5f5f5 !important;
+        font-weight: 500;
+      }
+    }
   }
 }

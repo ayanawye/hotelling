@@ -1,14 +1,29 @@
 import { SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Switch } from 'antd';
+import { message, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { type IFinanceTax, useDeleteFinanceTaxMutation, useGetFinanceTaxesQuery, } from '@entities/finance';
+import {
+  type IFinanceTax,
+  useDeleteFinanceTaxMutation,
+  useGetFinanceTaxesQuery,
+  usePatchFinanceTaxMutation,
+} from '@entities/finance';
 import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '@shared/lib';
 
 export const TaxesTable = () => {
+  const navigation = useNavigate();
+
   const { data } = useGetFinanceTaxesQuery();
+  const [patchTax, { isLoading: patchLoading }] = usePatchFinanceTaxMutation();
   const [deleteFinanceTax, { isLoading }] = useDeleteFinanceTaxMutation();
 
   const [filter, setFilter] = useState({
@@ -24,6 +39,14 @@ export const TaxesTable = () => {
       setDeleteModalOpen(false);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleUpdate = async (id: number, checked: boolean) => {
+    try {
+      await patchTax({ id: id, status: checked }).unwrap();
+    } catch (error) {
+      message.error(getErrorMessage(error));
     }
   };
 
@@ -53,10 +76,8 @@ export const TaxesTable = () => {
       width: '20%',
       render: (checked) => (
         <Switch
-          checked={checked === 'included'}
-          style={{
-            backgroundColor: checked === 'included' ? '#52C41A' : undefined,
-          }}
+          checked={checked}
+          onChange={(checked) => handleUpdate(selectedTax?.id || 1, checked)}
         />
       ),
     },
@@ -75,7 +96,6 @@ export const TaxesTable = () => {
           record={record}
           setSelectedItem={setSelectedTax}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink={'edit'}
         />
       ),
     },
@@ -97,15 +117,7 @@ export const TaxesTable = () => {
           onChange={() => setFilter({ ...filter })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigation('create')}>
           Создать
         </Button>
       </div>
@@ -118,7 +130,7 @@ export const TaxesTable = () => {
         title={TableHeader}
         data={data}
         columns={columns}
-        loading={false}
+        loading={isLoading || patchLoading}
       />
       <DeleteModal
         isOpen={deleteModalOpen}

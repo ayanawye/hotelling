@@ -88,7 +88,6 @@ export const RoomStatusTable = () => {
           record={record}
           setSelectedItem={setSelectedStatus}
           setDeleteModalOpen={setDeleteModalOpen}
-          editLink='edit'
         />
       ),
     },
@@ -110,6 +109,7 @@ export const RoomStatusTable = () => {
           maxTagCount={0}
           maxTagPlaceholder={() => 'Цвет статуса номера'}
           allowClear
+          size={'large'}
           suffixIcon={<BottomArrowIcon />}
           placeholder='Цвет статуса номера'
           onChange={(value) =>

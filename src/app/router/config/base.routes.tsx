@@ -125,10 +125,6 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.FinanceCurrenciesCreatePage />,
       },
       {
-        path: 'currencies/edit/:id',
-        element: <Pages.FinanceCurrenciesEditPage />,
-      },
-      {
         path: 'payment-types',
         element: <Pages.FinancePaymentTypesPage />,
       },
