@@ -1,7 +1,8 @@
+import { UsedConsumablesTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const Used: FC = () => {
-  return <div>Used Page</div>;
+  return <UsedConsumablesTable />;
 };
 
 export default Used;

@@ -34,7 +34,7 @@ export const bookingApi = baseApi.injectEndpoints({
     }),
     createBooking: build.mutation<Booking, Partial<Booking>>({
       query: (booking) => ({
-        url: '/bookings',
+        url: '/booking/reservation/',
         method: 'POST',
         body: booking,
       }),

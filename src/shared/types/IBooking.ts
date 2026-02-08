@@ -10,14 +10,14 @@ export interface IOrganizationShort {
   name: string;
 }
 
-export type IGuaranteeType = 'type1' | 'type2' | 'type3' | 'type4';
+export type IGuaranteeType = 'none' | 'company' | 'prepaid' | 'card';
 
 export type IReservationStatus =
-  | 'status1'
-  | 'status2'
-  | 'status3'
-  | 'status4'
-  | 'status5';
+  | 'reserved'
+  | 'checked_in'
+  | 'checked_out'
+  | 'cancelled'
+  | 'no_show';
 
 export interface IReservation {
   id: number;
@@ -33,5 +33,5 @@ export interface IReservation {
   children?: number | null;
   infants?: number | null;
   status: IReservationStatus;
-  group_id: string; // uuid
+  group_id: string;
 }

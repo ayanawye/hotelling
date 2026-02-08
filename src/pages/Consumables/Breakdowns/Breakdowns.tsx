@@ -1,7 +1,8 @@
 import type { FC } from 'react';
+import { ConsumablesTable } from '@widgets/Tables';
 
 const Breakdowns: FC = () => {
-  return <div>Breakdowns Page</div>;
+  return <ConsumablesTable />;
 };
 
 export default Breakdowns;

@@ -1,7 +1,8 @@
+import { StaffTable } from '@widgets/Tables';
 import type { FC } from 'react';
 
 const All: FC = () => {
-  return <div>All Page</div>;
+  return <StaffTable />;
 };
 
 export default All;

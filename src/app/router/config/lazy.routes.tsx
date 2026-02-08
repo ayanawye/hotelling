@@ -1,4 +1,4 @@
-import { Loadable } from '@shared/lib/Loadable.tsx';
+import { Loadable } from '@shared/lib';
 import { lazy } from 'react';
 
 // Auth & General
@@ -12,13 +12,17 @@ export const BookingBoardPage = Loadable(
 export const BookingListPage = Loadable(
   lazy(() => import('@pages/Bookings/BoardList/BoardList')),
 );
+export const BookingCreatePage = Loadable(
+  lazy(() => import('@pages/Bookings/CreateBooking/CreateBooking')),
+);
+
+export const BookingEditPage = Loadable(
+  lazy(() => import('@pages/Bookings/EditBooking/EditBooking')),
+);
 
 // Hotel
-export const HotelRoomsPage = Loadable(
-  lazy(() => import('@pages/Hotel/Rooms')),
-);
-export const HotelStaffPage = Loadable(
-  lazy(() => import('@pages/Hotel/Staff')),
+export const HotelSettingPage = Loadable(
+  lazy(() => import('@pages/Hotel/HotelSettings/HotelSettings')),
 );
 
 // Guests
@@ -26,36 +30,100 @@ export const GuestsPage = Loadable(lazy(() => import('@pages/Guests')));
 
 // Rooms (Settings)
 export const RoomsEnclosuresPage = Loadable(
-  lazy(() => import('@pages/Rooms/Enclosures')),
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresList')),
 );
+export const RoomsEnclosuresCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresCreate')),
+);
+export const RoomsEnclosuresEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresEdit')),
+);
+
 export const RoomsFloorsPage = Loadable(
   lazy(() => import('@pages/Rooms/Floors')),
+);
+export const RoomsFloorsCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Floors/FloorsCreate')),
+);
+export const RoomsFloorsEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Floors/FloorsEdit')),
 );
 export const RoomsTypesPage = Loadable(
   lazy(() => import('@pages/Rooms/Types')),
 );
+export const RoomsTypesCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Types/TypesCreate')),
+);
+export const RoomsTypesEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Types/TypesEdit')),
+);
+
 export const RoomsStatusPage = Loadable(
   lazy(() => import('@pages/Rooms/Status')),
 );
+export const RoomsStatusCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Status/StatusCreate')),
+);
+export const RoomsStatusEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Status/StatusEdit')),
+);
+
 export const RoomsStockPage = Loadable(
   lazy(() => import('@pages/Rooms/Stock')),
+);
+export const RoomsStockCreatePage = Loadable(
+  lazy(() => import('@pages/Rooms/Stock/StockCreate')),
+);
+export const RoomsStockEditPage = Loadable(
+  lazy(() => import('@pages/Rooms/Stock/StockEdit')),
 );
 
 // Finance
 export const FinanceTaxesPage = Loadable(
   lazy(() => import('@pages/Finance/Taxes')),
 );
+export const FinanceTaxesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Taxes/TaxesCreate')),
+);
+export const FinanceTaxesEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Taxes/TaxesEdit')),
+);
+
 export const FinanceCurrenciesPage = Loadable(
   lazy(() => import('@pages/Finance/Currencies')),
 );
+export const FinanceCurrenciesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Currencies/CurrenciesCreate')),
+);
+
 export const FinancePaymentTypesPage = Loadable(
   lazy(() => import('@pages/Finance/PaymentTypes')),
 );
+export const FinancePaymentTypesCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/PaymentTypes/PaymentTypesCreate')),
+);
+export const FinancePaymentTypesEditPage = Loadable(
+  lazy(() => import('@pages/Finance/PaymentTypes/PaymentTypesEdit')),
+);
+
 export const FinancePaymentsPage = Loadable(
   lazy(() => import('@pages/Finance/Payments')),
 );
+export const FinancePaymentsCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Payments/PaymentsCreate')),
+);
+export const FinancePaymentsEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Payments/PaymentsEdit')),
+);
+
 export const FinanceFolioPage = Loadable(
   lazy(() => import('@pages/Finance/Folio')),
+);
+export const FinanceFolioCreatePage = Loadable(
+  lazy(() => import('@pages/Finance/Folio/FolioCreate')),
+);
+export const FinanceFolioEditPage = Loadable(
+  lazy(() => import('@pages/Finance/Folio/FolioEdit')),
 );
 
 // Organizations

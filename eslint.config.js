@@ -35,6 +35,12 @@ export default defineConfig([
     linterOptions: {
       reportUnusedDisableDirectives: true,
     },
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      ecmaFeatures: { jsx: true },
+    },
     files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,

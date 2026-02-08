@@ -33,7 +33,7 @@ export const useStyles = () => {
     position: 'sticky',
     top: 0,
     left: 0,
-    padding: '24px 18px',
+    padding: '24px 18px 80px',
     width: '236px',
     maxWidth: '236px',
     minWidth: '236px',
@@ -59,12 +59,6 @@ export const useStyles = () => {
   const contentStyle: CSSProperties = {
     borderRadius: '24px',
     minHeight: '100%',
-  };
-
-  const headerTitleStyle: CSSProperties = {
-    fontWeight: '600',
-    fontSize: '32px',
-    lineHeight: '130%',
   };
 
   const headerRightStyle: CSSProperties = {
@@ -108,15 +102,9 @@ export const useStyles = () => {
   const tableStyles: CSSProperties = {
     borderRadius: '24px',
     overflow: 'hidden',
-    border: `1px solid ${token.colorBorderSecondary}`,
+    border: `1px solid #E5E5E5`,
     background: token.colorBgContainer,
     padding: '26px 24px',
-  };
-
-  const tableHeaderStyle: CSSProperties = {
-    width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: 16,
   };
 
   const inputField: CSSProperties = {
@@ -133,7 +121,7 @@ export const useStyles = () => {
     padding: 12,
     cellPaddingInlineStart: 0,
     headerSplitColor: 'transparent',
-    borderColor: token.colorBorderSecondary,
+    borderColor: '#E5E5E5',
     titlePadding: 0,
     footerPadding: '16px 24px',
     borderLeft: 0,
@@ -175,6 +163,32 @@ export const useStyles = () => {
     fontSize: 12,
     fontWeight: 600,
     lineHeight: '18px',
+    maxWidth: '90%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  };
+
+  const breadCrumbsStyle: CSSProperties = {
+    marginBottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    height: '48px',
+  };
+
+  const mainBreadCrumbsStyle: CSSProperties = {
+    fontSize: '32px',
+    fontWeight: 600,
+    color: '#000',
+    lineHeight: '130%',
+    marginBottom: '5px',
+  };
+
+  const secondBreadCrumbsStyle: CSSProperties = {
+    fontSize: '16px',
+    fontWeight: 400,
+    color: '#8c8c8c',
   };
 
   return {
@@ -184,13 +198,11 @@ export const useStyles = () => {
     contentWrapperStyle,
     scrollbarStyle,
     contentStyle,
-    headerTitleStyle,
     headerRightStyle,
     menuStyle,
     logoStyle,
     menuThemeConfig,
     tableStyles,
-    tableHeaderStyle,
     inputField,
     tableThemeConfig,
     emptyStyles,
@@ -200,5 +212,8 @@ export const useStyles = () => {
     fullWidthStyle,
     marginBottomStyle,
     bookingStatusTagStyle,
+    breadCrumbsStyle,
+    mainBreadCrumbsStyle,
+    secondBreadCrumbsStyle,
   };
 };

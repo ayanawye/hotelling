@@ -1,0 +1,36 @@
+.actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.action {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  gap: 4px;
+
+  &_label {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+  }
+
+  &_red {
+    color: var(--semantic-red);
+    text-decoration-color: var(--semantic-red);
+  }
+
+  &_black {
+    color: #404040;
+    text-decoration-color: #404040;
+  }
+}

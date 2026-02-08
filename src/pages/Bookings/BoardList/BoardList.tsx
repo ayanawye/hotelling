@@ -1,24 +1,21 @@
 import { useFetchAllBookingsQuery } from '@entities/booking/api/bookingApi';
 import { BoardingListTable } from '@widgets/Tables';
-import { Spin } from 'antd';
+import { Alert } from 'antd';
 import type { FC } from 'react';
+import { PageLoader } from '@shared/ui';
 
 const BoardList: FC = () => {
-  const { isLoading } = useFetchAllBookingsQuery();
+  const { isLoading, isError } = useFetchAllBookingsQuery();
 
   if (isLoading) {
-    return <Spin size='large' />;
+    return <PageLoader />;
   }
 
-  // if (isError) {
-  //   return <Alert title='Ошибка загрузки бронирований' type='error' />;
-  // }
+  if (isError) {
+    return <Alert title='Ошибка загрузки бронирований' type='error' />;
+  }
 
-  return (
-    <>
-      <BoardingListTable />
-    </>
-  );
+  return <BoardingListTable />;
 };
 
 export default BoardList;

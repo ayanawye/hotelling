@@ -2,15 +2,16 @@ import {
   useLazyGetMeQuery,
   useLoginMutation,
 } from '@entities/user/api/authApi';
-import { setCredentials } from '@entities/user/model/slice';
+import { setCredentials, setToken } from '@entities/user/model/slice';
 import type { LoginDto } from '@entities/user/types';
-import { loginHello, loginHotelling, loginLogo } from '@shared/assets';
+import { loginHello, LoginHelloSVG, loginLogo } from '@shared/assets';
 import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
 import { Button, Form, Input, Layout, message, Space, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useStyles } from './styled';
+import { Token } from '@shared/hooks/token.ts';
 
 const { Title } = Typography;
 
@@ -43,13 +44,14 @@ export const LoginPage = () => {
   const onFinish = async (values: LoginDto) => {
     try {
       const authData = await login(values).unwrap();
-      localStorage.setItem('token', authData.access);
+      Token.setToken(authData);
 
       // 3. Делаем запрос getMe.
       const userData = await triggerGetMe().unwrap();
 
       // 4. Теперь сохраняем всё в Redux
-      dispatch(setCredentials({ user: userData, access: authData.access }));
+      dispatch(setCredentials({ user: userData }));
+      dispatch(setToken(authData));
 
       message.success('Вход выполнен успешно');
       navigate('/');
@@ -65,7 +67,7 @@ export const LoginPage = () => {
   return (
     <Layout style={layoutStyle}>
       <div style={leftSideStyle}>
-        <img src={loginHotelling} alt='Hotelling' style={hotellingImgStyle} />
+        <img src={LoginHelloSVG} alt='Hotelling' style={hotellingImgStyle} />
         <img src={loginLogo} alt='Logo' style={logoImgStyle} />
         <img src={loginHello} alt='Hello' style={helloImgStyle} />
       </div>
