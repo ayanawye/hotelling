@@ -1,5 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetHotelEnclosuresQuery, useGetHotelFloorByIDQuery, } from '@entities/rooms';
+import {
+  useGetHotelEnclosuresQuery,
+  useGetHotelFloorByIDQuery,
+} from '@entities/rooms';
 import { RoomsForm } from '@features/RoomsForm';
 import { PageLoader } from '@shared/ui';
 

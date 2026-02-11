@@ -1,5 +1,9 @@
 import type { RootState } from '@app/store/store.ts';
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, } from '@reduxjs/toolkit/query/react';
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from '@reduxjs/toolkit/query/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Token } from '@shared/hooks/token.ts';
 import type { AuthResponse } from '@entities/user/types';

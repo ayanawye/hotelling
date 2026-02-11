@@ -13,11 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 
   --white-color: #ffffff;
-  --white-color-100: #F0F0F0;
-  --white-color-200: #F4F4F4;
+  --white-color-100: #f0f0f0;
+  --white-color-200: #f4f4f4;
   --black-color: #1a1a1a;
-  --body-bg-color: #EFEFEF;
-  --border-color: #E5E5E5;
+  --body-bg-color: #efefef;
+  --border-color: #e5e5e5;
   --border-radius: 24px;
   --text-tertiary-color: #737373;
   --text-secondary: #404040;
@@ -34,22 +34,22 @@
   --primary-light-4: #99c4f4;
 
   /* Semantic - Green */
-  --semantic-green: #34C759;
-  --semantic-green-1: #71D88B;
-  --semantic-green-2: #AEE9BD;
-  --semantic-green-3: #EBFAEE;
+  --semantic-green: #34c759;
+  --semantic-green-1: #71d88b;
+  --semantic-green-2: #aee9bd;
+  --semantic-green-3: #ebfaee;
 
   /* Semantic – Orange */
   --semantic-orange: #ff9500;
-  --semantic-orange-1: #FFB54C;
+  --semantic-orange-1: #ffb54c;
   --semantic-orange-2: #ffd598;
   --semantic-orange-3: #fff4e5;
 
   /* Semantic – Red */
-  --semantic-red: #FF3B30;
-  --semantic-red-1: #FF746C;
-  --semantic-red-2: #FFADA8;
-  --semantic-red-3: #FFE7E5;
+  --semantic-red: #ff3b30;
+  --semantic-red-1: #ff746c;
+  --semantic-red-2: #ffada8;
+  --semantic-red-3: #ffe7e5;
 
   /* Neutral */
   --neutral-white: #fff;
@@ -65,12 +65,12 @@
 
   /* Secondary - Base custom */
   --base: #22c36b;
-  --base-light-1: #43CC81;
-  --base-light-2: #64D597;
-  --base-light-3: #85DEAD;
-  --base-light-4: #A6E7C3;
-  --base-light-5: #C7F0D9;
-  --base-light-6: #E9FBF1;
+  --base-light-1: #43cc81;
+  --base-light-2: #64d597;
+  --base-light-3: #85dead;
+  --base-light-4: #a6e7c3;
+  --base-light-5: #c7f0d9;
+  --base-light-6: #e9fbf1;
 }
 
 :root.theme-dark {
@@ -86,10 +86,10 @@
   --primary-base: #007aff;
 
   /* Semantic – Green */
-  --semantic-green: #30D158;
+  --semantic-green: #30d158;
   --semantic-green-1: #6edf8a;
-  --semantic-green-2: #ACEDBC;
-  --semantic-green-3: #EAFAEE;
+  --semantic-green-2: #acedbc;
+  --semantic-green-3: #eafaee;
 
   /* Semantic – Orange */
   --semantic-orange: #ff9f0a;
@@ -98,17 +98,17 @@
   --semantic-orange-3: #fff5e5;
 
   /* Semantic – Red */
-  --semantic-red: #FF453A;
-  --semantic-red-1: #FF7B73;
-  --semantic-red-2: #FFB1AC;
-  --semantic-red-3: #FFE7E5;
+  --semantic-red: #ff453a;
+  --semantic-red-1: #ff7b73;
+  --semantic-red-2: #ffb1ac;
+  --semantic-red-3: #ffe7e5;
 
   /* Secondary - Base custom */
   --base: #45cd83;
   --base-light-1: #61d596;
   --base-light-2: #7ddda9;
-  --base-light-3: #99E5BC;
-  --base-light-4: #B5EDCF;
-  --base-light-5: #D1F5E2;
-  --base-light-6: #EBFAF2;
+  --base-light-3: #99e5bc;
+  --base-light-4: #b5edcf;
+  --base-light-5: #d1f5e2;
+  --base-light-6: #ebfaf2;
 }
