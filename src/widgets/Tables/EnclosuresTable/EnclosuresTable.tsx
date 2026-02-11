@@ -10,6 +10,8 @@ import {
 import { TableActions } from '@widgets/TableActions';
 import type { IHotelEnclosure } from '@entities/rooms/types';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const EnclosuresTable = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ export const EnclosuresTable = () => {
       await deleteHotelEnclosure(selectedEnclosure?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

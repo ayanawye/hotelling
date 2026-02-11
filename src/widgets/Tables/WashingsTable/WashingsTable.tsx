@@ -174,7 +174,6 @@ export const WashingsTable = () => {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onDelete={() => {
-          console.log('Deleting:', selectedWashing);
           setDeleteModalOpen(false);
         }}
         title='Удалить запись?'

@@ -7,7 +7,11 @@ import { useState } from 'react';
 import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
 import { useNavigate } from 'react-router-dom';
 import { TableActions } from '@widgets/TableActions';
-import { type IRoomStock, useDeleteHotelRoomStockMutation, useGetHotelRoomStocksQuery, } from '@entities/rooms';
+import {
+  type IRoomStock,
+  useDeleteHotelRoomStockMutation,
+  useGetHotelRoomStocksQuery,
+} from '@entities/rooms';
 
 export const RoomStockTable = () => {
   const navigate = useNavigate();

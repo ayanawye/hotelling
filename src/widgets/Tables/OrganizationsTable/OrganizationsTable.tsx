@@ -1,20 +1,13 @@
 import { SearchIcon } from '@shared/assets';
-import {
-  Button,
-  DeleteModal,
-  InputTextField,
-  SelectWithSearch,
-} from '@shared/ui';
+import { Button, DeleteModal, InputTextField, SelectWithSearch, } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import {
-  type IOrganization,
-  useDeleteOrganizationMutation,
-  useGetOrganizationsQuery,
-} from '@entities/organizations';
+import { type IOrganization, useDeleteOrganizationMutation, useGetOrganizationsQuery, } from '@entities/organizations';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const OrganizationsTable = () => {
   const navigate = useNavigate();
@@ -34,7 +27,7 @@ export const OrganizationsTable = () => {
       await deleteOrganization(selectedOrg?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

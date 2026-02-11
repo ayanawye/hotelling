@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, message, Switch, Upload } from 'antd';
 import {
   useGetHotelSettingsQuery,
@@ -20,18 +20,42 @@ export const HotelGeneralSettingsForm: React.FC<
   const [form] = Form.useForm();
 
   const { data: settings, isLoading: isFetching } = useGetHotelSettingsQuery();
+  const [logo, setLogo] = useState<File | null>(null);
+  const [showedLogo, setShowedLogo] = useState<string | undefined>(
+    settings?.logo,
+  );
   const [updateSettings, { isLoading: isUpdating }] =
     useUpdateHotelSettingsMutation();
 
   useEffect(() => {
     if (settings) {
       form.setFieldsValue(settings);
+      setShowedLogo(settings.logo);
     }
-  }, [settings, form]);
+  }, [settings]);
+
+  const handleChangeLogo = (info: any) => {
+    const file = info.file?.originFileObj || info.file;
+
+    if (!file) return;
+    setLogo(info.file.originFileObj);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      form.setFieldValue('logo', base64);
+      setShowedLogo(base64);
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   const onFinish = async (values: any) => {
     try {
-      await updateSettings(values).unwrap();
+      await updateSettings({
+        ...values,
+        logo: logo,
+      }).unwrap();
       message.success('Настройки успешно сохранены');
       onSuccess?.();
     } catch (error) {
@@ -58,10 +82,12 @@ export const HotelGeneralSettingsForm: React.FC<
             showUploadList={false}
             className={styles.uploadDragger}
             disabled={isUpdating}
+            beforeUpload={() => false}
+            onChange={(info) => handleChangeLogo(info)}
           >
-            {settings?.logo ? (
+            {showedLogo ? (
               <img
-                src={settings.logo}
+                src={showedLogo}
                 alt='Hotel Logo'
                 className={styles.logoImage}
               />

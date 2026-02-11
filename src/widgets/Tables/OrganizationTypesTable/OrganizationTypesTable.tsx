@@ -14,6 +14,8 @@ import {
   useGetOrganizationTypesQuery,
 } from '@entities/organizations';
 import { TableActions } from '@widgets/TableActions';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const OrganizationTypesTable = () => {
   const { data } = useGetOrganizationTypesQuery();
@@ -32,7 +34,7 @@ export const OrganizationTypesTable = () => {
       await deleteOrganizationType(selectedOrgType?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

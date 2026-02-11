@@ -15,6 +15,8 @@ import {
 import type { IHotelFloor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const FloorsTable = () => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ export const FloorsTable = () => {
       await deleteHotelFloor(selectedFloor?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

@@ -5,9 +5,6 @@
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   max-width: 708px;
   width: 100%;
 
@@ -58,10 +55,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   width: 100%;
-
-  & > div {
-    margin-bottom: 24px !important;
-  }
 }
 
 .actions {
@@ -76,7 +69,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+
+  div {
+    margin-bottom: 0 !important;
+  }
 
   span {
     color: var(--text-secondary);

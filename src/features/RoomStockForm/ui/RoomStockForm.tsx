@@ -71,8 +71,6 @@ export const RoomStockForm: React.FC<RoomStockFormProps> = ({
     }
   };
 
-  console.log(form.getFieldsValue());
-
   return (
     <div className={styles.container}>
       <Form

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Input, message, Switch } from 'antd';
 import {
   type IFinanceTax,
@@ -29,15 +29,8 @@ export const TaxForm: React.FC<TaxFormProps> = ({
 
   const isEdit = !!initialValues?.id;
 
-  useEffect(() => {
-    if (initialValues) {
-      form.setFieldsValue(initialValues);
-    } else {
-      form.resetFields();
-    }
-  }, [initialValues, form]);
-
   const onFinish = async (values: any) => {
+    console.log(values);
     try {
       if (isEdit) {
         await patchFinanceTax({ ...initialValues, ...values }).unwrap();
@@ -58,6 +51,7 @@ export const TaxForm: React.FC<TaxFormProps> = ({
         form={form}
         layout='vertical'
         onFinish={onFinish}
+        initialValues={initialValues}
         className={styles.form}
         requiredMark={false}
       >
@@ -93,18 +87,14 @@ export const TaxForm: React.FC<TaxFormProps> = ({
           </Form.Item>
         </div>
 
-        <Form.Item name='status' valuePropName='checked'>
-          <div className={styles.switch}>
+        <div className={styles.switch}>
+          <Form.Item name='status' valuePropName='checked'>
             <Switch />
-            <span>Включать в стоимость</span>
-          </div>
-        </Form.Item>
+          </Form.Item>
+          <span>Включать в стоимость</span>
+        </div>
 
-        <Form.Item
-          label='Примечание'
-          name='description'
-          rules={[{ required: true, message: 'Введите примечание' }]}
-        >
+        <Form.Item label='Примечание' name='description'>
           <Input.TextArea
             rows={4}
             placeholder='Text area'

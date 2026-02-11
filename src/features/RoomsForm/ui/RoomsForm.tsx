@@ -41,7 +41,6 @@ export const RoomsForm: React.FC<EnclosureFormProps> = ({
   }, [initialValues, form]);
 
   const onFinish = async (values: any) => {
-    console.log(values);
     try {
       if (isEdit) {
         let changedValues = getChangedFields(initialValues, values);
