@@ -1,8 +1,8 @@
 export interface IHotelFloor {
   id?: number;
-  floor: number;
-  hull_id: number;
-  hull: {
+  floor?: number;
+  hull_id?: number;
+  hull?: {
     id?: number;
     name: number;
   };
@@ -52,6 +52,7 @@ export interface IRoomStock {
   status_id: number | null;
   hull: IHotelEnclosure;
   floor: IHotelFloor;
+  room_type: IRoomType;
   status: {
     id: number;
     code: string;

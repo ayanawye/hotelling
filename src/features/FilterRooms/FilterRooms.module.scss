@@ -5,7 +5,8 @@
     padding: 0;
     border-radius: 12px;
     width: 320px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
   :global(.ant-popover-container) {
@@ -13,7 +14,7 @@
     border-radius: 12px;
     width: 320px;
     border: 1px solid var(--white-color-200);
-    background: var(--Neutral-White, #FFF);
+    background: var(--Neutral-White, #fff);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   }
 
@@ -77,20 +78,20 @@
 
 .fieldLabel {
   font-size: 14px;
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .resetLink {
   padding: 0;
   height: auto;
   font-size: 14px;
-  color: #3B82F6;
+  color: #3b82f6;
   background-color: transparent;
   border: none;
   cursor: pointer;
 
   &:hover {
-    color: #2563EB;
+    color: #2563eb;
   }
 }
 
@@ -125,10 +126,10 @@
   height: 44px;
   border-radius: 22px;
   font-weight: 500;
-  background-color: #2563EB;
+  background-color: #2563eb;
 
   &:hover {
-    background-color: #1D4ED8 !important;
+    background-color: #1d4ed8 !important;
   }
 }
 
@@ -139,8 +140,8 @@
   height: 40px;
   border-radius: 20px;
   padding: 0 12px;
-  color: #6B7280;
-  border: 1px solid #D1D5DB;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
   font-size: 14px;
   background-color: transparent;
   cursor: pointer;

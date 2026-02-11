@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { type IOrganization, useDeleteOrganizationMutation, useGetOrganizationsQuery, } from '@entities/organizations';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const OrganizationsTable = () => {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export const OrganizationsTable = () => {
       await deleteOrganization(selectedOrg?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

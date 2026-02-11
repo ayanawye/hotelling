@@ -304,9 +304,23 @@ export const navigationConfig: NavItem[] = [
       },
       {
         key: 'organizations-all',
-        label: 'Все',
+        label: 'Все организации',
         path: '/organizations/all',
         menu: true,
+        children: [
+          {
+            key: 'organizations-all-create',
+            label: 'Создание организации',
+            path: '/organizations/all/create',
+            menu: false,
+          },
+          {
+            key: 'organizations-all-create',
+            label: 'Изменение организации',
+            path: '/organizations/all/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },
@@ -370,7 +384,7 @@ export const navigationConfig: NavItem[] = [
       },
       {
         key: 'consumables-all',
-        label: 'Все',
+        label: 'Все расходники',
         path: '/consumables/all',
         menu: true,
       },
