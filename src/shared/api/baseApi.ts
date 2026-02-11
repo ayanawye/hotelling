@@ -79,6 +79,7 @@ export const baseApi = createApi({
     'FOLIO_TRANSACTION',
     'ORGANIZATION',
     'ORGANIZATION_TYPE',
+    'HOTEL_SETTINGS',
   ],
   endpoints: () => ({}),
 });

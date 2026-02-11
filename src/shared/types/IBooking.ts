@@ -22,7 +22,7 @@ export type IReservationStatus =
 export interface IReservation {
   id: number;
   hotel: number;
-  guest: IGuestShort;
+  guest: IGuestShort | null;
   organization?: IOrganizationShort | null;
   room?: number | null;
   guarantee_type: IGuaranteeType;

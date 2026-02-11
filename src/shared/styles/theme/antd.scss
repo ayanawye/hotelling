@@ -211,6 +211,21 @@ tbody > tr > td {
   border: 1px solid var(--neutral-gray-6);
 }
 
+.ant-switch {
+  height: 24px;
+}
+
+.ant-switch-handle, .ant-switch-handle::before {
+  width: 20px !important;
+  height: 20px !important;
+  //inset-inline-start: auto !important;
+  //right: 19px !important;
+}
+
+.ant-switch.ant-switch-checked {
+  background: var(--base) !important;
+}
+
 .ant-switch.ant-switch-checked {
   background: var(--base) !important;
 }

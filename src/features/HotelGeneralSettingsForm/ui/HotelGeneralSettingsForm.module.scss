@@ -1,0 +1,111 @@
+.container {
+  width: 100%;
+  max-width: 100%;
+  background: var(--white-color);
+  border-radius: var(--border-radius);
+}
+
+.form {
+  padding: 24px;
+  max-width: 720px;
+
+  & > div {
+    margin-bottom: 32px;
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--black-color);
+}
+
+.uploadDragger {
+  width: 253px !important;
+  height: 168px !important;
+  border: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--neutral-gray-6);
+  padding: 24px;
+
+  :global(.ant-upload-drag-container) {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.ant-upload) {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0 !important;
+    background: transparent;
+  }
+}
+
+.uploadTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-black);
+  line-height: 20px;
+}
+
+.uploadHint {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 1.4;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.row {
+  margin-bottom: 16px;
+
+  :global(.ant-input) {
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--black-color);
+
+    &::placeholder {
+      color: #A3A3A3;
+    }
+  }
+}
+
+.switchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.saveButton {
+  min-width: 240px;
+}
+
+.cancelButton {
+  min-width: 240px;
+}
