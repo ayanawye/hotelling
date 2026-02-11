@@ -19,11 +19,12 @@ export const roomsStockApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HOTEL_ROOM_STOCK'],
     }),
-    getHotelRoomStockByID: builder.query<void, number>({
-      query: (floorID) => ({
-        url: `hotel/room-stocks/${floorID}/`,
+    getHotelRoomStockByID: builder.query<IRoomStock, number>({
+      query: (id) => ({
+        url: `hotel/room-stocks/${id}/`,
         method: 'GET',
       }),
+      providesTags: (_, __, id) => [{ type: 'HOTEL_ROOM_STOCK', id }],
     }),
     patchHotelRoomStock: builder.mutation<void, IRoomStock>({
       query: (body) => ({
@@ -31,7 +32,10 @@ export const roomsStockApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body,
       }),
-      invalidatesTags: ['HOTEL_ROOM_STOCK'],
+      invalidatesTags: (_, __, { id }) => [
+        'HOTEL_ROOM_STOCK',
+        { type: 'HOTEL_ROOM_STOCK', id },
+      ],
     }),
     deleteHotelRoomStock: builder.mutation<void, number>({
       query: (id) => ({

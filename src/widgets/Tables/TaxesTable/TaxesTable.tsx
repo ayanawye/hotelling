@@ -38,7 +38,7 @@ export const TaxesTable = () => {
       await deleteFinanceTax(selectedTax?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 

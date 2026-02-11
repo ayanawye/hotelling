@@ -19,8 +19,8 @@ import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { dateFormat, RESERVATION_STATUS_CONFIG } from '@shared/lib';
-
 import { useNavigate } from 'react-router-dom';
+
 import './BoardingListTable.scss';
 
 export const BoardingListTable = () => {
@@ -66,7 +66,9 @@ export const BoardingListTable = () => {
       key: 'guest',
       width: '25%',
       render: (_, record) =>
-        `${record.guest.last_name} ${record.guest.first_name}`,
+        record.guest
+          ? `${record.guest?.last_name} ${record.guest?.first_name}`
+          : '—',
     },
     {
       title: 'Гостей',
@@ -146,7 +148,7 @@ export const BoardingListTable = () => {
   return (
     <TableComponent
       title={TableHeader}
-      data={data}
+      data={data || []}
       columns={reservationColumns}
       loading={false}
     />

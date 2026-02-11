@@ -19,11 +19,12 @@ export const roomsTypeApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HOTEL_ROOMS_TYPE'],
     }),
-    getHotelRoomsTypeByID: builder.query<void, number>({
-      query: (floorID) => ({
-        url: `hotel/room-types/${floorID}/`,
+    getHotelRoomsTypeByID: builder.query<IRoomType, number>({
+      query: (id) => ({
+        url: `hotel/room-types/${id}/`,
         method: 'GET',
       }),
+      providesTags: (_, __, id) => [{ type: 'HOTEL_ROOMS_TYPE', id }],
     }),
     patchHotelRoomsType: builder.mutation<void, IRoomType>({
       query: (body) => ({
@@ -31,7 +32,10 @@ export const roomsTypeApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body,
       }),
-      invalidatesTags: ['HOTEL_ROOMS_TYPE'],
+      invalidatesTags: (_, __, { id }) => [
+        'HOTEL_ROOMS_TYPE',
+        { type: 'HOTEL_ROOMS_TYPE', id },
+      ],
     }),
     deleteHotelRoomsType: builder.mutation<void, number>({
       query: (id) => ({

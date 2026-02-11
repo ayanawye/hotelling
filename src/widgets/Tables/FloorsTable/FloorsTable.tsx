@@ -1,7 +1,11 @@
 import { SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -10,8 +14,13 @@ import {
 } from '@entities/rooms';
 import type { IHotelFloor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const FloorsTable = () => {
+  const navigate = useNavigate();
+
   const { data } = useGetHotelFloorsQuery();
   const [deleteHotelFloor, { isLoading }] = useDeleteHotelFloorMutation();
 
@@ -27,7 +36,7 @@ export const FloorsTable = () => {
       await deleteHotelFloor(selectedFloor?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
 
@@ -76,17 +85,7 @@ export const FloorsTable = () => {
           onChange={(value) => setFilter({ ...filter, enclosure: value })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2B63D9',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           <span>Создать</span>
         </Button>
       </div>
