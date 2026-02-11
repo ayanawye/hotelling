@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { Form, Input, message, Switch, theme, Upload } from 'antd';
-import { useGetHotelSettingsQuery, useUpdateHotelSettingsMutation, } from '@entities/hotel';
+import {
+  useGetHotelSettingsQuery,
+  useUpdateHotelSettingsMutation,
+} from '@entities/hotel';
 import { Button } from '@shared/ui';
 import styles from './HotelGeneralSettingsForm.module.scss';
 import { UploadIcon } from '@shared/assets';
@@ -122,7 +125,7 @@ export const HotelGeneralSettingsForm: React.FC<
 
         <div className={styles.actions}>
           <Button
-            variant='primary'
+            variant='primary_big'
             htmlType='submit'
             isLoading={isUpdating}
             className={styles.saveButton}
@@ -130,7 +133,7 @@ export const HotelGeneralSettingsForm: React.FC<
             Сохранить
           </Button>
           <Button
-            variant='outlined_modal'
+            variant='outlined_big'
             onClick={onCancel}
             className={styles.cancelButton}
           >

@@ -7,7 +7,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   max-width: 708px;
   width: 100%;
 
@@ -80,10 +79,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   width: 100%;
-
-  & > div {
-    margin-bottom: 32px !important;
-  }
 
   .input {
     height: 44px !important;

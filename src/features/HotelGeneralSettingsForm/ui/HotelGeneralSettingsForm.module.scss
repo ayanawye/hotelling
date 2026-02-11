@@ -8,10 +8,6 @@
 .form {
   padding: 24px;
   max-width: 720px;
-
-  & > div {
-    margin-bottom: 32px;
-  }
 }
 
 .label {
@@ -84,10 +80,6 @@
     font-weight: 400;
     line-height: 20px;
     color: var(--black-color);
-
-    &::placeholder {
-      color: #A3A3A3;
-    }
   }
 }
 

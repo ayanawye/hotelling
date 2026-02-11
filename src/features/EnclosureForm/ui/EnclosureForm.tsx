@@ -3,13 +3,11 @@ import { Form, Input, message, theme } from 'antd';
 import {
   type IHotelEnclosure,
   useCreateNewHotelEnclosureMutation,
-  useGetHotelEnclosuresQuery,
   usePatchHotelEnclosureMutation,
 } from '@entities/rooms';
-import { SelectWithSearch } from '@shared/ui/SelectWithSearch/SelectWithSearch';
 import styles from './EnclosureForm.module.scss';
 import { Button } from '@shared/ui';
-import { getErrorMessage, mapToOptions } from '@shared/lib';
+import { getErrorMessage } from '@shared/lib';
 
 interface EnclosureFormProps {
   initialValues?: IHotelEnclosure;
@@ -25,7 +23,6 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
   const { token } = theme.useToken();
   const [form] = Form.useForm();
 
-  const { data: enclosures } = useGetHotelEnclosuresQuery();
   const [createEnclosure, { isLoading: isCreating }] =
     useCreateNewHotelEnclosureMutation();
   const [updateEnclosure, { isLoading: isUpdating }] =
@@ -73,89 +70,15 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
         requiredMark={false}
       >
         <Form.Item
-          label='Введите свой номер телефона'
-          name='phone'
+          label='Корпус'
+          name='name'
           className={styles.fullWidth}
-          rules={[{ required: true, message: 'Введите номер телефона' }]}
+          rules={[{ required: true, message: 'Введите название корпуса' }]}
         >
           <Input
             classNames={{ input: styles.input }}
             size='large'
-            placeholder='+996'
-            variant='borderless'
-          />
-        </Form.Item>
-
-        <div className={styles.row}>
-          <Form.Item
-            name='name'
-            className={styles.select}
-            rules={[{ required: true, message: 'Введите название корпуса' }]}
-          >
-            <SelectWithSearch
-              size='large'
-              placeholder='Название корпуса'
-              options={mapToOptions(enclosures)}
-            />
-          </Form.Item>
-
-          <Form.Item
-            className={styles.select}
-            name='floor'
-            rules={[{ required: true, message: 'Выберите этаж' }]}
-          >
-            <SelectWithSearch size='large' placeholder='Этаж' options={[]} />
-          </Form.Item>
-        </div>
-
-        <div className={styles.row}>
-          <Form.Item
-            className={styles.select}
-            name='room_type'
-            rules={[{ required: true, message: 'Выберите тип номера' }]}
-          >
-            <SelectWithSearch
-              size='large'
-              placeholder='Тип номера'
-              options={[]}
-            />
-          </Form.Item>
-
-          <Form.Item
-            className={styles.select}
-            name='room_number'
-            rules={[{ required: true, message: 'Выберите номер комнаты' }]}
-          >
-            <SelectWithSearch
-              size='large'
-              placeholder='Номер комнаты'
-              options={[]}
-            />
-          </Form.Item>
-        </div>
-
-        <Form.Item
-          className={styles.select}
-          name='status'
-          rules={[{ required: true, message: 'Выберите статус' }]}
-        >
-          <SelectWithSearch
-            size='large'
-            placeholder='Статус'
-            options={[]}
-            className={styles.fullWidth}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label='Примечание'
-          name='note'
-          rules={[{ required: true, message: 'Введите примечание' }]}
-        >
-          <Input.TextArea
-            rows={4}
-            placeholder='Text area'
-            size='large'
+            placeholder='Введите название корпуса'
             variant='borderless'
           />
         </Form.Item>
