@@ -173,6 +173,14 @@ export const baseRoutes: IAccessRouteObject[] = [
         path: 'all',
         element: <Pages.OrganizationsAllPage />,
       },
+      {
+        path: 'all/create',
+        element: <Pages.OrganizationCreatePage />,
+      },
+      {
+        path: 'all/edit/:id',
+        element: <Pages.OrganizationEditPage />,
+      },
     ],
   },
   {
