@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
 import { Form, Input, message, theme } from 'antd';
 import {
-  type IHotelEnclosure,
-  useCreateNewHotelEnclosureMutation,
-  usePatchHotelEnclosureMutation,
+  type IHotelFloor,
+  useCreateNewHotelFloorMutation,
+  useGetHotelEnclosuresQuery,
+  usePatchHotelFloorMutation,
 } from '@entities/rooms';
-import styles from './EnclosureForm.module.scss';
-import { Button } from '@shared/ui';
-import { getErrorMessage } from '@shared/lib';
+import styles from './RoomsForm.module.scss';
+import { Button, SelectWithSearch } from '@shared/ui';
+import { getErrorMessage, mapToOptions } from '@shared/lib';
+import { getChangedFields } from '@shared/utils';
 
 interface EnclosureFormProps {
-  initialValues?: IHotelEnclosure;
+  initialValues?: IHotelFloor;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-export const EnclosureForm: React.FC<EnclosureFormProps> = ({
+export const RoomsForm: React.FC<EnclosureFormProps> = ({
   initialValues,
   onSuccess,
   onCancel,
@@ -23,10 +25,11 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
   const { token } = theme.useToken();
   const [form] = Form.useForm();
 
-  const [createEnclosure, { isLoading: isCreating }] =
-    useCreateNewHotelEnclosureMutation();
-  const [updateEnclosure, { isLoading: isUpdating }] =
-    usePatchHotelEnclosureMutation();
+  const { data: enclosures } = useGetHotelEnclosuresQuery();
+  const [createNewHotelFloor, { isLoading: isCreating }] =
+    useCreateNewHotelFloorMutation();
+  const [patchHotelFloor, { isLoading: isUpdating }] =
+    usePatchHotelFloorMutation();
 
   const isEdit = !!initialValues?.id;
 
@@ -39,13 +42,29 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
   }, [initialValues, form]);
 
   const onFinish = async (values: any) => {
+    console.log(values);
     try {
       if (isEdit) {
-        await updateEnclosure({ ...initialValues, ...values }).unwrap();
-        message.success('Корпус успешно обновлен');
+        let changedValues = getChangedFields(initialValues, values);
+        if (changedValues?.hull?.id) {
+          changedValues.hull_id = changedValues.hull.id;
+          delete changedValues.hull;
+        }
+
+        if (!changedValues) {
+          message.info('Нет изменений');
+          return;
+        }
+
+        await patchHotelFloor({
+          id: initialValues.id,
+          ...changedValues,
+        }).unwrap();
+
+        message.success('Этаж успешно обновлен');
       } else {
-        await createEnclosure(values).unwrap();
-        message.success('Корпус успешно создан');
+        await createNewHotelFloor(values).unwrap();
+        message.success('Этаж успешно создан');
       }
       onSuccess?.();
     } catch (error) {
@@ -70,15 +89,27 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
         requiredMark={false}
       >
         <Form.Item
-          label='Корпус'
-          name='name'
-          className={styles.fullWidth}
+          name={isEdit ? ['hull', 'id'] : 'hull_id'}
+          label='Выберите корпус'
+          className={styles.select}
           rules={[{ required: true, message: 'Введите название корпуса' }]}
+        >
+          <SelectWithSearch
+            size='large'
+            placeholder='Название корпуса'
+            options={mapToOptions(enclosures)}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name='floor'
+          className={styles.fullWidth}
+          rules={[{ required: true, message: 'Введите номер этажа' }]}
         >
           <Input
             classNames={{ input: styles.input }}
             size='large'
-            placeholder='Введите название корпуса'
+            placeholder='Введите номер этажа'
             variant='borderless'
           />
         </Form.Item>

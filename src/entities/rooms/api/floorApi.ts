@@ -19,7 +19,7 @@ export const floorApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HOTEL_FLOOR'],
     }),
-    getHotelFloorByID: builder.query<void, number>({
+    getHotelFloorByID: builder.query<IHotelFloor, number>({
       query: (floorID) => ({
         url: `hotel/floors/${floorID}/`,
         method: 'GET',

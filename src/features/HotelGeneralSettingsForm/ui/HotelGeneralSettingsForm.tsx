@@ -133,6 +133,7 @@ export const HotelGeneralSettingsForm: React.FC<
             Сохранить
           </Button>
           <Button
+            htmlType='button'
             variant='outlined_big'
             onClick={onCancel}
             className={styles.cancelButton}

@@ -130,7 +130,7 @@ export const TaxForm: React.FC<TaxFormProps> = ({
           >
             {isEdit ? 'Сохранить' : 'Создать'}
           </Button>
-          <Button variant='outlined_big' onClick={onCancel}>
+          <Button htmlType='button' variant='outlined_big' onClick={onCancel}>
             Отменить
           </Button>
         </div>

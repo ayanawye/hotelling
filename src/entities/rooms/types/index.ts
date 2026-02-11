@@ -1,8 +1,8 @@
 export interface IHotelFloor {
   id?: number;
-  floor: number;
-  hull_id: number;
-  hull: {
+  floor?: number;
+  hull_id?: number;
+  hull?: {
     id?: number;
     name: number;
   };

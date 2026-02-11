@@ -175,6 +175,7 @@ button {
 .table-header-filter {
     display: flex;
     gap: 12px;
+    height: 100%;
 }
 
 
