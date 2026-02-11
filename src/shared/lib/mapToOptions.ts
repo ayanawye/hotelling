@@ -14,10 +14,11 @@ interface MapToOptionsItem {
  */
 export const mapToOptions = (
   data: MapToOptionsItem[] | undefined,
+  labelKey: string = 'name',
 ): SelectOption[] => {
   return (
     data?.map((item) => ({
-      label: String(item.name || item.description || ''),
+      label: String(item[labelKey] || item.name || item.description || ''),
       value: item.id ?? '',
     })) || []
   );

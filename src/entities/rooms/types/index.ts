@@ -52,6 +52,7 @@ export interface IRoomStock {
   status_id: number | null;
   hull: IHotelEnclosure;
   floor: IHotelFloor;
+  room_type: IRoomType;
   status: {
     id: number;
     code: string;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, message, Switch, theme, Upload } from 'antd';
+import { Form, Input, message, Switch, Upload } from 'antd';
 import {
   useGetHotelSettingsQuery,
   useUpdateHotelSettingsMutation,
@@ -17,7 +17,6 @@ interface HotelGeneralSettingsFormProps {
 export const HotelGeneralSettingsForm: React.FC<
   HotelGeneralSettingsFormProps
 > = ({ onSuccess, onCancel }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const { data: settings, isLoading: isFetching } = useGetHotelSettingsQuery();
@@ -40,12 +39,6 @@ export const HotelGeneralSettingsForm: React.FC<
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-  } as React.CSSProperties;
-
   if (isFetching) return null;
 
   return (
@@ -55,7 +48,6 @@ export const HotelGeneralSettingsForm: React.FC<
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <div>

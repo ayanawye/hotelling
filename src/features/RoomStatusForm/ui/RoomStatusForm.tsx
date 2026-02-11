@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, message, Select, theme } from 'antd';
+import { Form, Input, message, Select } from 'antd';
 import {
   type IRoomStatus,
   type RoomsColor,
@@ -21,7 +21,6 @@ export const RoomStatusForm: React.FC<RoomStatusFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createHotelRoomsStatus, { isLoading: isCreating }] =
@@ -57,12 +56,6 @@ export const RoomStatusForm: React.FC<RoomStatusFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-  } as React.CSSProperties;
-
   return (
     <div className={styles.container}>
       <Form
@@ -70,7 +63,6 @@ export const RoomStatusForm: React.FC<RoomStatusFormProps> = ({
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <Form.Item

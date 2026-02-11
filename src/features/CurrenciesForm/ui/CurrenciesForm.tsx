@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, message, Switch, theme } from 'antd';
+import { Form, Input, message, Switch } from 'antd';
 import { useCreateFinanceCurrencyMutation } from '@entities/finance';
 import { Button } from '@shared/ui';
 import styles from './CurrenciesForm.module.scss';
@@ -14,7 +14,6 @@ export const CurrenciesForm: React.FC<CurrenciesFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createFinanceCurrency, { isLoading: isCreating }] =
@@ -30,13 +29,6 @@ export const CurrenciesForm: React.FC<CurrenciesFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-    '--border-color': '#e5e5e5',
-  } as React.CSSProperties;
-
   return (
     <div className={styles.container}>
       <Form
@@ -44,7 +36,6 @@ export const CurrenciesForm: React.FC<CurrenciesFormProps> = ({
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <div className={styles.row}>

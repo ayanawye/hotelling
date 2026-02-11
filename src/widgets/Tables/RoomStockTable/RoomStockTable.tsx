@@ -7,19 +7,13 @@ import { useState } from 'react';
 import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
 import { useNavigate } from 'react-router-dom';
 import { TableActions } from '@widgets/TableActions';
-import {
-  type IRoomStock,
-  useDeleteHotelRoomStockMutation,
-  useGetHotelRoomStocksQuery,
-} from '@entities/rooms';
+import { type IRoomStock, useDeleteHotelRoomStockMutation, useGetHotelRoomStocksQuery, } from '@entities/rooms';
 
 export const RoomStockTable = () => {
   const navigate = useNavigate();
   const { data } = useGetHotelRoomStocksQuery();
   const [deleteHotelRoomStock, { isLoading }] =
     useDeleteHotelRoomStockMutation();
-
-  console.log(data);
 
   const [filter, setFilter] = useState({
     search: '',
@@ -46,26 +40,52 @@ export const RoomStockTable = () => {
       title: 'Корпус',
       dataIndex: ['hull', 'name'],
       key: 'hull',
+      width: '12%',
     },
     {
       title: 'Этаж',
       dataIndex: ['floor', 'floor'],
       key: 'floor',
+      width: '12%',
     },
     {
       title: 'Тип номера',
-      dataIndex: 'roomType',
-      key: 'roomType',
+      dataIndex: ['room_type', 'id'],
+      key: 'room_type',
+      width: '16%',
+      render: (_, record) => {
+        return (
+          <Tag
+            style={{
+              background: record?.room_type?.color,
+              color: '#000',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '2px 12px',
+            }}
+          >
+            {record?.room_type?.name}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: 'Номер комнаты',
+      dataIndex: 'room',
+      key: 'room',
+      width: '12%',
     },
     {
       title: 'Примечание',
       dataIndex: 'description',
       key: 'description',
+      width: '12%',
     },
     {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
+      width: '16%',
       render: (status) => {
         return (
           <Tag
@@ -85,6 +105,7 @@ export const RoomStockTable = () => {
     {
       title: 'Действия',
       key: 'actions',
+      width: '15%',
       render: (_, record) => (
         <TableActions
           record={record}

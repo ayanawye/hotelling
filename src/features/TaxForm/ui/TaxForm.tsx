@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, message, Switch, theme } from 'antd';
+import { Form, Input, message, Switch } from 'antd';
 import {
   type IFinanceTax,
   useCreateFinanceTaxMutation,
@@ -20,7 +20,6 @@ export const TaxForm: React.FC<TaxFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createFinanceTax, { isLoading: isCreating }] =
@@ -53,13 +52,6 @@ export const TaxForm: React.FC<TaxFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-    '--border-color': '#e5e5e5',
-  } as React.CSSProperties;
-
   return (
     <div className={styles.container}>
       <Form
@@ -67,7 +59,6 @@ export const TaxForm: React.FC<TaxFormProps> = ({
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <div className={styles.row}>

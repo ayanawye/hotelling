@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, message, theme } from 'antd';
+import { Form, Input, message } from 'antd';
 import {
   type IHotelEnclosure,
   useCreateNewHotelEnclosureMutation,
@@ -20,7 +20,6 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createEnclosure, { isLoading: isCreating }] =
@@ -53,12 +52,6 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-  } as React.CSSProperties;
-
   return (
     <div className={styles.container}>
       <Form
@@ -66,7 +59,6 @@ export const EnclosureForm: React.FC<EnclosureFormProps> = ({
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <Form.Item
