@@ -3,10 +3,10 @@
   max-width: 100%;
   background: var(--white-color);
   border-radius: var(--border-radius);
+  padding: 24px;
 }
 
 .form {
-  padding: 24px;
   max-width: 720px;
 }
 
@@ -90,8 +90,11 @@
 }
 
 .actions {
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 624px;
+  width: 100%;
 }
 
 .saveButton {

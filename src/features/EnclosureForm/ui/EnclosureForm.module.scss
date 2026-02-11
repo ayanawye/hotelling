@@ -81,7 +81,7 @@
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 40px;
   width: 100%;
 
   .input {
@@ -97,4 +97,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  max-width: 624px;
+  width: 100%;
 }

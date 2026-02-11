@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetHotelRoomsTypeByIDQuery } from '@entities/rooms';
 import { RoomTypeForm } from '@features/RoomTypeForm';
