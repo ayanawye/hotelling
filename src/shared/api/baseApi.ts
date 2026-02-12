@@ -67,6 +67,7 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: [
     'Booking',
+    'Room',
     'HOTEL_ENCLOSURE',
     'HOTEL_FLOOR',
     'HOTEL_ROOMS_TYPE',

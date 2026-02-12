@@ -1,4 +1,5 @@
 import { baseApi } from '@shared/api/baseApi';
+import type { Room } from '../model/types';
 
 export interface Guest {
   id: number;
@@ -40,8 +41,17 @@ export const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Booking'],
     }),
+    fetchRoomStocks: build.query<Room[], void>({
+      query: () => ({
+        url: '/hotel/room-stocks/',
+      }),
+      providesTags: ['Room'],
+    }),
   }),
 });
 
-export const { useFetchAllBookingsQuery, useCreateBookingMutation } =
-  bookingApi;
+export const {
+  useFetchAllBookingsQuery,
+  useCreateBookingMutation,
+  useFetchRoomStocksQuery,
+} = bookingApi;

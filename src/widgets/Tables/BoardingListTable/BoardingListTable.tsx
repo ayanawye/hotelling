@@ -146,7 +146,7 @@ export const BoardingListTable = () => {
   return (
     <TableComponent
       title={TableHeader}
-      data={data}
+      data={data || []}
       columns={reservationColumns}
       loading={false}
     />

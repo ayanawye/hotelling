@@ -10,7 +10,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
 import { ThemeProvider } from '@shared/styles/theme/ThemeContext';
 import { ErrorBoundary } from '@shared/ui/ErrorBoundary/ErrorBoundary';
-import { App, Spin } from 'antd';
+import { App, ConfigProvider, Spin } from 'antd';
 import { StrictMode, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -68,7 +68,17 @@ const AppContent = () => {
     );
   }
 
-  return <RouterProvider router={router} />;
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: 'Inter, sans-serif',
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
 };
 
 createRoot(document.getElementById('root')!).render(

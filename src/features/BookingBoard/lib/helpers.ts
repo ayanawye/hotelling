@@ -3,8 +3,8 @@ import dayjs, { Dayjs } from 'dayjs';
 export const GRID_CONFIG = {
   CELL_WIDTH: 150,
   CELL_HEIGHT: 80,
-  SIDEBAR_WIDTH: 200,
-  HEADER_HEIGHT: 60,
+  SIDEBAR_WIDTH: 110,
+  HEADER_HEIGHT: 80,
   DAYS_COUNT: 14,
 };
 
