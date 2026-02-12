@@ -4,7 +4,8 @@ import type { Booking } from '@entities/booking/api/bookingApi';
 import type { Room } from '@entities/booking/model/types';
 import { theme, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { type FC, useMemo } from 'react';
+import type { FC, CSSProperties } from 'react';
+import React, { useMemo } from 'react';
 
 import { getBookingPosition, getTimelineDays } from '../lib/helpers';
 import styles from './BookingBoard.module.scss';
@@ -26,7 +27,7 @@ export const BookingBoard: FC<BookingBoardProps> = ({ rooms, bookings }) => {
     '--border-color': token.colorBorderSecondary,
     '--bg-layout': token.colorBgLayout,
     '--bg-container': token.colorBgContainer,
-  } as React.CSSProperties;
+  } as CSSProperties;
 
   // Маппинг кодов статусов на цвета Ant Design
   const statusColors: Record<string, string> = {
@@ -77,7 +78,7 @@ export const BookingBoard: FC<BookingBoardProps> = ({ rooms, bookings }) => {
                 {
                   '--status-color':
                     statusColors[room.status.code] || room.status.color,
-                } as React.CSSProperties
+                } as CSSProperties
               }
             >
               <div className={styles.roomContent}>
