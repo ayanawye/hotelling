@@ -25,9 +25,7 @@ export const WashingsTable = () => {
   });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedWashing, setSelectedWashing] = useState<IWashings | null>(
-    null,
-  );
+  const [_, setSelectedWashing] = useState<IWashings | null>(null);
 
   const data: IWashings[] = Array(9)
     .fill({
@@ -174,7 +172,6 @@ export const WashingsTable = () => {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onDelete={() => {
-          console.log('Deleting:', selectedWashing);
           setDeleteModalOpen(false);
         }}
         title='Удалить запись?'

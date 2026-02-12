@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, message, theme } from 'antd';
+import { Form, Input, message } from 'antd';
 import {
   type IFinancePaymentType,
   useCreateFinancePaymentTypeMutation,
@@ -20,7 +20,6 @@ export const PaymentTypesForm: React.FC<PaymentTypesFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createPaymentType, { isLoading: isCreating }] =
@@ -53,13 +52,6 @@ export const PaymentTypesForm: React.FC<PaymentTypesFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-    '--border-color': '#e5e5e5',
-  } as React.CSSProperties;
-
   const paymentTypeOptions = [
     { label: 'Наличные', value: 'cash' },
     { label: 'Карта', value: 'card' },
@@ -73,7 +65,6 @@ export const PaymentTypesForm: React.FC<PaymentTypesFormProps> = ({
         layout='vertical'
         onFinish={onFinish}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <div className={styles.row}>
@@ -116,7 +107,7 @@ export const PaymentTypesForm: React.FC<PaymentTypesFormProps> = ({
           >
             {isEdit ? 'Сохранить' : 'Создать'}
           </Button>
-          <Button variant='outlined_big' onClick={onCancel}>
+          <Button htmlType='button' variant='outlined_big' onClick={onCancel}>
             Отменить
           </Button>
         </div>

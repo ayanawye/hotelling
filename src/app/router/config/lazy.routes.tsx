@@ -133,6 +133,17 @@ export const OrganizationsTypesPage = Loadable(
 export const OrganizationsAllPage = Loadable(
   lazy(() => import('@pages/Organizations/All')),
 );
+export const OrganizationCreatePage = Loadable(
+  lazy(
+    () =>
+      import('@pages/Organizations/All/OrganizationCreate/OrganizationCreate'),
+  ),
+);
+export const OrganizationEditPage = Loadable(
+  lazy(
+    () => import('@pages/Organizations/All/OrganizationEdit/OrganizationEdit'),
+  ),
+);
 
 // Tariff
 export const TariffHotelPage = Loadable(

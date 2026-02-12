@@ -5,6 +5,7 @@ import {
   THEME_LOCAL_STORAGE_KEY,
   type ThemeContextType,
 } from './types.ts';
+import { ConfigProvider } from 'antd';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -29,7 +30,17 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <ConfigProvider
+        theme={{
+          components: {
+            Switch: {
+              handleSize: 20,
+            },
+          },
+        }}
+      >
+        {children}
+      </ConfigProvider>
     </ThemeContext.Provider>
   );
 };

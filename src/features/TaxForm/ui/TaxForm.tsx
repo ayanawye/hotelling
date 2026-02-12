@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, Input, message, Switch, theme } from 'antd';
+import React from 'react';
+import { Form, Input, message, Switch } from 'antd';
 import {
   type IFinanceTax,
   useCreateFinanceTaxMutation,
@@ -20,7 +20,6 @@ export const TaxForm: React.FC<TaxFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const { token } = theme.useToken();
   const [form] = Form.useForm();
 
   const [createFinanceTax, { isLoading: isCreating }] =
@@ -30,15 +29,8 @@ export const TaxForm: React.FC<TaxFormProps> = ({
 
   const isEdit = !!initialValues?.id;
 
-  useEffect(() => {
-    if (initialValues) {
-      form.setFieldsValue(initialValues);
-    } else {
-      form.resetFields();
-    }
-  }, [initialValues, form]);
-
   const onFinish = async (values: any) => {
+    console.log(values);
     try {
       if (isEdit) {
         await patchFinanceTax({ ...initialValues, ...values }).unwrap();
@@ -53,21 +45,14 @@ export const TaxForm: React.FC<TaxFormProps> = ({
     }
   };
 
-  const dynamicVars = {
-    '--bg-container': token.colorBgContainer,
-    '--border-radius': `${token.borderRadiusLG}px`,
-    '--color-primary': token.colorPrimary,
-    '--border-color': '#e5e5e5',
-  } as React.CSSProperties;
-
   return (
     <div className={styles.container}>
       <Form
         form={form}
         layout='vertical'
         onFinish={onFinish}
+        initialValues={initialValues}
         className={styles.form}
-        style={dynamicVars}
         requiredMark={false}
       >
         <div className={styles.row}>
@@ -102,18 +87,14 @@ export const TaxForm: React.FC<TaxFormProps> = ({
           </Form.Item>
         </div>
 
-        <Form.Item name='status' valuePropName='checked'>
-          <div className={styles.switch}>
+        <div className={styles.switch}>
+          <Form.Item name='status' valuePropName='checked'>
             <Switch />
-            <span>Включать в стоимость</span>
-          </div>
-        </Form.Item>
+          </Form.Item>
+          <span>Включать в стоимость</span>
+        </div>
 
-        <Form.Item
-          label='Примечание'
-          name='description'
-          rules={[{ required: true, message: 'Введите примечание' }]}
-        >
+        <Form.Item label='Примечание' name='description'>
           <Input.TextArea
             rows={4}
             placeholder='Text area'
@@ -130,7 +111,7 @@ export const TaxForm: React.FC<TaxFormProps> = ({
           >
             {isEdit ? 'Сохранить' : 'Создать'}
           </Button>
-          <Button variant='outlined_big' onClick={onCancel}>
+          <Button htmlType='button' variant='outlined_big' onClick={onCancel}>
             Отменить
           </Button>
         </div>

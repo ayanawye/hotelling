@@ -15,6 +15,8 @@ import {
 } from '@entities/finance';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { getErrorMessage } from '@shared/lib';
 
 export const PaymentTypesTable = () => {
   const navigation = useNavigate();
@@ -35,11 +37,9 @@ export const PaymentTypesTable = () => {
       await deleteFinancePaymentType(selectedPaymentType?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
-      console.log(error);
+      message.error(getErrorMessage(error));
     }
   };
-
-  console.log(data);
 
   const columns: ColumnsType<IFinancePaymentType> = [
     {
