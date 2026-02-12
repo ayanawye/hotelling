@@ -156,24 +156,75 @@
   position: absolute;
   top: 4px;
   height: 72px;
-  color: #fff;
-  border-radius: 12px;
+  color: var(--neutral-black);
+  border: 1px solid var(--status-color);
+  border-radius: 16px;
   display: flex;
-  align-items: center;
-  padding: 0 10px;
-  font-size: 12px;
-  font-weight: bold;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   z-index: 2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: opacity 0.2s;
+  background-color: transparent; // Will be overridden by inline style
 
   &:hover {
     opacity: 0.9;
     cursor: pointer;
   }
+}
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.guestName {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1A1A1A;
+}
+
+.guestInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.usersIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--status-color);
+  path {
+    fill: currentColor;
+  }
+}
+
+.guestsCount {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--status-color);
+}
+
+.bookingStatus {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: #1A1A1A;
+  margin-bottom: 2px;
+}
+
+.guestType {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8C8C8C;
 }
 
 .status {
