@@ -10,8 +10,9 @@ import { useGetFinancePaymentTypesQuery } from '@entities/finance';
 import { type RoomsColor } from '@entities/rooms';
 import { Button, SelectWithSearch } from '@shared/ui';
 import { colorMap, getErrorMessage, mapToOptions } from '@shared/lib';
-import styles from './OrganizationForm.module.scss';
 import { getChangedFields } from '@shared/utils';
+
+import styles from './OrganizationForm.module.scss';
 
 interface OrganizationFormProps {
   initialValues?: IOrganization;
