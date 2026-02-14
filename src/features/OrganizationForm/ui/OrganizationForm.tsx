@@ -10,8 +10,9 @@ import { useGetFinancePaymentTypesQuery } from '@entities/finance';
 import { type RoomsColor } from '@entities/rooms';
 import { Button, SelectWithSearch } from '@shared/ui';
 import { colorMap, getErrorMessage, mapToOptions } from '@shared/lib';
-import styles from './OrganizationForm.module.scss';
 import { getChangedFields } from '@shared/utils';
+
+import styles from './OrganizationForm.module.scss';
 
 interface OrganizationFormProps {
   initialValues?: IOrganization;
@@ -47,18 +48,19 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({
   }, [initialValues, form]);
 
   const onFinish = async (values: any) => {
+    console.log(values);
     try {
       if (isEdit) {
         let changedValues = getChangedFields(initialValues, values);
-        await patchOrganization({
-          id: initialValues.id,
-          body: changedValues,
-        }).unwrap();
-
         if (!changedValues) {
           message.info('Нет изменений');
           return;
         }
+
+        await patchOrganization({
+          id: initialValues.id,
+          body: changedValues,
+        }).unwrap();
 
         message.success('Организация успешно обновлена');
       } else {
@@ -67,6 +69,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({
       }
       onSuccess?.();
     } catch (error) {
+      console.log(error);
       message.error(getErrorMessage(error));
     }
   };
@@ -227,7 +230,14 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({
         <div className={styles.section}>
           <h3>Финансовые настройки</h3>
           <div className={styles.row}>
-            <Form.Item name='payment_type_id' label='Вид платежа'>
+            <Form.Item
+              name={
+                initialValues?.payment_type_id
+                  ? 'payment_type_id'
+                  : ['payment_type', 'id']
+              }
+              label='Вид платежа'
+            >
               <Select
                 placeholder='Выберите вид платежа'
                 options={mapToOptions(

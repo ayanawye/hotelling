@@ -130,6 +130,20 @@ export const FinanceFolioEditPage = Loadable(
 export const OrganizationsTypesPage = Loadable(
   lazy(() => import('@pages/Organizations/Types')),
 );
+
+export const OrganizationTypeCreatePage = Loadable(
+  lazy(
+    () =>
+      import('@pages/Organizations/Types/OrganizationTypeCreate/OrganizationTypeCreate'),
+  ),
+);
+export const OrganizationTypeEditPage = Loadable(
+  lazy(
+    () =>
+      import('@pages/Organizations/Types/OrganizationTypeEdit/OrganizationTypeEdit'),
+  ),
+);
+
 export const OrganizationsAllPage = Loadable(
   lazy(() => import('@pages/Organizations/All')),
 );

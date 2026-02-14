@@ -16,8 +16,10 @@ import {
 import { TableActions } from '@widgets/TableActions';
 import { message } from 'antd';
 import { getErrorMessage } from '@shared/lib';
+import { useNavigate } from 'react-router-dom';
 
 export const OrganizationTypesTable = () => {
+  const navigate = useNavigate();
   const { data } = useGetOrganizationTypesQuery();
   const [deleteOrganizationType, { isLoading }] =
     useDeleteOrganizationTypeMutation();
@@ -43,16 +45,6 @@ export const OrganizationTypesTable = () => {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: 'Код',
-      dataIndex: 'code',
-      key: 'code',
-    },
-    {
-      title: 'Название операции',
-      dataIndex: 'operationName',
-      key: 'operationName',
     },
     {
       title: 'Действия',
@@ -81,7 +73,9 @@ export const OrganizationTypesTable = () => {
           onChange={() => setFilter({ ...filter })}
           options={[{ value: 'INV-1001', label: 'INV-1001' }]}
         />
-        <Button variant='primary'>Создать</Button>
+        <Button variant='primary' onClick={() => navigate('create')}>
+          Создать
+        </Button>
       </div>
     </div>
   );

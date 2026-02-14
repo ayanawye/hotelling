@@ -54,8 +54,8 @@ export const OrganizationsTable = () => {
     },
     {
       title: 'Расч-ь',
-      dataIndex: 'account',
-      key: 'account',
+      dataIndex: 'settlement',
+      key: 'settlement',
     },
     {
       title: 'Действия',
