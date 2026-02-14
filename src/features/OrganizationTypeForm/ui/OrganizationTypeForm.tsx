@@ -44,15 +44,15 @@ export const OrganizationTypeForm: React.FC<OrganizationFormProps> = ({
     try {
       if (isEdit) {
         let changedValues = getChangedFields(initialValues, values);
-        await patchOrganizationType({
-          id: initialValues.id,
-          body: changedValues,
-        }).unwrap();
-
         if (!changedValues) {
           message.info('Нет изменений');
           return;
         }
+
+        await patchOrganizationType({
+          id: initialValues.id,
+          body: changedValues,
+        }).unwrap();
 
         message.success('Тип организации успешно обновлен');
       } else {
@@ -83,28 +83,6 @@ export const OrganizationTypeForm: React.FC<OrganizationFormProps> = ({
             >
               <Input
                 placeholder='Введите название типа организации '
-                variant='borderless'
-              />
-            </Form.Item>
-          </div>
-          <div className={styles.row}>
-            <Form.Item
-              name='code'
-              label='Код'
-              rules={[{ required: true, message: 'Введите код' }]}
-            >
-              <Input
-                placeholder='Введите код организации'
-                variant='borderless'
-              />
-            </Form.Item>
-            <Form.Item
-              name='name'
-              label='Название операции'
-              rules={[{ required: true, message: 'Введите название' }]}
-            >
-              <Input
-                placeholder='Введите название операции'
                 variant='borderless'
               />
             </Form.Item>

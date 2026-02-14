@@ -1,5 +1,10 @@
 import { SearchIcon } from '@shared/assets';
-import { Button, DeleteModal, InputTextField, SelectWithSearch, } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -40,16 +45,6 @@ export const OrganizationTypesTable = () => {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: 'Код',
-      dataIndex: 'code',
-      key: 'code',
-    },
-    {
-      title: 'Название операции',
-      dataIndex: 'operationName',
-      key: 'operationName',
     },
     {
       title: 'Действия',

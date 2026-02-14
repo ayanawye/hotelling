@@ -3,6 +3,8 @@ export const getErrorMessage = (error: any): string => {
 
   const errorData = error.data || error;
 
+  console.log(errorData);
+
   if (typeof errorData === 'string') {
     return errorData;
   }
@@ -10,11 +12,11 @@ export const getErrorMessage = (error: any): string => {
   if (typeof errorData === 'object' && errorData !== null) {
     if (
       errorData.errors &&
-      errorData.errors.detail &&
-      Array.isArray(errorData.errors.detail) &&
-      errorData.errors.detail.length > 0
+      errorData.errors.name &&
+      Array.isArray(errorData.errors.name) &&
+      errorData.errors.name.length > 0
     ) {
-      const firstDetail = errorData.errors.detail[0];
+      const firstDetail = errorData.errors.name[0];
 
       if (typeof firstDetail === 'object' && firstDetail.message) {
         return firstDetail.message;
