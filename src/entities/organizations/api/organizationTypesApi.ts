@@ -26,7 +26,7 @@ export const organizationTypesApi = baseApi.injectEndpoints({
     }),
     patchOrganizationType: builder.mutation<
       void,
-      { id: number; body: Partial<IOrganizationType> }
+      { id: number; body: Partial<any> | null }
     >({
       query: ({ id, body }) => ({
         url: `organizations/organization-types/${id}/`,
