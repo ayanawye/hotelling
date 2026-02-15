@@ -1,6 +1,6 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: normal;
   font-weight: 400;
 
   color-scheme: light dark;
@@ -21,6 +21,8 @@
   --border-radius: 24px;
   --text-tertiary-color: #737373;
   --text-secondary: #404040;
+  --checked-in-color: #008421;
+  --canceled-color: #EE5D54;
 
   /* Primary */
   --primary-light-1: #006ce3;
