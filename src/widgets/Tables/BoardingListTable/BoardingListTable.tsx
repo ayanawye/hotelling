@@ -1,4 +1,7 @@
-import { useFetchAllBookingsQuery } from '@entities/booking/api/bookingApi.ts';
+import {
+  useDeleteBookingMutation,
+  useFetchAllBookingsQuery,
+} from '@entities/booking/api/bookingApi.ts';
 import {
   DeleteIcon,
   DotsIcon,
@@ -8,13 +11,13 @@ import {
   SearchIcon,
 } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import {
-  type IReservation,
-  type IReservationStatus,
+import type {
+  IReservation,
+  IReservationStatus,
 } from '@shared/types/IBooking.ts';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Dropdown, type MenuProps, Tag } from 'antd';
+import { Dropdown, type MenuProps, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -25,12 +28,33 @@ import './BoardingListTable.scss';
 
 export const BoardingListTable = () => {
   const { data } = useFetchAllBookingsQuery();
+  const [deleteBooking, { isLoading: isDeleting }] = useDeleteBookingMutation();
   const navigate = useNavigate();
   const { bookingStatusTagStyle } = useStyles();
 
   const [filter, setFilter] = useState({
     search: '',
   });
+
+  const [deleteModalState, setDeleteModalState] = useState<{
+    isOpen: boolean;
+    id: number | null;
+  }>({
+    isOpen: false,
+    id: null,
+  });
+
+  const handleDelete = async () => {
+    if (deleteModalState.id) {
+      try {
+        await deleteBooking(deleteModalState.id).unwrap();
+        message.success('Бронирование удалено');
+        setDeleteModalState({ isOpen: false, id: null });
+      } catch (e) {
+        message.error('Ошибка при удалении');
+      }
+    }
+  };
 
   const getActionItems = (record: IReservation): MenuProps['items'] => [
     {
@@ -49,14 +73,14 @@ export const BoardingListTable = () => {
       key: 'edit',
       label: 'Изменить',
       icon: <EditIcon />,
-      onClick: () => navigate('/bookings/create'),
+      onClick: () => navigate(`/bookings/edit/${record.id}`),
     },
     {
       key: 'delete',
       label: 'Удалить',
       icon: <DeleteIcon />,
       danger: true,
-      onClick: () => navigate(`/bookings/edit/${record.id}`),
+      onClick: () => setDeleteModalState({ isOpen: true, id: record.id }),
     },
   ];
 
@@ -142,15 +166,28 @@ export const BoardingListTable = () => {
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
+      <Button variant='primary' onClick={() => navigate('/bookings/create')}>
+        <span>Создать</span>
+      </Button>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data || []}
-      columns={reservationColumns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data || []}
+        columns={reservationColumns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalState.isOpen}
+        onClose={() => setDeleteModalState({ isOpen: false, id: null })}
+        onDelete={handleDelete}
+        title='Удалить бронирование'
+        description='Вы действительно хотите удалить это бронирование? Это действие нельзя будет отменить.'
+        isLoading={isDeleting}
+      />
+    </>
   );
 };
