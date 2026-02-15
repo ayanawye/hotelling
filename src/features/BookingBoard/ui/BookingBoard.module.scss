@@ -1,0 +1,247 @@
+.board {
+  // Константы сетки (перенесены из JS для чистоты компонента)
+  --cell-width: 150px;
+  --cell-height: 80px;
+  --sidebar-width: 110px;
+  --header-height: 80px;
+  --border-radius: 24px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  max-height: var(--max-height, calc(100vh - 100px));
+  width: 100%;
+  border: 1px solid var(--neutral-gray-6);
+  border-radius: var(--border-radius);
+  position: relative;
+  background: var(--white-color);
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.header {
+  display: flex;
+  background-color: var(--white-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: fit-content;
+  min-width: 100%;
+
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+
+  .cell:last-child {
+    border-right: none;
+  }
+}
+
+.corner {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border-color);
+  background-color: var(--white-color);
+  position: sticky;
+  left: 0;
+  z-index: 11;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cell {
+  width: var(--cell-width);
+  min-width: var(--cell-width);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.headerCell {
+  height: var(--header-height);
+  gap: 8px;
+}
+
+.today {
+  .todayLabel,
+  .todayDate {
+    color: #006ce3 !important;
+  }
+
+  .todayLabel {
+    font-size: 14px;
+    line-height: 1;
+  }
+}
+
+.body {
+  display: flex;
+  width: fit-content;
+  min-width: 100%;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background-color: var(--white-color);
+  border-right: 1px solid var(--border-color);
+  position: sticky;
+  left: 0;
+  z-index: 9;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  height: var(--cell-height);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.roomCell {
+  border-right: none;
+  border-left: 4px solid var(--status-color, transparent);
+  align-items: flex-start;
+  width: var(--sidebar-width);
+  height: var(--cell-height);
+}
+
+.roomContent {
+  padding-left: 8px;
+
+  .roomNumber {
+    color: var(--neutral-black);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .roomType {
+    color: var(--neutral-gray-2);
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+  }
+}
+
+.gridContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+
+  .cell:last-child {
+    border-right: none;
+  }
+}
+
+.bookingBar {
+  position: absolute;
+  top: 4px;
+  height: 72px;
+  color: var(--neutral-black);
+  border: 1px solid var(--status-color);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 2;
+  transition: opacity 0.2s;
+  background-color: transparent; // Will be overridden by inline style
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+}
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.guestName {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1A1A1A;
+}
+
+.guestInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.usersIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--status-color);
+  path {
+    fill: currentColor;
+  }
+}
+
+.guestsCount {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--status-color);
+}
+
+.bookingStatus {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: #1A1A1A;
+  margin-bottom: 2px;
+}
+
+.guestType {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8C8C8C;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+  .squareStatus {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .statusText {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+}
+
