@@ -4,12 +4,13 @@ import type { Booking } from '@entities/booking/api/bookingApi';
 import type { Room } from '@entities/booking/model/types';
 import { theme, Typography } from 'antd';
 import dayjs from 'dayjs';
-import type { FC, CSSProperties } from 'react';
+import type { CSSProperties, FC } from 'react';
 import { useMemo } from 'react';
 
 import { getBookingPosition, getTimelineDays } from '../lib/helpers';
 import styles from './BookingBoard.module.scss';
 import { UsersIcon } from '@shared/assets';
+import clsx from 'clsx';
 
 dayjs.locale('ru');
 
@@ -97,7 +98,7 @@ export const BookingBoard: FC<BookingBoardProps> = ({ rooms, bookings }) => {
               style={
                 {
                   '--status-color':
-                    statusColors[room.status.code] || room.status.color,
+                    statusColors[room.room_type.color] || room.room_type.color,
                 } as CSSProperties
               }
             >
@@ -180,14 +181,24 @@ export const BookingBoard: FC<BookingBoardProps> = ({ rooms, bookings }) => {
                   return (
                     <div
                       key={booking.id}
-                      className={styles.bookingBar}
+                      className={clsx(
+                        styles[`bookingBar_${booking.status}`],
+                        styles.bookingBar,
+                      )}
                       style={bookingStyles}
                     >
                       <div className={styles.bookingHeader}>
                         <span className={styles.guestName}>{guestName}</span>
                         <div className={styles.guestInfo}>
-                          <UsersIcon className={styles.usersIcon} />
-                          <span className={styles.guestsCount}>
+                          <UsersIcon
+                            className={styles[`icon_${booking.status}`]}
+                          />
+                          <span
+                            className={clsx(
+                              styles.guestsCount,
+                              styles[`guestsCount_${booking.status}`],
+                            )}
+                          >
                             {guestsCount}
                           </span>
                         </div>
