@@ -85,6 +85,8 @@ export const baseApi = createApi({
     'ORGANIZATION',
     'ORGANIZATION_TYPE',
     'HOTEL_SETTINGS',
+    'TARIFF',
+    'ORGANIZATION_TARIFF',
   ],
   endpoints: () => ({}),
 });

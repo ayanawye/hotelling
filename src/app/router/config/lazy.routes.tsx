@@ -149,8 +149,28 @@ export const OrganizationEditPage = Loadable(
 export const TariffHotelPage = Loadable(
   lazy(() => import('@pages/Tariff/Hotel')),
 );
+export const HotelTariffCreatePage = Loadable(
+  lazy(() => import('@pages/Tariff/Hotel/HotelTariffCreate/HotelTariffCreate')),
+);
+export const HotelTariffEditPage = Loadable(
+  lazy(() => import('@pages/Tariff/Hotel/HotelTariffEdit/HotelTariffEdit')),
+);
+
 export const TariffOrganizationsPage = Loadable(
   lazy(() => import('@pages/Tariff/Organizations')),
+);
+
+export const TariffOrganizationsCreatePage = Loadable(
+  lazy(
+    () =>
+      import('@pages/Tariff/Organizations/OrganizationTariffCreate/OrganizationTariffCreate'),
+  ),
+);
+export const TariffOrganizationsEditPage = Loadable(
+  lazy(
+    () =>
+      import('@pages/Tariff/Organizations/OrganizationTariffEdit/OrganizationTariffEdit'),
+  ),
 );
 
 // Services

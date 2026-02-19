@@ -1,109 +1,39 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch, Tag } from 'antd';
+import { message, Select, Switch, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IOrganizationTariff {
-  id: string;
-  name: string;
-  roomType: string;
-  price: string;
-  manualInput: boolean;
-  earlyCheckIn: string;
-  lateCheckOut: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { TableActions } from '@widgets/TableActions';
+import { type IRoomStatus } from '@entities/rooms';
+import {
+  useDeleteOrganizationTariffMutation,
+  useGetOrganizationTariffsQuery,
+} from '@entities/tariff';
+import type { IOrganizationTariff } from '@entities/tariff/types';
 
 export const OrganizationTariffTable = () => {
+  const navigate = useNavigate();
+  const { data } = useGetOrganizationTariffsQuery();
+  const [deleteTariff, { isLoading }] = useDeleteOrganizationTariffMutation();
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedTariff, setSelectedTariff] = useState<IRoomStatus | null>(
+    null,
+  );
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  const data: IOrganizationTariff[] = [
-    {
-      id: '1',
-      name: 'Корпоративный',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '2',
-      name: 'Индивидуальный',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: false,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '3',
-      name: 'Партнёрский',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '4',
-      name: 'Контрактный',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: false,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '5',
-      name: 'Корпоративный',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '6',
-      name: 'Договорной',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '7',
-      name: 'Договорной',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '8',
-      name: 'Договорной',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '9',
-      name: 'Договорной',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualInput: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-  ];
+  const handleDelete = async () => {
+    try {
+      await deleteTariff(Number(selectedTariff?.id) || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
   const columns: ColumnsType<IOrganizationTariff> = [
     {
@@ -113,7 +43,8 @@ export const OrganizationTariffTable = () => {
     },
     {
       title: 'Тип номера',
-      dataIndex: 'roomType',
+      width: '190px',
+      dataIndex: ['room_type', 'name'],
       key: 'roomType',
       render: (type) => (
         <Tag
@@ -136,32 +67,35 @@ export const OrganizationTariffTable = () => {
     },
     {
       title: 'Ручной ввод',
-      dataIndex: 'manualInput',
-      key: 'manualInput',
-      render: (checked) => <Switch checked={checked} />,
+      dataIndex: 'manually',
+      key: 'manually',
+      render: (checked) => <Switch checked={checked} disabled />,
     },
     {
       title: 'Ранний заезд',
-      dataIndex: 'earlyCheckIn',
-      key: 'earlyCheckIn',
+      dataIndex: 'early_check_in',
+      key: 'early_check_in',
+      render: (_, record) => (
+        <p>{record.early_check_in ? record.early_check_in : '-'}</p>
+      ),
     },
     {
       title: 'Поздний отъезд',
-      dataIndex: 'lateCheckOut',
-      key: 'lateCheckOut',
+      dataIndex: 'late_departure',
+      key: 'late_departure',
+      render: (_, record) => (
+        <p>{record.late_departure ? record.late_departure : '-'}</p>
+      ),
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <Button
-          type='text'
-          danger
-          icon={<DeleteOutlined />}
-          style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-        >
-          Удалить
-        </Button>
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedTariff}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -180,15 +114,7 @@ export const OrganizationTariffTable = () => {
           style={{ width: 120, height: 40 }}
           options={[{ value: 'select', label: 'Select' }]}
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           Создать
         </Button>
       </div>
@@ -196,11 +122,21 @@ export const OrganizationTariffTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить тариф?'
+        isLoading={isLoading}
+        description={`Тариф "${selectedTariff?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

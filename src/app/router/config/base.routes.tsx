@@ -191,8 +191,24 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.TariffHotelPage />,
       },
       {
+        path: 'hotel/create',
+        element: <Pages.HotelTariffCreatePage />,
+      },
+      {
+        path: 'hotel/edit/:id',
+        element: <Pages.HotelTariffEditPage />,
+      },
+      {
         path: 'organizations',
         element: <Pages.TariffOrganizationsPage />,
+      },
+      {
+        path: 'organizations/create',
+        element: <Pages.TariffOrganizationsCreatePage />,
+      },
+      {
+        path: 'organizations/edit/:id',
+        element: <Pages.TariffOrganizationsEditPage />,
       },
     ],
   },

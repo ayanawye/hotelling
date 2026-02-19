@@ -197,8 +197,10 @@ button {
 
 .ant-input,
 .ant-select,
+.ant-input-number,
 .ant-select-outlined,
-.ant-input-outlined {
+.ant-input-outlined,
+.ant-picker {
     border-radius: 12px;
     border: 1px solid var(--border-color);
     background: var(--white-color);

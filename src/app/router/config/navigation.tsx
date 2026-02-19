@@ -335,12 +335,40 @@ export const navigationConfig: NavItem[] = [
         label: 'Отель',
         path: '/tariff/hotel',
         menu: true,
+        children: [
+          {
+            key: 'tariff-hotel-tariff',
+            label: 'Создать тариф',
+            path: '/tariff/hotel/create',
+            menu: false,
+          },
+          {
+            key: 'tariff-hotel-tariff-edit',
+            label: 'Изменить тариф',
+            path: '/tariff/hotel/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'tariff-organizations',
         label: 'Организации',
         path: '/tariff/organizations',
         menu: true,
+        children: [
+          {
+            key: 'tariff-organizations-tariff',
+            label: 'Создать тариф',
+            path: '/tariff/organizations/create',
+            menu: false,
+          },
+          {
+            key: 'tariff-organizations-edit',
+            label: 'Изменить тариф',
+            path: '/tariff/organizations/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },
