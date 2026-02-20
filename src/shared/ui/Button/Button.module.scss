@@ -21,7 +21,7 @@
   }
 
   &_primary_big,
-  &_outlined_big {
+  &_outlined_big, &_outlined_danger {
     max-height: 54px;
     height: 54px;
     border-radius: 32px;
@@ -35,6 +35,13 @@
     color: var(--white-color);
     background: var(--semantic-red);
     border: 1px solid var(--semantic-red);
+  }
+
+  &_outlined_danger {
+    background: var(--white-color);
+    color: var(--semantic-red);
+    border: 1px solid var(--semantic-red);
+    border-radius: 12px;
   }
 
   &_outlined_modal,

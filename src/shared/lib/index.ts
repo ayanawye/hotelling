@@ -1,4 +1,4 @@
-export { dateFormat } from './dayjs.ts';
+export { dateFormat, timeFormat } from './dayjs.ts';
 export { Loadable } from './Loadable';
 export {
   RESERVATION_STATUS_CONFIG,

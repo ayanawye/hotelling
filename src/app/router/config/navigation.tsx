@@ -301,6 +301,20 @@ export const navigationConfig: NavItem[] = [
         label: 'Типы организаций',
         path: '/organizations/types',
         menu: true,
+        children: [
+          {
+            key: 'organizations-types-create',
+            label: 'Создание типа организации',
+            path: '/organizations/types/create',
+            menu: false,
+          },
+          {
+            key: 'organizations-типа-create',
+            label: 'Изменение типа организации',
+            path: '/organizations/types/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'organizations-all',
@@ -335,12 +349,40 @@ export const navigationConfig: NavItem[] = [
         label: 'Отель',
         path: '/tariff/hotel',
         menu: true,
+        children: [
+          {
+            key: 'tariff-hotel-tariff',
+            label: 'Создать тариф',
+            path: '/tariff/hotel/create',
+            menu: false,
+          },
+          {
+            key: 'tariff-hotel-tariff-edit',
+            label: 'Изменить тариф',
+            path: '/tariff/hotel/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'tariff-organizations',
         label: 'Организации',
         path: '/tariff/organizations',
         menu: true,
+        children: [
+          {
+            key: 'tariff-organizations-tariff',
+            label: 'Создать тариф',
+            path: '/tariff/organizations/create',
+            menu: false,
+          },
+          {
+            key: 'tariff-organizations-edit',
+            label: 'Изменить тариф',
+            path: '/tariff/organizations/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },
@@ -355,18 +397,60 @@ export const navigationConfig: NavItem[] = [
         label: 'Категории услуг',
         path: '/services/categories',
         menu: true,
+        children: [
+          {
+            key: 'services-categories-create',
+            label: 'Создать категорию',
+            path: '/services/categories/create',
+            menu: false,
+          },
+          {
+            key: 'services-categories-edit',
+            label: 'Изменить категорию',
+            path: '/services/categories/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'services-all',
         label: 'Все',
         path: '/services/all',
         menu: true,
+        children: [
+          {
+            key: 'services-all-create',
+            label: 'Создать услугу',
+            path: '/services/all/create',
+            menu: false,
+          },
+          {
+            key: 'services-all-edit',
+            label: 'Изменить услугу',
+            path: '/services/all/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'services-orders',
         label: 'Заказы услуг',
         path: '/services/orders',
         menu: true,
+        children: [
+          {
+            key: 'services-orders-create',
+            label: 'Создать услугу',
+            path: '/services/orders/create',
+            menu: false,
+          },
+          {
+            key: 'services-orders-edit',
+            label: 'Изменить услугу',
+            path: '/services/orders/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },

@@ -1,160 +1,62 @@
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch, Tag } from 'antd';
+import { message, Select, Switch, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IHotelTariff {
-  id: string;
-  name: string;
-  organization: string;
-  roomType: string;
-  price: string;
-  manualSum: boolean;
-  earlyCheckIn: string;
-  lateCheckOut: string;
-}
-
-const ROOM_TYPE_COLORS: Record<string, { color: string; bgColor: string }> = {
-  Люкс: { color: '#00B368', bgColor: '#E6F9F0' },
-  Стандарт: { color: '#D97706', bgColor: '#FEF3C7' },
-  Делюкс: { color: '#E11D48', bgColor: '#FEE2E2' },
-};
+import { useNavigate } from 'react-router-dom';
+import { useDeleteTariffMutation, useGetTariffQuery } from '@entities/tariff';
+import type { IRoomStatus } from '@entities/rooms';
+import type { ITariff } from '@entities/tariff/types';
+import { TableActions } from '@widgets/TableActions';
 
 export const HotelTariffTable = () => {
+  const navigate = useNavigate();
+  const { data } = useGetTariffQuery();
+  const [deleteTariff, { isLoading }] = useDeleteTariffMutation();
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedTariff, setSelectedTariff] = useState<IRoomStatus | null>(
+    null,
+  );
   const [filter, setFilter] = useState({
     search: '',
-    select: undefined,
+    select: '',
   });
 
-  const data: IHotelTariff[] = [
-    {
-      id: '1',
-      name: 'Корпоративный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '2',
-      name: 'Договорной',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: false,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '3',
-      name: 'Партнёрский',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '4',
-      name: 'Индивидуальный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: false,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '5',
-      name: 'Контрактный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '6',
-      name: 'Корпоративный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '7',
-      name: 'Корпоративный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '8',
-      name: 'Корпоративный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-    {
-      id: '9',
-      name: 'Корпоративный',
-      organization: '«Алхимик»',
-      roomType: 'Люкс',
-      price: '13 000',
-      manualSum: true,
-      earlyCheckIn: '14:00',
-      lateCheckOut: '16:00',
-    },
-  ];
+  const handleDelete = async () => {
+    try {
+      await deleteTariff(Number(selectedTariff?.id) || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
-  const columns: ColumnsType<IHotelTariff> = [
+  const columns: ColumnsType<ITariff> = [
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Организация',
-      dataIndex: 'organization',
-      key: 'organization',
-    },
-    {
       title: 'Тип номера',
-      dataIndex: 'roomType',
+      width: '190px',
+      dataIndex: ['room_type', 'name'],
       key: 'roomType',
-      render: (type) => {
-        const config = ROOM_TYPE_COLORS[type] || {
-          color: '#D97706',
-          bgColor: '#FEF3C7',
-        };
-        return (
-          <Tag
-            style={{
-              background: config.bgColor,
-              color: config.color,
-              border: 'none',
-              borderRadius: '12px',
-              padding: '2px 12px',
-            }}
-          >
-            {type}
-          </Tag>
-        );
-      },
+      render: (type) => (
+        <Tag
+          style={{
+            background: type === 'Люкс' ? '#E6F9F0' : '#FEE2E2',
+            color: type === 'Люкс' ? '#00B368' : '#E11D48',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '2px 12px',
+          }}
+        >
+          {type}
+        </Tag>
+      ),
     },
     {
       title: 'Цена',
@@ -163,24 +65,42 @@ export const HotelTariffTable = () => {
     },
     {
       title: 'Ручной ввод суммы',
-      dataIndex: 'manualSum',
-      key: 'manualSum',
+      dataIndex: 'manually',
+      key: 'manually',
       render: (manualSum) => (
         <Switch
+          disabled
           checked={manualSum}
-          style={{ backgroundColor: manualSum ? '#52C41A' : undefined }}
+          // style={{ backgroundColor: manualSum ? '#52C41A' : undefined }}
         />
       ),
     },
     {
       title: 'Ранний заезд',
-      dataIndex: 'earlyCheckIn',
-      key: 'earlyCheckIn',
+      dataIndex: 'early_check_in',
+      key: 'early_check_in',
+      render: (_, record) => (
+        <p>{record.early_check_in ? record.early_check_in : '-'}</p>
+      ),
     },
     {
-      title: 'Поздний выезд',
-      dataIndex: 'lateCheckOut',
-      key: 'lateCheckOut',
+      title: 'Поздний отъезд',
+      dataIndex: 'late_departure',
+      key: 'late_departure',
+      render: (_, record) => (
+        <p>{record.late_departure ? record.late_departure : '-'}</p>
+      ),
+    },
+    {
+      title: 'Действия',
+      key: 'actions',
+      render: (_, record) => (
+        <TableActions
+          record={record}
+          setSelectedItem={setSelectedTariff}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
+      ),
     },
   ];
 
@@ -200,15 +120,7 @@ export const HotelTariffTable = () => {
           onChange={(value) => setFilter({ ...filter, select: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           Создать
         </Button>
       </div>
@@ -216,11 +128,21 @@ export const HotelTariffTable = () => {
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить тариф?'
+        isLoading={isLoading}
+        description={`Тариф "${selectedTariff?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

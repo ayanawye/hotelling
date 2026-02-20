@@ -44,15 +44,14 @@ export const RoomsForm: React.FC<EnclosureFormProps> = ({
     try {
       if (isEdit) {
         let changedValues = getChangedFields(initialValues, values);
+        if (changedValues?.hull?.id) {
+          changedValues.hull_id = changedValues.hull.id;
+          delete changedValues.hull;
+        }
 
         if (!changedValues) {
           message.info('Нет изменений');
           return;
-        }
-
-        if (changedValues?.hull?.id) {
-          changedValues.hull_id = changedValues.hull.id;
-          delete changedValues.hull;
         }
 
         await patchHotelFloor({

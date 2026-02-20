@@ -1,3 +1,5 @@
+import type { Room } from '@entities/booking/model/types.ts';
+
 export type GuestLanguage = 'en' | 'ru' | 'de';
 
 export type GuestTitle =
@@ -26,4 +28,5 @@ export interface IGuest {
   guest_category?: GuestCategory | null;
   phone: string;
   comment: string;
+  bookings?: Room[];
 }

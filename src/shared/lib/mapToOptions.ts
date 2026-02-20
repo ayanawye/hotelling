@@ -18,7 +18,13 @@ export const mapToOptions = (
 ): SelectOption[] => {
   return (
     data?.map((item) => ({
-      label: String(item[labelKey] || item.name || item.description || ''),
+      label: String(
+        item[labelKey] ||
+          item.name ||
+          item.description ||
+          (item.first_name && `${item.first_name} ${item.last_name}`) ||
+          (item.room && `Комната №: ${item.room}`),
+      ),
       value: item.id ?? '',
     })) || []
   );
