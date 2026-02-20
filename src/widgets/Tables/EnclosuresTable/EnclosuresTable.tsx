@@ -82,7 +82,6 @@ export const EnclosuresTable = () => {
         data={data}
         columns={columns}
         loading={false}
-        rowKey='id'
       />
       <DeleteModal
         isOpen={deleteModalOpen}

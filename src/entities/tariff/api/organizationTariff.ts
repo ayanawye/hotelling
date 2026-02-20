@@ -26,14 +26,11 @@ export const organizationTariff = baseApi.injectEndpoints({
       }),
       providesTags: ['ORGANIZATION_TARIFF'],
     }),
-    patchOrganizationTariff: builder.mutation<
-      void,
-      { id: number | undefined; body: Partial<any> | null }
-    >({
-      query: ({ id, body }) => ({
-        url: `tariff/organization_tariff/${id}/`,
+    patchOrganizationTariff: builder.mutation<void, any>({
+      query: (body) => ({
+        url: `tariff/organization_tariff/${body.id}/`,
         method: 'PATCH',
-        body: { ...body },
+        body,
       }),
       invalidatesTags: ['ORGANIZATION_TARIFF'],
     }),

@@ -6,7 +6,10 @@ import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import styles from './OrganizationTariffForm.module.scss';
-import { useCreateOrganizationTariffMutation, usePatchOrganizationTariffMutation, } from '@entities/tariff';
+import {
+  useCreateOrganizationTariffMutation,
+  usePatchOrganizationTariffMutation,
+} from '@entities/tariff';
 import type { IOrganizationTariff } from '@entities/tariff/types';
 
 interface OrganizationFormProps {

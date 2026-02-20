@@ -1,33 +1,40 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch } from 'antd';
+import { message, Select, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IServiceCategory {
-  id: string;
-  name: string;
-  parentCategory: string;
-  isActive: boolean;
-  sortOrder: string;
-}
+import {
+  useDeleteServiceCategoryMutation,
+  useGetServiceCategoriesQuery,
+} from '@entities/services';
+import type { IServiceCategory } from '@entities/services/types';
+import { getErrorMessage } from '@shared/lib';
+import { useNavigate } from 'react-router-dom';
+import { TableActions } from '@widgets/TableActions';
 
 export const ServiceCategoriesTable = () => {
+  const navigate = useNavigate();
+
+  const { data } = useGetServiceCategoriesQuery();
+  const [deleteServiceCategory, { isLoading }] =
+    useDeleteServiceCategoryMutation();
+
   const [filter, setFilter] = useState({
     search: '',
   });
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<IServiceCategory | null>(null);
 
-  const data: IServiceCategory[] = Array(9)
-    .fill(null)
-    .map((_, index) => ({
-      id: `INV-100${index + 1}`,
-      name: 'Тур Агентство',
-      parentCategory: 'INV-1001',
-      isActive: index !== 6, // 7-й элемент неактивен на скрине
-      sortOrder: 'INV-1001',
-    }));
+  const handleDelete = async () => {
+    try {
+      await deleteServiceCategory(selectedCategory?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<IServiceCategory> = [
     {
@@ -36,53 +43,25 @@ export const ServiceCategoriesTable = () => {
       key: 'name',
     },
     {
-      title: 'Старшая категория',
-      dataIndex: 'parentCategory',
-      key: 'parentCategory',
-    },
-    {
       title: 'Активна',
-      dataIndex: 'isActive',
-      key: 'isActive',
-      render: (isActive) => (
-        <Switch
-          checked={isActive}
-          style={{ backgroundColor: isActive ? '#52C41A' : undefined }}
-        />
-      ),
+      dataIndex: 'is_active',
+      key: 'is_active',
+      render: (isActive) => <Switch checked={isActive} />,
     },
     {
       title: 'Порядок сортировки',
-      dataIndex: 'sortOrder',
-      key: 'sortOrder',
+      dataIndex: 'sort_order',
+      key: 'sort_order',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              fontWeight: 500,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedCategory}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -102,27 +81,29 @@ export const ServiceCategoriesTable = () => {
           options={[]}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить категорию?'
+        isLoading={isLoading}
+        description={`Категория "${selectedCategory?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

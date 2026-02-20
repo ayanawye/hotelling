@@ -14,6 +14,7 @@ interface Props {
     | 'none'
     | 'outlined_modal'
     | 'outlined_big'
+    | 'outlined_danger'
     | 'danger_modal';
   onClick?: () => void;
   className?: string;

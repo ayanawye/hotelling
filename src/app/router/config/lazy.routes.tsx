@@ -30,7 +30,7 @@ export const GuestsPage = Loadable(lazy(() => import('@pages/Guests')));
 
 // Rooms (Settings)
 export const RoomsEnclosuresPage = Loadable(
-  lazy(() => import('@pages/Rooms/Enclosures/EnclosuresList')),
+  lazy(() => import('@pages/Rooms/Enclosures')),
 );
 export const RoomsEnclosuresCreatePage = Loadable(
   lazy(() => import('@pages/Rooms/Enclosures/EnclosuresCreate')),
@@ -177,11 +177,29 @@ export const TariffOrganizationsEditPage = Loadable(
 export const ServicesCategoriesPage = Loadable(
   lazy(() => import('@pages/Services/Categories')),
 );
+export const ServicesCategoriesCreatePage = Loadable(
+  lazy(() => import('@pages/Services/Categories/CategoriesCreate')),
+);
+export const ServicesCategoriesEditPage = Loadable(
+  lazy(() => import('@pages/Services/Categories/CategoriesEdit')),
+);
 export const ServicesAllPage = Loadable(
   lazy(() => import('@pages/Services/All')),
 );
+export const ServicesAllCreatePage = Loadable(
+  lazy(() => import('@pages/Services/All/AllCreate')),
+);
+export const ServicesAllEditPage = Loadable(
+  lazy(() => import('@pages/Services/All/AllEdit')),
+);
 export const ServicesOrdersPage = Loadable(
   lazy(() => import('@pages/Services/Orders')),
+);
+export const ServicesOrdersCreatePage = Loadable(
+  lazy(() => import('@pages/Services/Orders/OrderCreate')),
+);
+export const ServicesOrdersEditPage = Loadable(
+  lazy(() => import('@pages/Services/Orders/OrderEdit')),
 );
 
 // Consumables

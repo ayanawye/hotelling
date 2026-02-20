@@ -92,7 +92,7 @@ export const BoardingListTable = () => {
       render: (_, record) =>
         record.guest
           ? `${record.guest?.last_name} ${record.guest?.first_name}`
-          : '—',
+          : '-',
     },
     {
       title: 'Гостей',

@@ -220,12 +220,36 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.ServicesCategoriesPage />,
       },
       {
+        path: 'categories/create',
+        element: <Pages.ServicesCategoriesCreatePage />,
+      },
+      {
+        path: 'categories/edit/:id',
+        element: <Pages.ServicesCategoriesEditPage />,
+      },
+      {
         path: 'all',
         element: <Pages.ServicesAllPage />,
       },
       {
+        path: 'all/create',
+        element: <Pages.ServicesAllCreatePage />,
+      },
+      {
+        path: 'all/edit/:id',
+        element: <Pages.ServicesAllEditPage />,
+      },
+      {
         path: 'orders',
         element: <Pages.ServicesOrdersPage />,
+      },
+      {
+        path: 'orders/create',
+        element: <Pages.ServicesOrdersCreatePage />,
+      },
+      {
+        path: 'orders/edit/:id',
+        element: <Pages.ServicesOrdersEditPage />,
       },
     ],
   },

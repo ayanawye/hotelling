@@ -383,18 +383,60 @@ export const navigationConfig: NavItem[] = [
         label: 'Категории услуг',
         path: '/services/categories',
         menu: true,
+        children: [
+          {
+            key: 'services-categories-create',
+            label: 'Создать категорию',
+            path: '/services/categories/create',
+            menu: false,
+          },
+          {
+            key: 'services-categories-edit',
+            label: 'Изменить категорию',
+            path: '/services/categories/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'services-all',
         label: 'Все',
         path: '/services/all',
         menu: true,
+        children: [
+          {
+            key: 'services-all-create',
+            label: 'Создать услугу',
+            path: '/services/all/create',
+            menu: false,
+          },
+          {
+            key: 'services-all-edit',
+            label: 'Изменить услугу',
+            path: '/services/all/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'services-orders',
         label: 'Заказы услуг',
         path: '/services/orders',
         menu: true,
+        children: [
+          {
+            key: 'services-orders-create',
+            label: 'Создать услугу',
+            path: '/services/orders/create',
+            menu: false,
+          },
+          {
+            key: 'services-orders-edit',
+            label: 'Изменить услугу',
+            path: '/services/orders/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },

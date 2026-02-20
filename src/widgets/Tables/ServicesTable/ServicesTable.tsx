@@ -1,47 +1,51 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch } from 'antd';
+import { message, Select, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IService {
-  id: string;
-  category: string;
-  name: string;
-  price: string;
-  isActive: boolean;
-  description: string;
-}
+import { useNavigate } from 'react-router-dom';
+import {
+  useDeleteServiceMutation,
+  useGetServicesQuery,
+} from '@entities/services';
+import { getErrorMessage } from '@shared/lib';
+import { TableActions } from '@widgets/TableActions';
+import type { IService } from '@entities/services/types';
 
 export const ServicesTable = () => {
+  const navigate = useNavigate();
+
+  const { data } = useGetServicesQuery();
+  const [deleteService, { isLoading }] = useDeleteServiceMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     category: undefined,
   });
 
-  const data: IService[] = Array(9)
-    .fill(null)
-    .map((_, index) => ({
-      id: `INV-100${index + 1}`,
-      category: 'Тур Агенство',
-      name: 'INV-1001',
-      price: 'INV-1001',
-      isActive: true,
-      description: 'INV-1001',
-    }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<IService | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteService(selectedService?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<IService> = [
     {
       title: 'Категория',
-      dataIndex: 'category',
-      key: 'category',
+      dataIndex: 'category_name',
+      key: 'category_name',
     },
     {
       title: 'Название',
       dataIndex: 'name',
-      key: 'name',
+      key: 'category_name',
     },
     {
       title: 'Цена',
@@ -50,14 +54,9 @@ export const ServicesTable = () => {
     },
     {
       title: 'Активна',
-      dataIndex: 'isActive',
-      key: 'isActive',
-      render: (isActive) => (
-        <Switch
-          defaultChecked={isActive}
-          style={{ backgroundColor: isActive ? '#52C41A' : undefined }}
-        />
-      ),
+      dataIndex: 'is_active',
+      key: 'is_active',
+      render: (isActive) => <Switch checked={isActive} disabled />,
     },
     {
       title: 'Описание',
@@ -67,29 +66,12 @@ export const ServicesTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedService}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -112,27 +94,29 @@ export const ServicesTable = () => {
           onChange={(value) => setFilter({ ...filter, category: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить услугу?'
+        isLoading={isLoading}
+        description={`Услуга "${selectedService?.name}" будет удалена из системы.`}
+      />
+    </>
   );
 };
