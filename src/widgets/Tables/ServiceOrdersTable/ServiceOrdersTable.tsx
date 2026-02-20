@@ -1,151 +1,69 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { message, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IServiceOrder {
-  id: string;
-  guest: string;
-  booking: string;
-  service: string;
-  count: number;
-  pricePerUnit: string;
-  total: string;
-  shift: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { useDeleteServiceOrderMutation, useGetServiceOrdersQuery, } from '@entities/services';
+import { getErrorMessage } from '@shared/lib';
+import { TableActions } from '@widgets/TableActions';
+import type { IServiceOrder } from '@entities/services/types';
 
 export const ServiceOrdersTable = () => {
+  const navigate = useNavigate();
+
+  const { data } = useGetServiceOrdersQuery();
+  const [deleteServiceOrder, { isLoading }] = useDeleteServiceOrderMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     select: undefined,
   });
 
-  const data: IServiceOrder[] = [
-    {
-      id: '1',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Массаж',
-      count: 2,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '2',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Проживание',
-      count: 3,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '3',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Завтрак',
-      count: 1,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '4',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Ресторан',
-      count: 2,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '5',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Прачка',
-      count: 3,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '6',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Массаж',
-      count: 4,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '7',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Прачка',
-      count: 2,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '8',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Прачка',
-      count: 2,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-    {
-      id: '9',
-      guest: 'Иванов Иван',
-      booking: 'Проживание',
-      service: 'Прачка',
-      count: 1,
-      pricePerUnit: '10 000',
-      total: '10 000',
-      shift: 'Ибраимов А.',
-    },
-  ];
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedServiceOrder, setSelectedServiceOrder] =
+    useState<IServiceOrder | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteServiceOrder(selectedServiceOrder?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<IServiceOrder> = [
     {
       title: 'Гость',
-      dataIndex: 'guest',
-      key: 'guest',
+      dataIndex: 'guest_name',
+      key: 'guest_name',
     },
     {
       title: 'Бронирование',
-      dataIndex: 'booking',
-      key: 'booking',
+      dataIndex: 'reservation_id',
+      key: 'reservation_id',
     },
     {
       title: 'Услуга',
-      dataIndex: 'service',
-      key: 'service',
+      dataIndex: 'service_name',
+      key: 'service_name',
     },
     {
       title: 'Кол-во',
-      dataIndex: 'count',
-      key: 'count',
+      dataIndex: 'quantity',
+      key: 'quantity',
     },
     {
       title: 'Цена за ед.',
-      dataIndex: 'pricePerUnit',
-      key: 'pricePerUnit',
+      dataIndex: 'unit_amount',
+      key: 'unit_amount',
     },
     {
       title: 'Сумма',
-      dataIndex: 'total',
-      key: 'total',
+      dataIndex: 'amount',
+      key: 'amount',
     },
     {
       title: 'Смена',
@@ -155,29 +73,12 @@ export const ServiceOrdersTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedServiceOrder}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -200,27 +101,29 @@ export const ServiceOrdersTable = () => {
           onChange={(value) => setFilter({ ...filter, select: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={false}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить заказ услуги?'
+        isLoading={isLoading}
+        description={`Заказ "${selectedServiceOrder?.description}" будет удалена из системы.`}
+      />
+    </>
   );
 };

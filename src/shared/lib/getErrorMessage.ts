@@ -3,27 +3,30 @@ export const getErrorMessage = (error: any): string => {
 
   const errorData = error.data || error;
 
-  console.log(errorData);
-
   if (typeof errorData === 'string') {
     return errorData;
   }
 
   if (typeof errorData === 'object' && errorData !== null) {
-    if (
-      errorData.errors &&
-      errorData.errors.name &&
-      Array.isArray(errorData.errors.name) &&
-      errorData.errors.name.length > 0
-    ) {
-      const firstDetail = errorData.errors.name[0];
+    if (errorData.errors && typeof errorData.errors === 'object') {
+      for (const key in errorData.errors) {
+        const fieldErrors = errorData.errors[key];
 
-      if (typeof firstDetail === 'object' && firstDetail.message) {
-        return firstDetail.message;
-      }
+        if (Array.isArray(fieldErrors) && fieldErrors.length > 0) {
+          const firstError = fieldErrors[0];
 
-      if (typeof firstDetail === 'string') {
-        return firstDetail;
+          if (typeof firstError === 'string') {
+            return firstError;
+          }
+
+          if (
+            typeof firstError === 'object' &&
+            firstError !== null &&
+            firstError.message
+          ) {
+            return firstError.message;
+          }
+        }
       }
     }
 
@@ -33,30 +36,6 @@ export const getErrorMessage = (error: any): string => {
 
     if (typeof errorData.error === 'string') {
       return errorData.error;
-    }
-
-    for (const key in errorData) {
-      const fieldError = errorData[key];
-
-      if (Array.isArray(fieldError) && fieldError.length > 0) {
-        if (typeof fieldError[0] === 'string') {
-          return fieldError[0];
-        }
-        if (typeof fieldError[0] === 'object' && fieldError[0].message) {
-          return fieldError[0].message;
-        }
-      }
-
-      if (typeof fieldError === 'string') {
-        return fieldError;
-      }
-
-      if (typeof fieldError === 'object' && fieldError !== null) {
-        const deepError = getErrorMessage(fieldError);
-        if (deepError !== 'Произошла неизвестная ошибка') {
-          return deepError;
-        }
-      }
     }
   }
 
