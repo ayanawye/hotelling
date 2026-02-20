@@ -301,6 +301,20 @@ export const navigationConfig: NavItem[] = [
         label: 'Типы организаций',
         path: '/organizations/types',
         menu: true,
+        children: [
+          {
+            key: 'organizations-types-create',
+            label: 'Создание типа организации',
+            path: '/organizations/types/create',
+            menu: false,
+          },
+          {
+            key: 'organizations-типа-create',
+            label: 'Изменение типа организации',
+            path: '/organizations/types/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'organizations-all',
