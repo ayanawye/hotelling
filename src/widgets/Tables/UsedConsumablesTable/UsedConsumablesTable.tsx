@@ -1,36 +1,48 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { message, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IUsedConsumable {
-  id: string;
-  number: string;
-  consumable: string;
-  quantity: number;
-  addedBy: string;
-}
+import {
+  type IConsumableUsage,
+  useDeleteConsumableUsageMutation,
+  useGetConsumableUsagesQuery,
+} from '@entities/consumable';
+import { TableActions } from '@widgets/TableActions';
+import { getErrorMessage } from '@shared/lib';
+import { useNavigate } from 'react-router-dom';
 
 export const UsedConsumablesTable = () => {
+  const navigate = useNavigate();
+
+  const { data, isLoading } = useGetConsumableUsagesQuery();
+  const [deleteConsumableUsage, { isLoading: isDeleting }] =
+    useDeleteConsumableUsageMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     select: undefined,
   });
 
-  const data: IUsedConsumable[] = Array(8)
-    .fill({
-      id: '67584902',
-      number: '№23434',
-      consumable: 'Мыло',
-      quantity: 7,
-      addedBy: 'Айдаров С.',
-    })
-    .map((item, index) => ({ ...item, key: index }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IConsumableUsage | null>(
+    null,
+  );
 
-  const columns: ColumnsType<IUsedConsumable> = [
+  const handleDelete = async () => {
+    try {
+      if (selectedItem?.id) {
+        await deleteConsumableUsage(selectedItem.id).unwrap();
+        message.success('Использованный расходник успешно удален');
+      }
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
+
+  const columns: ColumnsType<IConsumableUsage> = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -38,13 +50,13 @@ export const UsedConsumablesTable = () => {
     },
     {
       title: 'Номер',
-      dataIndex: 'number',
-      key: 'number',
+      dataIndex: 'consumable_id',
+      key: 'consumable_id',
     },
     {
       title: 'Расходник',
-      dataIndex: 'consumable',
-      key: 'consumable',
+      dataIndex: ['consumable', 'name'],
+      key: ['consumable', 'name'],
     },
     {
       title: 'Кол-во',
@@ -53,35 +65,18 @@ export const UsedConsumablesTable = () => {
     },
     {
       title: 'Добавил',
-      dataIndex: 'addedBy',
-      key: 'addedBy',
+      dataIndex: 'user',
+      key: 'user',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedItem}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -102,27 +97,29 @@ export const UsedConsumablesTable = () => {
           onChange={(value) => setFilter({ ...filter, select: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить использованный расходник?'
+        isLoading={isDeleting}
+        description={`Использованный расходник будет удален из системы.`}
+      />
+    </>
   );
 };

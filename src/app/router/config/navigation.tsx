@@ -465,24 +465,80 @@ export const navigationConfig: NavItem[] = [
         label: 'Категории',
         path: '/consumables/categories',
         menu: true,
+        children: [
+          {
+            key: 'consumables-categories-create',
+            label: 'Создание категории',
+            path: '/consumables/categories/create',
+            menu: false,
+          },
+          {
+            key: 'consumables-categories-create',
+            label: 'Изменение категории',
+            path: '/consumables/categories/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'consumables-all',
         label: 'Все расходники',
         path: '/consumables/all',
         menu: true,
+        children: [
+          {
+            key: 'consumables-all-create',
+            label: 'Создание расходника',
+            path: '/consumables/all/create',
+            menu: false,
+          },
+          {
+            key: 'consumables-all-create',
+            label: 'Изменение расходника',
+            path: '/consumables/all/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'consumables-breakdowns',
         label: 'Поломки',
         path: '/consumables/breakdowns',
         menu: true,
+        children: [
+          {
+            key: 'consumables-breakdowns-create',
+            label: 'Создать',
+            path: '/consumables/breakdowns/create',
+            menu: false,
+          },
+          {
+            key: 'consumables-breakdowns-create',
+            label: 'Изменить',
+            path: '/consumables/breakdowns/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'consumables-used',
         label: 'Использованные',
         path: '/consumables/used',
         menu: true,
+        children: [
+          {
+            key: 'consumables-used-create',
+            label: 'Создать',
+            path: '/consumables/used/create',
+            menu: false,
+          },
+          {
+            key: 'consumables-used-create',
+            label: 'Изменить',
+            path: '/consumables/used/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },

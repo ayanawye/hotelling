@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, message, Switch } from 'antd';
-import { Button } from '@shared/ui';
-import { getErrorMessage } from '@shared/lib';
+import { Button, SelectWithSearch } from '@shared/ui';
+import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import type { IServiceCategory } from '@entities/services/types';
 import {
   useCreateServiceCategoryMutation,
+  useGetServiceCategoriesQuery,
   usePatchServiceCategoryMutation,
 } from '@entities/services';
 
@@ -24,6 +25,7 @@ export const ServiceCategoryForm: React.FC<ComponentProps> = ({
 }) => {
   const [form] = Form.useForm();
 
+  const { data: allCategories } = useGetServiceCategoriesQuery();
   const [createItem, { isLoading: isCreating }] =
     useCreateServiceCategoryMutation();
   const [patchItem, { isLoading: isUpdating }] =
@@ -72,16 +74,25 @@ export const ServiceCategoryForm: React.FC<ComponentProps> = ({
         className={styles.form}
         requiredMark={false}
       >
-        <Form.Item
-          name='name'
-          label='Название'
-          rules={[{ required: true, message: 'Введите название' }]}
-        >
-          <Input
-            placeholder='Введите название категории'
-            variant='borderless'
-          />
-        </Form.Item>
+        <div className={styles.row}>
+          <Form.Item
+            name='name'
+            label='Название'
+            rules={[{ required: true, message: 'Введите название' }]}
+          >
+            <Input
+              placeholder='Введите название категории'
+              variant='borderless'
+            />
+          </Form.Item>
+          <Form.Item name={parent} label='Старшая категория'>
+            <SelectWithSearch
+              placeholder='Выберите категорию'
+              options={mapToOptions(allCategories)}
+              variant='borderless'
+            />
+          </Form.Item>
+        </div>
         <Form.Item
           name='sort_order'
           label='Порядок сортировки'

@@ -1,17 +1,17 @@
-import { DatePicker, Form, Input, theme, TimePicker } from 'antd';
-import type { FC, CSSProperties } from 'react';
+import { DatePicker, Form, Input, message, theme, TimePicker } from 'antd';
+import type { CSSProperties, FC } from 'react';
 import { useEffect, useMemo } from 'react';
 
 import styles from './BookingForm.module.scss';
 import { Button, SelectWithSearch } from '@shared/ui';
+import type {
+  Booking,
+  ICreateBookingRequest,
+} from '@entities/booking/api/bookingApi';
 import {
   useCreateBookingMutation,
   useFetchRoomStocksQuery,
   useUpdateBookingMutation,
-} from '@entities/booking/api/bookingApi';
-import type {
-  Booking,
-  ICreateBookingRequest,
 } from '@entities/booking/api/bookingApi';
 import { useGetHotelRoomsTypesQuery } from '@entities/rooms/api/roomsTypeApi';
 import { useGetHotelRoomsStatusQuery } from '@entities/rooms/api/roomsStatus.ts';
@@ -22,6 +22,7 @@ import {
   mapToOptions,
 } from '@shared/lib';
 import dayjs from 'dayjs';
+import { getErrorMessage } from '@shared/lib';
 
 interface BookingFormProps {
   onCancel?: () => void;
@@ -151,7 +152,7 @@ export const BookingForm: FC<BookingFormProps> = ({
       }
       onSuccess?.();
     } catch (error) {
-      console.error('Failed to submit booking:', error);
+      message.error(getErrorMessage(error));
     }
   };
 
