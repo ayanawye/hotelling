@@ -10,7 +10,7 @@ import { getErrorMessage } from '@shared/lib';
 import { TableActions } from '@widgets/TableActions';
 
 interface ComponentProps {
-  data: IConsumable[];
+  data: IConsumable[] | undefined;
   deleteConsumable: (id: number) => void;
   isDeleteLoading: boolean;
   setFilter: (filter: any) => void;
