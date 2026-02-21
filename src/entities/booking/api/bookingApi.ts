@@ -1,6 +1,6 @@
 import { baseApi } from '@shared/api/baseApi';
 import type { Room } from '../model/types';
-import type { IReservation } from '@shared/types/IBooking';
+import type { IReservation, IGuaranteeType } from '@shared/types/IBooking';
 
 export type Booking = IReservation;
 
@@ -11,9 +11,15 @@ export type ICreateBookingRequest = {
     middle_name?: string;
     email?: string;
     phone?: string;
+    title?: string;
+    language?: string;
+    citizenship?: string;
+    vip_code?: string | null;
+    guest_category?: string | null;
+    comment?: string;
   };
   rooms: number[];
-  guarantee_type: string;
+  guarantee_type: IGuaranteeType;
   arrival_datetime: string;
   departure_datetime: string;
   nights: number;
@@ -22,11 +28,17 @@ export type ICreateBookingRequest = {
   infants: number;
 };
 
+export type IFetchAllBookingsRequest = {
+  arrival_from?: string;
+  arrival_to?: string;
+};
+
 export const bookingApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchAllBookings: build.query<Booking[], void>({
-      query: () => ({
+    fetchAllBookings: build.query<Booking[], IFetchAllBookingsRequest | void>({
+      query: (params) => ({
         url: '/booking/reservation/',
+        params: params ?? undefined,
       }),
       providesTags: (result) =>
         result

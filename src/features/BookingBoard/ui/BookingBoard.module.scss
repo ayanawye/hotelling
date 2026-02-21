@@ -16,12 +16,43 @@
   position: relative;
   background: var(--white-color);
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  // scroll-behavior: smooth; // Убираем, чтобы не мешал динамической коррекции скролла
+  overscroll-behavior-x: contain; // Важно для кастомного эффекта вытягивания
+}
 
-  * {
-    box-sizing: border-box;
+.pullIndicator {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--white-color);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.1s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-color);
   }
 }
+
+.pullStart {
+  position: absolute;
+  left: calc(var(--sidebar-width) + 10px);
+}
+
+.pullEnd {
+  position: absolute;
+  right: 10px;
+}
+
 
 .header {
   display: flex;
@@ -36,6 +67,14 @@
   text-align: center;
   font-size: 12px;
   font-weight: 500;
+
+  transform: translateX(var(--pull-offset, 0));
+  transition: transform 0.4s cubic-bezier(0.15, 0.85, 0.35, 1);
+  will-change: transform;
+
+  &.isPulling {
+    transition: none;
+  }
 
   .cell:last-child {
     border-right: none;
@@ -97,6 +136,14 @@
   display: flex;
   width: fit-content;
   min-width: 100%;
+
+  transform: translateX(var(--pull-offset, 0));
+  transition: transform 0.4s cubic-bezier(0.15, 0.85, 0.35, 1);
+  will-change: transform;
+
+  &.isPulling {
+    transition: none;
+  }
 }
 
 .sidebar {

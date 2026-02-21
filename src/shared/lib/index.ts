@@ -5,6 +5,7 @@ export {
   GUESTS_TITLE,
   GUESTS_LANGUAGE,
   colorMap,
+  GUARANTEE_TYPE_LABELS,
 } from './tableLabels';
 export { mapToOptions } from './mapToOptions';
 export { getErrorMessage } from './getErrorMessage';

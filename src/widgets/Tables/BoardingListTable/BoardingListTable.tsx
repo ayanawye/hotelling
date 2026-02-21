@@ -17,7 +17,7 @@ import type {
 } from '@shared/types/IBooking.ts';
 import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Dropdown, type MenuProps, message, Tag } from 'antd';
+import { DatePicker, Dropdown, type MenuProps, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -26,8 +26,20 @@ import { useNavigate } from 'react-router-dom';
 
 import './BoardingListTable.scss';
 
+const { RangePicker } = DatePicker;
+
 export const BoardingListTable = () => {
-  const { data } = useFetchAllBookingsQuery();
+  const [dates, setDates] = useState<
+    [dayjs.Dayjs | null, dayjs.Dayjs | null] | null
+  >(null);
+  const { data, isLoading } = useFetchAllBookingsQuery(
+    dates?.[0] && dates?.[1]
+      ? {
+          arrival_from: dates[0].startOf('day').toISOString(),
+          arrival_to: dates[1].endOf('day').toISOString(),
+        }
+      : undefined,
+  );
   const [deleteBooking, { isLoading: isDeleting }] = useDeleteBookingMutation();
   const navigate = useNavigate();
   const { bookingStatusTagStyle } = useStyles();
@@ -89,10 +101,18 @@ export const BoardingListTable = () => {
       title: 'Гость',
       key: 'guest',
       width: '25%',
-      render: (_, record) =>
-        record.guest
-          ? `${record.guest?.last_name} ${record.guest?.first_name}`
-          : '-',
+      render: (_, record) => {
+        if (!record.guest) return '—';
+        const {
+          last_name = '',
+          first_name = '',
+          middle_name = '',
+        } = record.guest;
+        const fullName = [last_name, first_name, middle_name]
+          .filter(Boolean)
+          .join(' ');
+        return fullName || '—';
+      },
     },
     {
       title: 'Гостей',
@@ -128,7 +148,11 @@ export const BoardingListTable = () => {
       key: 'status',
       width: '20%',
       render: (status: IReservationStatus) => {
-        const { label, bgColor, textColor } = RESERVATION_STATUS_CONFIG[status];
+        const config = RESERVATION_STATUS_CONFIG[status];
+        if (!config) {
+          return <Tag>{status || '—'}</Tag>;
+        }
+        const { label, bgColor, textColor } = config;
         return (
           <Tag
             style={{
@@ -160,12 +184,20 @@ export const BoardingListTable = () => {
 
   const TableHeader = (
     <div className='table-header'>
-      <InputTextField
-        value={filter.search}
-        onChange={(e) => setFilter({ search: e.target.value })}
-        placeholder='Поиск'
-        prefixIcon={<SearchIcon />}
-      />
+      <div className='table-header-filter'>
+        <InputTextField
+          value={filter.search}
+          onChange={(e) => setFilter({ search: e.target.value })}
+          placeholder='Поиск'
+          prefixIcon={<SearchIcon />}
+        />
+        <RangePicker
+          value={dates}
+          onChange={(values) => setDates(values)}
+          placeholder={['Заезд от', 'Заезд до']}
+          format='DD.MM.YYYY'
+        />
+      </div>
       <Button variant='primary' onClick={() => navigate('/bookings/create')}>
         <span>Создать</span>
       </Button>
@@ -178,7 +210,7 @@ export const BoardingListTable = () => {
         title={TableHeader}
         data={data || []}
         columns={reservationColumns}
-        loading={false}
+        loading={isLoading}
       />
       <DeleteModal
         isOpen={deleteModalState.isOpen}

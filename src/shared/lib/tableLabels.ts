@@ -1,4 +1,14 @@
-import type { IReservationStatus } from '@shared/types/IBooking.ts';
+import type {
+  IReservationStatus,
+  IGuaranteeType,
+} from '@shared/types/IBooking.ts';
+
+export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
+  none: 'Без гарантии',
+  company: 'Гарантия компании',
+  prepaid: 'Предоплата',
+  card: 'Гарантия картой',
+};
 import type { GuestLanguage, GuestTitle } from '@entities/guests/types';
 import type { RoomsColor } from '@entities/rooms';
 
@@ -39,8 +49,8 @@ export const RESERVATION_STATUS_CONFIG: Record<
 };
 
 export const GUESTS_TITLE: Record<GuestTitle, string> = {
-  mr: 'Мистер',
-  mrs: 'Миссис',
+  mr: 'Г-н',
+  mrs: 'Г-жа',
   miss: 'Мисс',
   sir: 'Сэр',
   madam: 'Мадам',

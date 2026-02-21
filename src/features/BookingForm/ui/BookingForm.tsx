@@ -15,7 +15,12 @@ import type {
 } from '@entities/booking/api/bookingApi';
 import { useGetHotelRoomsTypesQuery } from '@entities/rooms/api/roomsTypeApi';
 import { useGetHotelRoomsStatusQuery } from '@entities/rooms/api/roomsStatus.ts';
-import { mapToOptions } from '@shared/lib/mapToOptions';
+import {
+  GUARANTEE_TYPE_LABELS,
+  GUESTS_LANGUAGE,
+  GUESTS_TITLE,
+  mapToOptions,
+} from '@shared/lib';
 import dayjs from 'dayjs';
 
 interface BookingFormProps {
@@ -58,20 +63,22 @@ export const BookingForm: FC<BookingFormProps> = ({
     [roomStatusesData],
   );
 
-  const titulOptions = [
-    { label: 'Г-н', value: 'mr' },
-    { label: 'Г-жа', value: 'ms' },
-  ];
+  const titulOptions = Object.entries(GUESTS_TITLE).map(([value, label]) => ({
+    label,
+    value,
+  }));
 
   const guestCategoryOptions = [
-    { label: 'VIP', value: 'vip' },
+    { label: 'VIP', value: 'middle_manager' },
     { label: 'Обычный', value: 'regular' },
   ];
 
-  const languageOptions = [
-    { label: 'Русский', value: 'ru' },
-    { label: 'English', value: 'en' },
-  ];
+  const languageOptions = Object.entries(GUESTS_LANGUAGE).map(
+    ([value, label]) => ({
+      label,
+      value,
+    }),
+  );
 
   const countOptions = Array.from({ length: 11 }, (_, i) => ({
     label: String(i),
@@ -83,10 +90,12 @@ export const BookingForm: FC<BookingFormProps> = ({
     value: i,
   }));
 
-  const guaranteeOptions = [
-    { label: 'Гарантировано', value: 'none' },
-    { label: 'Не гарантировано', value: 'none' },
-  ];
+  const guaranteeOptions = Object.entries(GUARANTEE_TYPE_LABELS).map(
+    ([value, label]) => ({
+      label,
+      value,
+    }),
+  );
 
   const themeVars = {
     '--bg-container': token.colorBgContainer,
@@ -121,6 +130,9 @@ export const BookingForm: FC<BookingFormProps> = ({
           middle_name: values.guest.third_name || '',
           email: values.guest.email,
           phone: values.guest.phone,
+          title: values.titul,
+          language: values.language,
+          guest_category: values.guestCategory,
         },
         rooms: values.rooms,
         guarantee_type: values.guarantee_type,
@@ -153,6 +165,9 @@ export const BookingForm: FC<BookingFormProps> = ({
           email: initialData.guest?.email,
           phone: initialData.guest?.phone,
         },
+        titul: initialData.guest?.title,
+        language: initialData.guest?.language,
+        guestCategory: initialData.guest?.guest_category,
         rooms:
           initialData.rooms || (initialData.room ? [initialData.room] : []),
         guarantee_type: initialData.guarantee_type,

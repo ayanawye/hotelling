@@ -2,9 +2,15 @@ export type IGuestShort = {
   id: number;
   first_name: string;
   last_name: string;
-  middle_name: string;
+  middle_name?: string;
+  language?: string;
+  title?: string;
   email?: string;
+  citizenship?: string;
+  vip_code?: string | null;
+  guest_category?: string | null;
   phone?: string;
+  comment?: string;
 };
 
 export type IOrganizationShort = {
@@ -12,7 +18,7 @@ export type IOrganizationShort = {
   name: string;
 };
 
-export type IGuaranteeType = string;
+export type IGuaranteeType = 'none' | 'company' | 'prepaid' | 'card';
 
 export type IReservationStatus =
   | 'reserved'
@@ -24,15 +30,15 @@ export type IReservationStatus =
 export type IReservation = {
   id: number;
   hotel: number;
-  guest: (IGuestShort & { email?: string; phone?: string }) | null;
+  guest: IGuestShort | null;
   organization?: IOrganizationShort | null;
   room?: number | null;
   rooms?: number[];
   guarantee_type: IGuaranteeType;
-  arrival_datetime?: string | null;
-  departure_datetime?: string | null;
-  nights?: number | null;
-  adults?: number | null;
+  arrival_datetime: string;
+  departure_datetime: string;
+  nights: number;
+  adults: number;
   children?: number | null;
   infants?: number | null;
   status: IReservationStatus;
