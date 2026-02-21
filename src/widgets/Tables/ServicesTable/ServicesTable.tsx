@@ -78,14 +78,12 @@ export const ServicesTable = () => {
 
   const TableHeader = (
     <div className='table-header'>
-      <div style={{ display: 'flex', gap: '16px' }}>
-        <InputTextField
-          value={filter.search}
-          onChange={(e) => setFilter({ ...filter, search: e.target.value })}
-          placeholder='Поиск'
-          prefixIcon={<SearchIcon />}
-        />
-      </div>
+      <InputTextField
+        value={filter.search}
+        onChange={(e) => setFilter({ ...filter, search: e.target.value })}
+        placeholder='Поиск'
+        prefixIcon={<SearchIcon />}
+      />
       <div className='table-header-filter'>
         <Select
           placeholder='Select'

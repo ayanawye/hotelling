@@ -218,18 +218,51 @@ export const ServicesOrdersEditPage = Loadable(
 export const ConsumablesCategoriesPage = Loadable(
   lazy(() => import('@pages/Consumables/Categories')),
 );
+export const ConsumablesCategoriesCreatePage = Loadable(
+  lazy(() => import('@pages/Consumables/Categories/ConsumableCategoryCreate')),
+);
+export const ConsumablesCategoriesEditPage = Loadable(
+  lazy(() => import('@pages/Consumables/Categories/ConsumableCategoryEdit')),
+);
+
 export const ConsumablesAllPage = Loadable(
   lazy(() => import('@pages/Consumables/All')),
 );
+export const ConsumablesAllCreatePage = Loadable(
+  lazy(() => import('@pages/Consumables/All/ConsumableCreate')),
+);
+export const ConsumablesAllEditPage = Loadable(
+  lazy(() => import('@pages/Consumables/All/ConsumableEdit')),
+);
+
 export const ConsumablesBreakdownsPage = Loadable(
   lazy(() => import('@pages/Consumables/Breakdowns')),
 );
+export const ConsumablesBreakdownsCreatePage = Loadable(
+  lazy(() => import('@pages/Consumables/Breakdowns/ConsumableBreakdownCreate')),
+);
+export const ConsumablesBreakdownsEditPage = Loadable(
+  lazy(() => import('@pages/Consumables/Breakdowns/ConsumableBreakdownEdit')),
+);
+
 export const ConsumablesUsedPage = Loadable(
   lazy(() => import('@pages/Consumables/Used')),
+);
+export const ConsumablesUsedCreatePage = Loadable(
+  lazy(() => import('@pages/Consumables/Used/ConsumableUsageCreate')),
+);
+export const ConsumablesUsedEditPage = Loadable(
+  lazy(() => import('@pages/Consumables/Used/ConsumableUsageEdit')),
 );
 
 // Staff
 export const StaffAllPage = Loadable(lazy(() => import('@pages/Staff/All')));
+export const StaffAllCreatePage = Loadable(
+  lazy(() => import('@pages/Staff/All/StaffCreate/StaffCreate')),
+);
+export const StaffAllEditPage = Loadable(
+  lazy(() => import('@pages/Staff/All/StaffEdit/StaffEdit')),
+);
 export const StaffHistoryPage = Loadable(
   lazy(() => import('@pages/Staff/History')),
 );

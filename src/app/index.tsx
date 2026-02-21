@@ -1,9 +1,6 @@
 import './style/index.css';
-
-import { useLazyGetMeQuery } from '@entities/user/api/authApi';
 import {
   authSelector,
-  logout,
   setCredentials,
   setToken,
 } from '@entities/user/model/slice';
@@ -20,6 +17,7 @@ import { createAppRouter } from './router/appRouter';
 import type { UserRole } from './router/config/types';
 import { setupStore } from './store/store';
 import { Token } from '@shared/hooks/token.ts';
+import { useLazyGetMeQuery } from '@entities/user/api/authApi.ts';
 
 const store = setupStore();
 
@@ -38,7 +36,7 @@ const AppContent = () => {
           dispatch(setCredentials({ user: userData }));
           dispatch(setToken(tokenLocal));
         } catch (error) {
-          dispatch(logout());
+          // dispatch(logout());
         }
       }
     };

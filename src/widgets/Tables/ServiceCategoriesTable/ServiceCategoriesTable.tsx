@@ -43,6 +43,11 @@ export const ServiceCategoriesTable = () => {
       key: 'name',
     },
     {
+      title: 'Старшая категория',
+      dataIndex: 'parent',
+      key: 'parent',
+    },
+    {
       title: 'Активна',
       dataIndex: 'is_active',
       key: 'is_active',

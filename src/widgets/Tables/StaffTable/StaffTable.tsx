@@ -1,45 +1,54 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { message, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IStaff {
-  id: number;
-  fio: string;
-  phone: string;
-  username: string;
-  role: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { getErrorMessage, STAFF_ROLE } from '@shared/lib';
+import {
+  type IPersonal,
+  useDeleteStaffMutation,
+  useGetStaffsQuery,
+} from '@entities/staff';
+import { TableActions } from '@widgets/TableActions';
 
 export const StaffTable = () => {
+  const navigate = useNavigate();
+
+  const { data, isLoading: isFetching } = useGetStaffsQuery();
+  const [deleteItem, { isLoading: isDeleting }] = useDeleteStaffMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     role: undefined,
   });
 
-  const data: IStaff[] = Array(9)
-    .fill(null)
-    .map((_, index) => ({
-      id: index + 1,
-      fio: 'Айдаров С.',
-      phone: '996 556 345 230',
-      username: 'nikita001@gmail.com',
-      role: 'Менеджер Отеля',
-    }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IPersonal | null>(null);
 
-  const columns: ColumnsType<IStaff> = [
+  const handleDelete = async () => {
+    try {
+      if (selectedItem?.id) {
+        await deleteItem(selectedItem.id).unwrap();
+        message.success('Сотрудник успешно удален');
+      }
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
+
+  const columns: ColumnsType<IPersonal> = [
     {
       title: 'ФИО',
-      dataIndex: 'fio',
-      key: 'fio',
+      dataIndex: 'full_name',
+      key: 'full_name',
     },
     {
       title: 'Номер телефона',
-      dataIndex: 'phone',
-      key: 'phone',
+      dataIndex: 'phone_number',
+      key: 'phone_number',
     },
     {
       title: 'Имя пользователя',
@@ -50,33 +59,17 @@ export const StaffTable = () => {
       title: 'Роль',
       dataIndex: 'role',
       key: 'role',
+      render: (role: keyof typeof STAFF_ROLE) => STAFF_ROLE[role],
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedItem}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -97,27 +90,29 @@ export const StaffTable = () => {
           onChange={(value) => setFilter({ ...filter, role: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isFetching}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить сотрудника?'
+        isLoading={isDeleting}
+        description={`Сотрудник "${selectedItem?.full_name}" будет удален из системы.`}
+      />
+    </>
   );
 };

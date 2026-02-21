@@ -11,8 +11,6 @@ const TaxesEdit = () => {
     skip: !id,
   });
 
-  console.log(tax);
-
   const handleSuccess = () => {
     navigate('/finance/taxes');
   };

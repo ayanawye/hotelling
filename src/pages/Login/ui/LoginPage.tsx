@@ -5,9 +5,8 @@ import {
 import { setCredentials, setToken } from '@entities/user/model/slice';
 import type { LoginDto } from '@entities/user/types';
 import { loginHello, LoginHelloSVG, loginLogo } from '@shared/assets';
-import { useAppDispatch, useAppSelector } from '@shared/hooks/redux';
+import { useAppDispatch } from '@shared/hooks/redux';
 import { Button, Form, Input, Layout, message, Space, Typography } from 'antd';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useStyles } from './styled';
@@ -33,28 +32,18 @@ export const LoginPage = () => {
     helloImgStyle,
   } = useStyles();
 
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/', { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
-
   const onFinish = async (values: LoginDto) => {
     try {
       const authData = await login(values).unwrap();
       Token.setToken(authData);
 
-      // 3. Делаем запрос getMe.
       const userData = await triggerGetMe().unwrap();
 
-      // 4. Теперь сохраняем всё в Redux
       dispatch(setCredentials({ user: userData }));
       dispatch(setToken(authData));
 
       message.success('Вход выполнен успешно');
-      navigate('/');
+      navigate('/bookings/board');
     } catch (err: any) {
       const errorMessage =
         err?.data?.message || 'Ошибка авторизации. Проверьте данные.';

@@ -269,16 +269,48 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.ConsumablesCategoriesPage />,
       },
       {
+        path: 'categories/create',
+        element: <Pages.ConsumablesCategoriesCreatePage />,
+      },
+      {
+        path: 'categories/edit/:id',
+        element: <Pages.ConsumablesCategoriesEditPage />,
+      },
+      {
         path: 'all',
         element: <Pages.ConsumablesAllPage />,
+      },
+      {
+        path: 'all/create',
+        element: <Pages.ConsumablesAllCreatePage />,
+      },
+      {
+        path: 'all/edit/:id',
+        element: <Pages.ConsumablesAllEditPage />,
       },
       {
         path: 'breakdowns',
         element: <Pages.ConsumablesBreakdownsPage />,
       },
       {
+        path: 'breakdowns/create',
+        element: <Pages.ConsumablesBreakdownsCreatePage />,
+      },
+      {
+        path: 'breakdowns/edit/:id',
+        element: <Pages.ConsumablesBreakdownsEditPage />,
+      },
+      {
         path: 'used',
         element: <Pages.ConsumablesUsedPage />,
+      },
+      {
+        path: 'used/create',
+        element: <Pages.ConsumablesUsedCreatePage />,
+      },
+      {
+        path: 'used/edit/:id',
+        element: <Pages.ConsumablesUsedEditPage />,
       },
     ],
   },
@@ -288,6 +320,14 @@ export const baseRoutes: IAccessRouteObject[] = [
       {
         path: 'all',
         element: <Pages.StaffAllPage />,
+      },
+      {
+        path: 'all/create',
+        element: <Pages.StaffAllCreatePage />,
+      },
+      {
+        path: 'all/edit/:id',
+        element: <Pages.StaffAllEditPage />,
       },
       {
         path: 'history',

@@ -1,34 +1,43 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { message, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface IConsumableCategory {
-  id: string;
-  name: string;
-  parentCategory: string;
-}
+import {
+  type IConsumableCategory,
+  useDeleteConsumableCategoryMutation,
+  useGetConsumableCategoriesQuery,
+} from '@entities/consumable';
+import { useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '@shared/lib';
+import { TableActions } from '@widgets/TableActions';
 
 export const ConsumableCategoriesTable = () => {
+  const navigate = useNavigate();
+
+  const { data } = useGetConsumableCategoriesQuery();
+  const [deleteConsumableCategory, { isLoading }] =
+    useDeleteConsumableCategoryMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     parentCategory: undefined,
   });
 
-  const data: IConsumableCategory[] = [
-    { id: '1', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '2', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '3', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '4', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '5', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '6', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '7', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '8', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-    { id: '9', name: 'Тур Агенство', parentCategory: 'INV-1001' },
-  ];
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IConsumableCategory | null>(
+    null,
+  );
+
+  const handleDelete = async () => {
+    try {
+      await deleteConsumableCategory(selectedItem?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<IConsumableCategory> = [
     {
@@ -38,35 +47,19 @@ export const ConsumableCategoriesTable = () => {
     },
     {
       title: 'Старшая категория',
-      dataIndex: 'parentCategory',
-      key: 'parentCategory',
+      dataIndex: ['sub_category', 'name'],
+      key: 'sub_category',
+      render: (subCategory) => subCategory || '-',
     },
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
-          >
-            Изменить
-          </Button>
-        </div>
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedItem}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -89,27 +82,29 @@ export const ConsumableCategoriesTable = () => {
           onChange={(value) => setFilter({ ...filter, parentCategory: value })}
           allowClear
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить категорию?'
+        isLoading={isLoading}
+        description={`Категория "${selectedItem?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };
