@@ -3,6 +3,15 @@
 .wrapper {
   padding: 24px;
   background-color: var(--white-color);
-
   border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
