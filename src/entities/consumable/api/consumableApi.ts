@@ -25,11 +25,8 @@ export const consumableApi = baseApi.injectEndpoints({
       }),
       providesTags: ['CONSUMABLE'],
     }),
-    patchConsumable: builder.mutation<
-      void,
-      Partial<IConsumable> & { id: number }
-    >({
-      query: ({ id, ...body }) => ({
+    patchConsumable: builder.mutation<void, { id: number; body: any }>({
+      query: ({ id, body }) => ({
         url: `consumable/consumables/${id}/`,
         method: 'PATCH',
         body,

@@ -85,7 +85,7 @@ export const ServiceCategoryForm: React.FC<ComponentProps> = ({
               variant='borderless'
             />
           </Form.Item>
-          <Form.Item name={parent} label='Старшая категория'>
+          <Form.Item name='parent' label='Старшая категория'>
             <SelectWithSearch
               placeholder='Выберите категорию'
               options={mapToOptions(allCategories)}
