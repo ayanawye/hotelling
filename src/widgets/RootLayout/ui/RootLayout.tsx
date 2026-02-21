@@ -13,7 +13,7 @@ import { useTheme } from '@shared/styles/theme/useTheme';
 import { Breadcrumbs } from '@shared/ui';
 import { Button, Layout, Menu, type MenuProps, Switch } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
@@ -116,11 +116,11 @@ export const RootLayout = () => {
     navigate('/login');
   };
 
-  // useEffect(() => {
-  //   if (location.pathname === '/') {
-  //     navigate('/bookings/board');
-  //   }
-  // }, [location.pathname, navigate]);
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/bookings/board');
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <Layout style={layoutStyle}>

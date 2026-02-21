@@ -1,10 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Spin } from 'antd';
-import {
-  useGetConsumableBreakdownByIdQuery,
-  usePatchConsumableBreakdownMutation,
-} from '@entities/consumable';
-import { ConsumableCategoryForm } from '@features/ConsumableCategoryForm';
+import { useGetConsumableBreakdownByIdQuery } from '@entities/consumable';
+import { ConsumableBreakdownForm } from '@features/ConsumableBreakdownForm';
 
 const ConsumableBreakdownEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,8 +10,6 @@ const ConsumableBreakdownEdit = () => {
   const { data, isLoading } = useGetConsumableBreakdownByIdQuery(Number(id), {
     skip: !id,
   });
-  const [patchItem, { isLoading: isUpdating }] =
-    usePatchConsumableBreakdownMutation();
 
   const handleSuccess = () => {
     navigate('/consumables/breakdowns');
@@ -29,12 +24,10 @@ const ConsumableBreakdownEdit = () => {
   }
 
   return (
-    <ConsumableCategoryForm
+    <ConsumableBreakdownForm
       initialValues={data}
       onSuccess={handleSuccess}
       onCancel={handleCancel}
-      isLoading={isUpdating}
-      apiFunc={patchItem}
     />
   );
 };

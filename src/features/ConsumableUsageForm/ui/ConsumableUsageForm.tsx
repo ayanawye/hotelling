@@ -1,5 +1,4 @@
 import type { CSSProperties, FC } from 'react';
-import React, { useMemo } from 'react';
 import { Form, Input, InputNumber, message, theme } from 'antd';
 import {
   type IConsumableUsage,
@@ -7,11 +6,11 @@ import {
   useGetConsumablesQuery,
   usePatchConsumableUsageMutation,
 } from '@entities/consumable';
-import { useFetchRoomStocksQuery } from '@entities/booking/api/bookingApi';
 import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage } from '@shared/lib';
 import { mapToOptions } from '@shared/lib/mapToOptions';
 import styles from './ConsumableUsageForm.module.scss';
+import { useGetStaffsQuery } from '@entities/staff';
 
 interface ConsumableUsageFormProps {
   initialValues?: Partial<IConsumableUsage>;
@@ -29,8 +28,7 @@ export const ConsumableUsageForm: FC<ConsumableUsageFormProps> = ({
 
   const { data: consumablesData, isLoading: isConsumablesLoading } =
     useGetConsumablesQuery();
-  const { data: roomsData, isLoading: isRoomsLoading } =
-    useFetchRoomStocksQuery();
+  const { data: allStaff, isLoading: isStaffLoading } = useGetStaffsQuery();
 
   const [createUsage, { isLoading: isCreating }] =
     useCreateConsumableUsageMutation();
@@ -38,16 +36,6 @@ export const ConsumableUsageForm: FC<ConsumableUsageFormProps> = ({
     usePatchConsumableUsageMutation();
 
   const isEdit = !!initialValues?.id;
-
-  const consumableOptions = useMemo(
-    () => mapToOptions(consumablesData),
-    [consumablesData],
-  );
-
-  const roomOptions = useMemo(
-    () => mapToOptions(roomsData, 'room_number'),
-    [roomsData],
-  );
 
   const onFinish = async (values: any) => {
     try {
@@ -85,7 +73,7 @@ export const ConsumableUsageForm: FC<ConsumableUsageFormProps> = ({
             name='consumable_id'
             rules={[{ required: true, message: 'Выберите расходник' }]}
           >
-            <Input size='large' placeholder='Введите ID расходника' />
+            <Input disabled size='large' placeholder='Введите ID расходника' />
           </Form.Item>
 
           <Form.Item label='Номер расходника' name='id_number'>
@@ -101,7 +89,7 @@ export const ConsumableUsageForm: FC<ConsumableUsageFormProps> = ({
           >
             <SelectWithSearch
               placeholder='Расходник'
-              options={consumableOptions}
+              options={mapToOptions(consumablesData)}
               loading={isConsumablesLoading}
             />
           </Form.Item>
@@ -127,8 +115,8 @@ export const ConsumableUsageForm: FC<ConsumableUsageFormProps> = ({
         >
           <SelectWithSearch
             placeholder='Добавил'
-            options={roomOptions}
-            loading={isRoomsLoading}
+            options={mapToOptions(allStaff)}
+            loading={isStaffLoading}
           />
         </Form.Item>
 

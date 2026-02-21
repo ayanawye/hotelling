@@ -1,5 +1,5 @@
 import { baseApi } from '@shared/api/baseApi';
-import type { IConsumable, IConsumableBreakdown } from '../model/types';
+import type { IConsumable } from '../model/types';
 
 export const breakdownApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,10 +10,7 @@ export const breakdownApi = baseApi.injectEndpoints({
       }),
       providesTags: ['CONSUMABLE_BREAKDOWN'],
     }),
-    createConsumableBreakdown: builder.mutation<
-      void,
-      Partial<IConsumableBreakdown>
-    >({
+    createConsumableBreakdown: builder.mutation<void, Partial<IConsumable>>({
       query: (body) => ({
         url: 'consumable/breakdowns/',
         method: 'POST',

@@ -32,7 +32,7 @@ export const ConsumableCategoriesTable = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteConsumableCategory(selectedCategory?.id || 1).unwrap();
+      await deleteConsumableCategory(selectedItem?.id || 1).unwrap();
       setDeleteModalOpen(false);
     } catch (error) {
       message.error(getErrorMessage(error));
@@ -47,8 +47,9 @@ export const ConsumableCategoriesTable = () => {
     },
     {
       title: 'Старшая категория',
-      dataIndex: 'sub_category',
+      dataIndex: ['sub_category', 'name'],
       key: 'sub_category',
+      render: (subCategory) => subCategory || '-',
     },
     {
       title: 'Действия',

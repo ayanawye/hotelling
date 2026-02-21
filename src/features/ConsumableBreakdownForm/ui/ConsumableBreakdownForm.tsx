@@ -4,21 +4,21 @@ import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import {
-  type IConsumableCategory,
-  useCreateConsumableCategoryMutation,
+  type IConsumable,
+  useCreateConsumableBreakdownMutation,
   useGetConsumableCategoriesQuery,
-  usePatchConsumableCategoryMutation,
+  usePatchConsumableBreakdownMutation,
 } from '@entities/consumable';
 
-import styles from './ConsumableCategoryForm.module.scss';
+import styles from './ConsumableBreakdownForm.module.scss';
 
 interface ComponentProps {
-  initialValues?: IConsumableCategory;
+  initialValues?: IConsumable;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-export const ConsumableCategoryForm: React.FC<ComponentProps> = ({
+export const ConsumableBreakdownForm: React.FC<ComponentProps> = ({
   initialValues,
   onSuccess,
   onCancel,
@@ -27,9 +27,9 @@ export const ConsumableCategoryForm: React.FC<ComponentProps> = ({
 
   const { data: allCategories } = useGetConsumableCategoriesQuery();
   const [createItem, { isLoading: isCreating }] =
-    useCreateConsumableCategoryMutation();
+    useCreateConsumableBreakdownMutation();
   const [patchItem, { isLoading: isUpdating }] =
-    usePatchConsumableCategoryMutation();
+    usePatchConsumableBreakdownMutation();
 
   const isEdit = !!initialValues?.id;
 
@@ -37,6 +37,7 @@ export const ConsumableCategoryForm: React.FC<ComponentProps> = ({
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
+        category_id: initialValues.category?.id || initialValues.category_id,
       });
     } else {
       form.resetFields();
@@ -79,12 +80,13 @@ export const ConsumableCategoryForm: React.FC<ComponentProps> = ({
             label='Название'
             rules={[{ required: true, message: 'Введите название' }]}
           >
-            <Input
-              placeholder='Введите название категории'
-              variant='borderless'
-            />
+            <Input placeholder='Введите название' variant='borderless' />
           </Form.Item>
-          <Form.Item name='sub_category_id' label='Старшая категория'>
+          <Form.Item
+            name='category_id'
+            label='Категория'
+            rules={[{ required: true, message: 'Выберите категорию' }]}
+          >
             <SelectWithSearch
               placeholder='Выберите категорию'
               options={mapToOptions(allCategories)}

@@ -56,7 +56,7 @@ export const UsedConsumablesTable = () => {
     {
       title: 'Расходник',
       dataIndex: ['consumable', 'name'],
-      key: ['consumable', 'name'],
+      key: 'consumable_name',
     },
     {
       title: 'Кол-во',

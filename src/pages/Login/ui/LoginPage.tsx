@@ -32,14 +32,6 @@ export const LoginPage = () => {
     helloImgStyle,
   } = useStyles();
 
-  // const { isAuthenticated } = useAppSelector((state) => state.auth);
-  //
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate('/bookings/board', { replace: true });
-  //   }
-  // }, [isAuthenticated]);
-
   const onFinish = async (values: LoginDto) => {
     try {
       const authData = await login(values).unwrap();

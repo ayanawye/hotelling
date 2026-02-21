@@ -1,21 +1,11 @@
-import { type FC, useState } from 'react';
-import { ConsumablesTable } from '@widgets/Tables';
-import {
-  useDeleteConsumableBreakdownMutation,
-  useGetConsumableBreakdownsQuery,
-} from '@entities/consumable';
+import { type FC } from 'react';
+import { useGetConsumableBreakdownsQuery } from '@entities/consumable';
 import { PageLoader } from '@shared/ui';
 import { Alert } from 'antd';
+import { ConsumableBreakdownsTable } from '@widgets/Tables';
 
 const Breakdowns: FC = () => {
-  const { data, isError, isLoading } = useGetConsumableBreakdownsQuery();
-  const [deleteConsumable, { isLoading: isDeleteLoading }] =
-    useDeleteConsumableBreakdownMutation();
-
-  const [filter, setFilter] = useState({
-    search: '',
-    category: undefined,
-  });
+  const { isError, isLoading } = useGetConsumableBreakdownsQuery();
 
   if (isLoading) {
     return <PageLoader />;
@@ -25,15 +15,7 @@ const Breakdowns: FC = () => {
     return <Alert title='Ошибка загрузки' type='error' />;
   }
 
-  return (
-    <ConsumablesTable
-      deleteConsumable={deleteConsumable}
-      isDeleteLoading={isDeleteLoading}
-      data={data}
-      setFilter={setFilter}
-      filter={filter}
-    />
-  );
+  return <ConsumableBreakdownsTable />;
 };
 
 export default Breakdowns;

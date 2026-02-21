@@ -2,10 +2,11 @@ import type { IHotel } from '@entities/tariff/types';
 import type { IRoomStock } from '@entities/rooms';
 
 export interface IConsumableCategory {
-  id?: number;
+  id: number;
   name: string;
-  sub_category?: string;
+  category: IConsumableCategory;
   sub_category_id?: number;
+  sub_category?: IConsumableCategory;
   hotel?: IHotel;
 }
 

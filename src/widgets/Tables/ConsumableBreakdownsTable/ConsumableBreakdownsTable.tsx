@@ -7,18 +7,18 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   type IConsumable,
-  useDeleteConsumableMutation,
-  useGetConsumablesQuery,
+  useDeleteConsumableBreakdownMutation,
+  useGetConsumableBreakdownsQuery,
 } from '@entities/consumable';
 import { getErrorMessage } from '@shared/lib';
 import { TableActions } from '@widgets/TableActions';
 
-export const ConsumablesTable = () => {
+export const ConsumableBreakdownsTable = () => {
   const navigate = useNavigate();
 
-  const { data } = useGetConsumablesQuery();
+  const { data } = useGetConsumableBreakdownsQuery();
   const [deleteConsumable, { isLoading: isDeleteLoading }] =
-    useDeleteConsumableMutation();
+    useDeleteConsumableBreakdownMutation();
 
   const [filter, setFilter] = useState({
     search: '',

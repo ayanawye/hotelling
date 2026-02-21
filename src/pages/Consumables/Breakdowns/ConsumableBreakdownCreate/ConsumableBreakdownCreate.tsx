@@ -1,11 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useCreateConsumableBreakdownMutation } from '@entities/consumable';
-import { ConsumableCategoryForm } from '@features/ConsumableCategoryForm';
+import { ConsumableBreakdownForm } from '@features/ConsumableBreakdownForm';
 
 const ConsumableBreakdownCreate = () => {
   const navigate = useNavigate();
-
-  const [patchItem, { isLoading }] = useCreateConsumableBreakdownMutation();
 
   const handleSuccess = () => {
     navigate('/consumables/breakdowns');
@@ -16,11 +13,9 @@ const ConsumableBreakdownCreate = () => {
   };
 
   return (
-    <ConsumableCategoryForm
+    <ConsumableBreakdownForm
       onSuccess={handleSuccess}
       onCancel={handleCancel}
-      isLoading={isLoading}
-      apiFunc={patchItem}
     />
   );
 };

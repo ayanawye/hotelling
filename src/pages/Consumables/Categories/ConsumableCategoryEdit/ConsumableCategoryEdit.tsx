@@ -1,23 +1,18 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Spin } from 'antd';
 import { ConsumableCategoryForm } from '@features/ConsumableCategoryForm';
-import {
-  useGetConsumableCategoriesQuery,
-  usePatchConsumableCategoryMutation,
-} from '@entities/consumable';
+import { useGetConsumableCategoryByIdQuery } from '@entities/consumable';
 
 const ConsumableCategoryEdit = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: category, isLoading } = useGetConsumableCategoriesQuery(
+  const { data: category, isLoading } = useGetConsumableCategoryByIdQuery(
     Number(id),
     {
       skip: !id,
     },
   );
-  const [patchItem, { isLoading: isUpdating }] =
-    usePatchConsumableCategoryMutation();
 
   const handleSuccess = () => {
     navigate('/consumables/categories');
@@ -36,8 +31,6 @@ const ConsumableCategoryEdit = () => {
       initialValues={category}
       onSuccess={handleSuccess}
       onCancel={handleCancel}
-      apiFunc={patchItem}
-      isLoading={isUpdating}
     />
   );
 };
