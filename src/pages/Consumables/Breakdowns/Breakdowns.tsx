@@ -1,6 +1,9 @@
 import { type FC, useState } from 'react';
 import { ConsumablesTable } from '@widgets/Tables';
-import { useDeleteConsumableBreakdownMutation, useGetConsumableBreakdownsQuery, } from '@entities/consumable';
+import {
+  useDeleteConsumableBreakdownMutation,
+  useGetConsumableBreakdownsQuery,
+} from '@entities/consumable';
 import { PageLoader } from '@shared/ui';
 import { Alert } from 'antd';
 

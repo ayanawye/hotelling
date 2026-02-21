@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  background: var(--white-color);
+  border-radius: var(--border-radius);
+  padding: 24px;
+}
+
+.form {
+  max-width: 708px;
+
+  :global(.ant-select) {
+    border-radius: 12px !important;
+    height: 50px !important;
+  }
+
+  :global(.ant-input-password) {
+    height: 50px !important;
+    padding: 0 12px 0 0;
+
+    input {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 12px;
+      padding-left: 12px;
+
+      &:focus, &:focus-within, &:hover {
+        border-radius: 12px;
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 624px;
+  width: 100%;
+  margin-top: 8px;
+}

@@ -257,6 +257,12 @@ export const ConsumablesUsedEditPage = Loadable(
 
 // Staff
 export const StaffAllPage = Loadable(lazy(() => import('@pages/Staff/All')));
+export const StaffAllCreatePage = Loadable(
+  lazy(() => import('@pages/Staff/All/StaffCreate/StaffCreate')),
+);
+export const StaffAllEditPage = Loadable(
+  lazy(() => import('@pages/Staff/All/StaffEdit/StaffEdit')),
+);
 export const StaffHistoryPage = Loadable(
   lazy(() => import('@pages/Staff/History')),
 );

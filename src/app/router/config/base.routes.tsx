@@ -322,6 +322,14 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.StaffAllPage />,
       },
       {
+        path: 'all/create',
+        element: <Pages.StaffAllCreatePage />,
+      },
+      {
+        path: 'all/edit/:id',
+        element: <Pages.StaffAllEditPage />,
+      },
+      {
         path: 'history',
         element: <Pages.StaffHistoryPage />,
       },
