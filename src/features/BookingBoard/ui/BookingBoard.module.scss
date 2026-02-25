@@ -351,3 +351,89 @@
   }
 }
 
+// Hover hint for empty cells
+.cellHint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--neutral-gray-2);
+  font-size: 12px;
+  font-weight: 400;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--neutral-gray-2);
+  }
+}
+
+.cell:hover .cellHint {
+  opacity: 1;
+}
+
+// Preview booking bar during drag
+.previewBookingBar {
+  position: absolute;
+  top: 4px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 2px dashed var(--primary-color);
+  background: rgba(47, 102, 238, 0.05);
+  border-radius: 12px;
+  z-index: 3;
+  pointer-events: none;
+  transition: all 0.1s ease-out;
+
+  .previewText {
+    color: var(--primary-color);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &.invalid {
+    border-color: var(--error-color, #ff4d4f);
+    background: rgba(255, 77, 79, 0.05);
+
+    .previewText {
+      color: var(--error-color, #ff4d4f);
+    }
+  }
+}
+
+// Draggable cell
+.cell {
+  position: relative;
+  user-select: none;
+
+  &.draggable {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &.dragging {
+    cursor: grabbing;
+  }
+}
+

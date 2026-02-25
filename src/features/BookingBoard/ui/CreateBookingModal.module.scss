@@ -1,0 +1,21 @@
+.modal {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-layout, #fafafa);
+    border-radius: 8px;
+
+    .value {
+      margin: 0;
+    }
+  }
+}
