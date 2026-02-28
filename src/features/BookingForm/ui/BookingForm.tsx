@@ -1,6 +1,7 @@
 import { DatePicker, Form, Input, message, theme, TimePicker } from 'antd';
 import type { CSSProperties, FC } from 'react';
 import { useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import styles from './BookingForm.module.scss';
 import { Button, SelectWithSearch } from '@shared/ui';
@@ -37,6 +38,15 @@ export const BookingForm: FC<BookingFormProps> = ({
 }) => {
   const { token } = theme.useToken();
   const [form] = Form.useForm();
+  const location = useLocation();
+
+  // Get prefill data from navigation state
+  const prefillData = location.state as {
+    roomId?: number;
+    arrival_datetime?: string;
+    departure_datetime?: string;
+    nights?: number;
+  } | null;
 
   const [createBooking, { isLoading: isCreating }] = useCreateBookingMutation();
   const [updateBooking, { isLoading: isUpdating }] = useUpdateBookingMutation();
@@ -134,6 +144,7 @@ export const BookingForm: FC<BookingFormProps> = ({
           title: values.titul,
           language: values.language,
           guest_category: values.guestCategory,
+          comment: values.comment || '',
         },
         rooms: values.rooms,
         guarantee_type: values.guarantee_type,
@@ -188,9 +199,21 @@ export const BookingForm: FC<BookingFormProps> = ({
         adults: initialData.adults,
         children: initialData.children,
         infants: initialData.infants,
+        comment: initialData.guest?.comment || '',
+      });
+    } else if (prefillData) {
+      form.setFieldsValue({
+        rooms: prefillData.roomId ? [prefillData.roomId] : [],
+        check_in_date: prefillData.arrival_datetime
+          ? dayjs(prefillData.arrival_datetime)
+          : undefined,
+        check_out_date: prefillData.departure_datetime
+          ? dayjs(prefillData.departure_datetime)
+          : undefined,
+        nights: prefillData.nights || 1,
       });
     }
-  }, [initialData, form]);
+  }, [initialData, prefillData, form]);
 
   return (
     <div className={styles.container} style={themeVars}>
@@ -316,46 +339,72 @@ export const BookingForm: FC<BookingFormProps> = ({
 
           <div className={styles.row}>
             <Form.Item
-              name={['rooms']}
-              label='Номер'
+              name='rooms'
+              label='Номера'
               rules={[{ required: true, message: 'Выберите номер' }]}
-              className={`${styles.formItem} ${styles.select} ${styles.flex1}`}
+              className={`${styles.formItem} ${styles.select} ${styles.fullWidth}`}
             >
               <SelectWithSearch
                 size='large'
                 mode='multiple'
-                placeholder='Выберите номер'
+                placeholder='Выберите номера'
                 options={roomOptions}
                 loading={isRoomsLoading}
               />
             </Form.Item>
-            <Form.Item
-              name={['room_type']}
-              label='Тип номера'
-              rules={[{ required: true, message: 'Укажите тип номера' }]}
-              className={`${styles.formItem} ${styles.select} ${styles.flex1}`}
-            >
-              <SelectWithSearch
-                size='large'
-                placeholder='Тип номера'
-                options={roomTypeOptions}
-                loading={isRoomTypesLoading}
-              />
-            </Form.Item>
-            <Form.Item
-              name={['status']}
-              label='Статус'
-              rules={[{ required: true, message: 'Укажите статус' }]}
-              className={`${styles.formItem} ${styles.select} ${styles.flex1}`}
-            >
-              <SelectWithSearch
-                size='large'
-                placeholder='Укажите статус'
-                options={roomStatusOptions}
-                loading={isRoomStatusesLoading}
-              />
-            </Form.Item>
           </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prev, cur) => prev.rooms !== cur.rooms}
+          >
+            {({ getFieldValue }) => {
+              const selectedRooms: number[] = getFieldValue('rooms') || [];
+              if (selectedRooms.length === 0) return null;
+
+              return selectedRooms.map((roomId) => {
+                const roomLabel =
+                  roomOptions?.find((o) => o.value === roomId)?.label || roomId;
+                return (
+                  <div key={roomId} className={styles.roomGroup}>
+                    <div className={styles.roomGroupTitle}>
+                      Комната: {roomLabel}
+                    </div>
+                    <div className={styles.row}>
+                      <Form.Item
+                        name={['room_details', roomId, 'room_type']}
+                        label='Тип номера'
+                        rules={[
+                          { required: true, message: 'Укажите тип номера' },
+                        ]}
+                        className={`${styles.formItem} ${styles.select} ${styles.flex1}`}
+                      >
+                        <SelectWithSearch
+                          size='large'
+                          placeholder='Тип номера'
+                          options={roomTypeOptions}
+                          loading={isRoomTypesLoading}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name={['room_details', roomId, 'status']}
+                        label='Статус'
+                        rules={[{ required: true, message: 'Укажите статус' }]}
+                        className={`${styles.formItem} ${styles.select} ${styles.flex1}`}
+                      >
+                        <SelectWithSearch
+                          size='large'
+                          placeholder='Укажите статус'
+                          options={roomStatusOptions}
+                          loading={isRoomStatusesLoading}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                );
+              });
+            }}
+          </Form.Item>
 
           <div className={styles.row}>
             <div className={styles.dateTimeWrapper}>
@@ -474,6 +523,19 @@ export const BookingForm: FC<BookingFormProps> = ({
             </Form.Item>
             <div className={styles.flex1} />
           </div>
+
+          <Form.Item
+            name='comment'
+            label='Комментарий'
+            className={styles.formItem}
+          >
+            <Input.TextArea
+              size='large'
+              rows={4}
+              placeholder='Введите комментарий...'
+              style={{ resize: 'vertical' }}
+            />
+          </Form.Item>
         </div>
 
         <div className={styles.footer}>
