@@ -554,12 +554,13 @@ export const navigationConfig: NavItem[] = [
         path: '/staff/all',
         menu: true,
       },
-      {
-        key: 'staff-history',
-        label: 'История действий',
-        path: '/staff/history',
-        menu: true,
-      },
+      // на бэке нет нужных api
+      // {
+      //   key: 'staff-history',
+      //   label: 'История действий',
+      //   path: '/staff/history',
+      //   menu: true,
+      // },
     ],
   },
   {
@@ -570,19 +571,47 @@ export const navigationConfig: NavItem[] = [
     children: [
       {
         key: 'laundry-washings',
-        label: 'Стирки',
+        label: 'Стирки', //внутренние
         path: '/laundry/washings',
         menu: true,
+        children: [
+          {
+            key: 'laundry-washings-create',
+            label: 'Создание стирки',
+            path: '/laundry/washings/create',
+            menu: false,
+          },
+          {
+            key: 'laundry-washings-edit',
+            label: 'Изменение стирки',
+            path: '/laundry/washings/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'laundry-items',
         label: 'Предметы',
         path: '/laundry/items',
         menu: true,
+        children: [
+          {
+            key: 'laundry-items-create',
+            label: 'Создать предмет',
+            path: '/laundry/items/create',
+            menu: false,
+          },
+          {
+            key: 'laundry-items-edit',
+            label: 'Изменить предмет',
+            path: '/laundry/items/edit/:id',
+            menu: false,
+          },
+        ],
       },
       {
         key: 'laundry-orders',
-        label: 'Заказы',
+        label: 'Заказы', //от клиентов
         path: '/laundry/orders',
         menu: true,
       },

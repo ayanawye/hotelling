@@ -27,7 +27,7 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
   const [form] = Form.useForm();
   const [logo, setLogo] = useState<File | null>(null);
   const [showedLogo, setShowedLogo] = useState<string | undefined>(
-    initialValues?.image,
+    initialValues?.consumable_image,
   );
 
   const { data: allCategories } = useGetConsumableCategoriesQuery();
@@ -40,8 +40,8 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
+        category_id: initialValues.category.id,
       });
-      setShowedLogo(initialValues?.image);
     } else {
       form.resetFields();
     }
@@ -59,10 +59,12 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
   const onFinish = async (values: any) => {
     const formData = new FormData();
 
-    if (logo) formData.append('image', logo);
+    if (logo) {
+      formData.append('consumable_image', logo);
+    }
 
     formData.append('name', values.name);
-    formData.append('address', values.address);
+    formData.append('category_id', values.category_id);
     try {
       if (isEdit) {
         let changedValues = getChangedFields(initialValues, values);
@@ -74,7 +76,7 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
         await patchItem({ id: initialValues.id, body: formData }).unwrap();
         message.success('Успешно обновлен');
       } else {
-        await createItem(values).unwrap();
+        await createItem(formData).unwrap();
         message.success('Успешно создано');
       }
       onSuccess?.();
@@ -92,13 +94,13 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
         className={styles.form}
         requiredMark={false}
       >
-        <div>
+        <div className={styles.uploadDragger}>
           <span className={styles.label}>Расходник</span>
           <Upload.Dragger
             name='logo'
             multiple={false}
             showUploadList={false}
-            className={styles.uploadDragger}
+            accept='image/png'
             disabled={isUpdating}
             beforeUpload={() => false}
             onChange={(info) => handleChangeLogo(info)}
@@ -110,18 +112,15 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
                 className={styles.logoImage}
               />
             ) : (
-              <>
+              <div className={styles.uploadRecommend}>
                 <UploadIcon />
-                <p className={styles.uploadTitle}>
-                  Добавить <br />
-                  логотип отеля
-                </p>
+                <p className={styles.uploadTitle}>Добавить картинку</p>
                 <div className={styles.uploadHint}>
-                  PNG, JPG или SVG · до 2 МБ
+                  PNG · до 2 МБ
                   <br />
-                  Рекомендуемый размер: 512×512
+                  Рекомендуемый размер: 80×80
                 </div>
-              </>
+              </div>
             )}
           </Upload.Dragger>
         </div>
@@ -133,11 +132,11 @@ export const ConsumableForm: React.FC<ComponentProps> = ({
             rules={[{ required: true, message: 'Введите название' }]}
           >
             <Input
-              placeholder='Введите название категории'
+              placeholder='Введите название расходника'
               variant='borderless'
             />
           </Form.Item>
-          <Form.Item name='sub_category_id' label='Старшая категория'>
+          <Form.Item name='category_id' label='Категория'>
             <SelectWithSearch
               placeholder='Выберите категорию'
               options={mapToOptions(allCategories)}

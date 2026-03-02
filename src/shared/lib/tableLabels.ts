@@ -1,7 +1,10 @@
 import type {
-  IReservationStatus,
   IGuaranteeType,
+  IReservationStatus,
 } from '@shared/types/IBooking.ts';
+import type { GuestLanguage, GuestTitle } from '@entities/guests/types';
+import type { RoomsColor } from '@entities/rooms';
+import type { PersonalRole } from '@entities/staff';
 
 export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
   none: 'Без гарантии',
@@ -9,9 +12,6 @@ export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
   prepaid: 'Предоплата',
   card: 'Гарантия картой',
 };
-import type { GuestLanguage, GuestTitle } from '@entities/guests/types';
-import type { RoomsColor } from '@entities/rooms';
-import type { PersonalRole } from '@entities/staff';
 
 export const RESERVATION_STATUS_CONFIG: Record<
   IReservationStatus,

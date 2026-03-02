@@ -47,6 +47,11 @@ const baseQueryWithReauth: BaseQueryFn<
       extraOptions,
     );
 
+    // if (refreshResult.error) {
+    //   Token.removeToken();
+    //   window.location.href = '/login';
+    // }
+
     if (refreshResult.data) {
       const userType = Token.getToken();
       const newTokens = {
@@ -102,6 +107,9 @@ export const baseApi = createApi({
     'CONSUMABLE_USAGE',
     'STAFF',
     'STAFF_HISTORY',
+    'WASHING',
+    'LAUNDRY_ITEMS',
+    'LAUNDRY_ORDER',
   ],
   endpoints: () => ({}),
 });

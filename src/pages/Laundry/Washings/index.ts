@@ -1,1 +1,1 @@
-export { default } from './Washings';
+export { default } from './Laundry';

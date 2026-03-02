@@ -343,12 +343,36 @@ export const baseRoutes: IAccessRouteObject[] = [
         element: <Pages.LaundryWashingsPage />,
       },
       {
+        path: 'washings/create',
+        element: <Pages.LaundryWashingsCreatePage />,
+      },
+      {
+        path: 'washings/edit/:id',
+        element: <Pages.LaundryWashingsEditPage />,
+      },
+      {
         path: 'items',
         element: <Pages.LaundryItemsPage />,
       },
       {
+        path: 'items/create',
+        element: <Pages.LaundryItemsCreatePage />,
+      },
+      {
+        path: 'items/edit/:id',
+        element: <Pages.LaundryItemsEditPage />,
+      },
+      {
         path: 'orders',
         element: <Pages.LaundryOrdersPage />,
+      },
+      {
+        path: 'orders/create',
+        element: <Pages.LaundryOrdersCreatePage />,
+      },
+      {
+        path: 'orders/edit/:id',
+        element: <Pages.LaundryOrdersEditPage />,
       },
     ],
   },

@@ -54,6 +54,7 @@ export const ConsumableCategoriesTable = () => {
     {
       title: 'Действия',
       key: 'actions',
+      width: '220px',
       render: (_, record) => (
         <TableActions
           setSelectedItem={setSelectedItem}

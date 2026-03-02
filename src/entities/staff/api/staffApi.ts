@@ -3,10 +3,13 @@ import type { IPersonal } from '../model/types';
 
 export const staffApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getStaffs: builder.query<IPersonal[], void>({
-      query: () => ({
+    getStaffs: builder.query<IPersonal[], string | void>({
+      query: (role) => ({
         url: 'personal/',
         method: 'GET',
+        params: {
+          role,
+        },
       }),
       providesTags: ['STAFF'],
     }),
