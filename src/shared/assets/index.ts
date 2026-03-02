@@ -31,3 +31,5 @@ export { default as FilerIcon2 } from './icons/filterIcon2.svg?react';
 export { default as CloseIcon } from './icons/closeIcon.svg?react';
 export { default as UploadIcon } from './icons/uploadIcon.svg?react';
 export { default as UsersIcon } from './icons/users.svg?react';
+export { default as MinusIcon } from './icons/minusIcon.svg?react';
+export { default as PlusIconNoBorderIcon } from './icons/plusIconNoBorder.svg?react';

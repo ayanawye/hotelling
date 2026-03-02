@@ -30,7 +30,6 @@ export const TaxForm: React.FC<TaxFormProps> = ({
   const isEdit = !!initialValues?.id;
 
   const onFinish = async (values: any) => {
-    console.log(values);
     try {
       if (isEdit) {
         await patchFinanceTax({ ...initialValues, ...values }).unwrap();

@@ -25,3 +25,4 @@ export { StaffHistoryTable } from './StaffHistoryTable/StaffHistoryTable';
 export { WashingsTable } from './WashingsTable/WashingsTable';
 export { LaundryItemsTable } from './LaundryItemsTable/LaundryItemsTable';
 export { LaundryOrdersTable } from './LaundryOrdersTable/LaundryOrdersTable';
+export { ConsumableBreakdownsTable } from './ConsumableBreakdownsTable/ConsumableBreakdownsTable';

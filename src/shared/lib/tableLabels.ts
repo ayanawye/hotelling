@@ -1,6 +1,17 @@
-import type { IReservationStatus } from '@shared/types/IBooking.ts';
+import type {
+  IGuaranteeType,
+  IReservationStatus,
+} from '@shared/types/IBooking.ts';
 import type { GuestLanguage, GuestTitle } from '@entities/guests/types';
 import type { RoomsColor } from '@entities/rooms';
+import type { PersonalRole } from '@entities/staff';
+
+export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
+  none: 'Без гарантии',
+  company: 'Гарантия компании',
+  prepaid: 'Предоплата',
+  card: 'Гарантия картой',
+};
 
 export const RESERVATION_STATUS_CONFIG: Record<
   IReservationStatus,
@@ -39,13 +50,26 @@ export const RESERVATION_STATUS_CONFIG: Record<
 };
 
 export const GUESTS_TITLE: Record<GuestTitle, string> = {
-  mr: 'Мистер',
-  mrs: 'Миссис',
+  mr: 'Г-н',
+  mrs: 'Г-жа',
   miss: 'Мисс',
   sir: 'Сэр',
   madam: 'Мадам',
   professor: 'Профессор',
   doctor: 'Доктор',
+};
+
+export const STAFF_ROLE: Record<PersonalRole, string> = {
+  owner: 'Владелец',
+  hotelmanager: 'Менеджер отеля',
+  receptionist: 'Ресепшионист',
+  cleaningmanager: 'Менеджер клининга',
+  cleaning_worker: 'Сотрудник клининга',
+  laundry: 'Прачечная',
+  techmanager: 'Технический менеджер',
+  restaurant_manager: 'Менеджер ресторана',
+  filial_administrator: 'Администратор филиала',
+  waiter: 'Официант',
 };
 
 export const GUESTS_LANGUAGE: Record<GuestLanguage, string> = {

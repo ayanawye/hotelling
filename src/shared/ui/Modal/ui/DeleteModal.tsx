@@ -1,5 +1,6 @@
 import type { FC } from 'react';
-import { BaseModal, Button } from '@shared/ui';
+import { BaseModal } from '../BaseModal';
+import { Button } from '../../Button/Button';
 import s from './DeleteModal.module.scss';
 
 interface DeleteModalProps {

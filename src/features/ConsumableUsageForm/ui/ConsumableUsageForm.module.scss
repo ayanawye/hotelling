@@ -1,0 +1,39 @@
+.container {
+  padding: 24px;
+  background-color: var(--bg-container, #fff);
+  border-radius: var(--border-radius, 12px);
+
+  :global {
+    .ant-select, .ant-input-number {
+      height: 50px;
+    }
+  }
+}
+
+.form {
+  max-width: 720px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.row_sized {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 624px;
+  width: 100%;
+}
+
+.fullWidth {
+  width: 100%;
+}

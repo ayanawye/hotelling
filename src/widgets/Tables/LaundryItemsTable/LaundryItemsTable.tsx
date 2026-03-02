@@ -1,43 +1,60 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select, Switch } from 'antd';
+import { message, Select, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface ILaundryItem {
-  id: string;
-  staff: string;
-  category: string;
-  name: string;
-  isActive: boolean;
-}
+import { type IConsumableCategory } from '@entities/consumable';
+import { getErrorMessage } from '@shared/lib';
+import {
+  type ILaundryItem,
+  useDeleteLaundryItemMutation,
+  useGetLaundryItemsQuery,
+  usePatchLaundryItemMutation,
+} from '@entities/laundry';
+import { TableActions } from '@widgets/TableActions';
+import { useNavigate } from 'react-router-dom';
 
 export const LaundryItemsTable = () => {
+  const navigate = useNavigate();
+
+  const { data } = useGetLaundryItemsQuery();
+  const [updateItem, { isLoading: isUpdating }] = usePatchLaundryItemMutation();
+  const [deleteItem, { isLoading }] = useDeleteLaundryItemMutation();
+
   const [filter, setFilter] = useState({
     search: '',
   });
 
-  const data: ILaundryItem[] = Array(9)
-    .fill(null)
-    .map((_, index) => ({
-      id: String(index + 1),
-      staff: 'Айдаров С.',
-      category: 'Полотенце',
-      name: '1 час',
-      isActive: true,
-    }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IConsumableCategory | null>(
+    null,
+  );
+
+  const handleDelete = async () => {
+    try {
+      await deleteItem(selectedItem?.id || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
+
+  const handleUpdate = async (record: ILaundryItem, active: boolean) => {
+    try {
+      await updateItem({
+        id: record.id,
+        is_active: active,
+      }).unwrap();
+    } catch (error) {
+      message.error(getErrorMessage(error));
+    }
+  };
 
   const columns: ColumnsType<ILaundryItem> = [
     {
-      title: 'Клининг персонал',
-      dataIndex: 'staff',
-      key: 'staff',
-    },
-    {
       title: 'Категория',
-      dataIndex: 'category',
+      dataIndex: ['category', 'name'],
       key: 'category',
     },
     {
@@ -47,11 +64,12 @@ export const LaundryItemsTable = () => {
     },
     {
       title: 'Активные',
-      dataIndex: 'isActive',
-      key: 'isActive',
-      render: (isActive) => (
+      dataIndex: 'is_active',
+      key: 'is_active',
+      render: (isActive, record) => (
         <Switch
           checked={isActive}
+          onChange={(active) => handleUpdate(record, active)}
           style={{ backgroundColor: isActive ? '#00B368' : undefined }}
         />
       ),
@@ -59,29 +77,13 @@ export const LaundryItemsTable = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: () => (
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Button
-            type='text'
-            danger
-            icon={<DeleteOutlined />}
-            style={{ display: 'flex', alignItems: 'center', padding: 0 }}
-          >
-            Удалить
-          </Button>
-          <Button
-            type='text'
-            icon={<EditOutlined />}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 0,
-              fontWeight: 500,
-            }}
-          >
-            <span style={{ textDecoration: 'underline' }}>Изменить</span>
-          </Button>
-        </div>
+      width: '220px',
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedItem}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       ),
     },
   ];
@@ -96,34 +98,36 @@ export const LaundryItemsTable = () => {
           prefixIcon={<SearchIcon />}
         />
       </div>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <Button
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            borderColor: '#2563EB',
-            color: '#2563EB',
-            padding: '0 20px',
-          }}
-        >
-          Активные
-        </Button>
+      <div className={'table-header-filter'}>
         <Select
           placeholder='Категория'
           style={{ width: 140, height: 40 }}
           options={[]}
           allowClear
         />
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
+        </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading || isUpdating}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить предмет?'
+        isLoading={isLoading}
+        description={`Предмет "${selectedItem?.name}" будет удален из системы.`}
+      />
+    </>
   );
 };

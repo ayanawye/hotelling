@@ -1,73 +1,91 @@
 import { SearchIcon } from '@shared/assets';
-import { InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Select } from 'antd';
+import { message, Select, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-
-interface ILaundryOrder {
-  id: string;
-  guest: string;
-  staff: string;
-  item: string;
-  count: number;
-  duration: string;
-  consumable: string;
-}
+import { useNavigate } from 'react-router-dom';
+import {
+  type ILaundryOrder,
+  useDeleteLaundryOrderMutation,
+  useGetLaundryOrdersQuery,
+} from '@entities/laundry';
+import { TableActions } from '@widgets/TableActions';
+import dayjs from 'dayjs';
 
 export const LaundryOrdersTable = () => {
+  const navigate = useNavigate();
+  const { data } = useGetLaundryOrdersQuery();
+  const [deleteOrder, { isLoading }] = useDeleteLaundryOrderMutation();
+
   const [filter, setFilter] = useState({
     search: '',
     category: undefined,
   });
 
-  const data: ILaundryOrder[] = Array(11)
-    .fill({
-      id: '65432',
-      guest: 'Иванов Иван',
-      staff: 'Айдаров С.',
-      item: 'Полотенце',
-      count: 12,
-      duration: '1 час',
-      consumable: 'Порошок · 5 кг',
-    })
-    .map((item, index) => ({ ...item, key: index }));
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ILaundryOrder | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      await deleteOrder(Number(selectedItem?.id) || 1).unwrap();
+      setDeleteModalOpen(false);
+    } catch (error) {
+      message.error('Удаление невозможно');
+    }
+  };
 
   const columns: ColumnsType<ILaundryOrder> = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
       title: 'Гость',
-      dataIndex: 'guest',
+      dataIndex: ['guest', 'name'],
       key: 'guest',
+      width: '200px',
     },
     {
       title: 'Клининг персонал',
-      dataIndex: 'staff',
+      dataIndex: ['laundry_personal', 'full_name'],
       key: 'staff',
+      width: '200px',
     },
     {
       title: 'Предмет',
-      dataIndex: 'item',
+      dataIndex: 'items',
       key: 'item',
+      width: '150px',
     },
     {
-      title: 'Кол-во',
-      dataIndex: 'count',
-      key: 'count',
+      title: 'Статус',
+      dataIndex: 'status_label',
+      key: 'status',
+      width: '100px',
+      render: (status) => <Tag>{status}</Tag>,
     },
     {
       title: 'Длительность',
-      dataIndex: 'duration',
+      dataIndex: 'duration_seconds',
       key: 'duration',
+      width: '150px',
     },
     {
-      title: 'Расходник',
-      dataIndex: 'consumable',
-      key: 'consumable',
+      title: 'Время выдачи',
+      dataIndex: 'planned_pickup_time',
+      key: 'duration',
+      width: '150px',
+      render: (duration) =>
+        duration ? dayjs(duration, 'HH:mm:ss').format('HH:mm') : '-',
+    },
+    {
+      title: 'Действие',
+      key: 'action',
+      width: '220px',
+      render: (_, record) => (
+        <TableActions
+          setSelectedItem={setSelectedItem}
+          record={record}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
+      ),
     },
   ];
 
@@ -90,27 +108,29 @@ export const LaundryOrdersTable = () => {
           allowClear
           className='custom-select-rounded'
         />
-        <Button
-          type='primary'
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
-          Создать
+        <Button variant='primary' onClick={() => navigate('create')}>
+          <span>Создать</span>
         </Button>
       </div>
     </div>
   );
 
   return (
-    <TableComponent
-      title={TableHeader}
-      data={data}
-      columns={columns}
-      loading={false}
-    />
+    <>
+      <TableComponent
+        title={TableHeader}
+        data={data}
+        columns={columns}
+        loading={isLoading}
+      />
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onDelete={handleDelete}
+        title='Удалить заказ?'
+        isLoading={isLoading}
+        description={`Заказ клиента"${selectedItem?.guest}" будет удален из системы.`}
+      />
+    </>
   );
 };

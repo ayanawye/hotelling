@@ -23,7 +23,8 @@ export const mapToOptions = (
           item.name ||
           item.description ||
           (item.first_name && `${item.first_name} ${item.last_name}`) ||
-          (item.room && `Комната №: ${item.room}`),
+          (item.room && `Комната №: ${item.room}`) ||
+          item.full_name,
       ),
       value: item.id ?? '',
     })) || []

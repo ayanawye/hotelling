@@ -8,8 +8,11 @@ export const GRID_CONFIG = {
   DAYS_COUNT: 14,
 };
 
-export const getTimelineDays = (startDate: Dayjs = dayjs()): Dayjs[] => {
-  return Array.from({ length: GRID_CONFIG.DAYS_COUNT }, (_, i) =>
+export const getTimelineDays = (
+  startDate: Dayjs = dayjs(),
+  daysCount: number = GRID_CONFIG.DAYS_COUNT,
+): Dayjs[] => {
+  return Array.from({ length: daysCount }, (_, i) =>
     startDate.add(i, 'day').startOf('day'),
   );
 };
@@ -51,4 +54,23 @@ export const getBookingPosition = (
     left: leftDays * GRID_CONFIG.CELL_WIDTH,
     width: durationDays * GRID_CONFIG.CELL_WIDTH,
   };
+};
+
+export const hexToRgba = (hex: string, opacity: number) => {
+  let r = 0,
+    g = 0,
+    b = 0;
+  // 3 digits
+  if (hex.length === 4) {
+    r = parseInt(hex[1] + hex[1], 16);
+    g = parseInt(hex[2] + hex[2], 16);
+    b = parseInt(hex[3] + hex[3], 16);
+  }
+  // 6 digits
+  else if (hex.length === 7) {
+    r = parseInt(hex[1] + hex[2], 16);
+    g = parseInt(hex[3] + hex[4], 16);
+    b = parseInt(hex[5] + hex[6], 16);
+  }
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };

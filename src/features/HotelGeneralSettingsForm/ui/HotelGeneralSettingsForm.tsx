@@ -35,27 +35,24 @@ export const HotelGeneralSettingsForm: React.FC<
   }, [settings]);
 
   const handleChangeLogo = (info: any) => {
-    const file = info.file?.originFileObj || info.file;
+    const file = info.file;
 
     if (!file) return;
-    setLogo(info.file.originFileObj);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
-      form.setFieldValue('logo', base64);
-      setShowedLogo(base64);
-    };
-
-    reader.readAsDataURL(file);
+    setLogo(info.file);
+    setShowedLogo(URL.createObjectURL(file));
   };
 
   const onFinish = async (values: any) => {
+    const formData = new FormData();
+
+    if (logo) formData.append('logo', logo);
+
+    formData.append('name', values.name);
+    formData.append('address', values.address);
+
     try {
-      await updateSettings({
-        ...values,
-        logo: logo,
-      }).unwrap();
+      await updateSettings(formData).unwrap();
       message.success('Настройки успешно сохранены');
       onSuccess?.();
     } catch (error) {

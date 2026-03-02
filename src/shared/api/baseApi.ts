@@ -47,6 +47,11 @@ const baseQueryWithReauth: BaseQueryFn<
       extraOptions,
     );
 
+    // if (refreshResult.error) {
+    //   Token.removeToken();
+    //   window.location.href = '/login';
+    // }
+
     if (refreshResult.data) {
       const userType = Token.getToken();
       const newTokens = {
@@ -58,8 +63,14 @@ const baseQueryWithReauth: BaseQueryFn<
 
       result = await baseQuery(args, api, extraOptions);
     } else {
-      Token.removeToken();
-      window.location.href = '/';
+      const isGetMe =
+        (typeof args === 'string' && args === 'auth/me/') ||
+        (typeof args === 'object' && args.url === 'auth/me/');
+
+      if (!isGetMe) {
+        Token.removeToken();
+        window.location.href = '/login';
+      }
     }
   }
 
@@ -90,6 +101,15 @@ export const baseApi = createApi({
     'SERVICE',
     'SERVICE_CATEGORY',
     'SERVICE_ORDER',
+    'CONSUMABLE_BREAKDOWN',
+    'CONSUMABLE_CATEGORY',
+    'CONSUMABLE',
+    'CONSUMABLE_USAGE',
+    'STAFF',
+    'STAFF_HISTORY',
+    'WASHING',
+    'LAUNDRY_ITEMS',
+    'LAUNDRY_ORDER',
   ],
   endpoints: () => ({}),
 });

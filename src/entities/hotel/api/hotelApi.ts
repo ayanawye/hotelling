@@ -10,7 +10,7 @@ export const hotelApi = baseApi.injectEndpoints({
       }),
       providesTags: ['HOTEL_SETTINGS'],
     }),
-    updateHotelSettings: builder.mutation<void, Partial<IHotelSettings>>({
+    updateHotelSettings: builder.mutation<void, any>({
       query: (body) => ({
         url: 'hotel/hotel/',
         method: 'PATCH',
