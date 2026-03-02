@@ -10,7 +10,7 @@ export const consumableApi = baseApi.injectEndpoints({
       }),
       providesTags: ['CONSUMABLE'],
     }),
-    createConsumable: builder.mutation<void, Partial<IConsumable>>({
+    createConsumable: builder.mutation<void, any>({
       query: (body) => ({
         url: 'consumable/consumables/',
         method: 'POST',

@@ -4,11 +4,7 @@ import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import type { IServiceOrder } from '@entities/services/types';
-import {
-  useCreateServiceOrderMutation,
-  useGetServicesQuery,
-  usePatchServiceOrderMutation,
-} from '@entities/services';
+import { useCreateServiceOrderMutation, useGetServicesQuery, usePatchServiceOrderMutation, } from '@entities/services';
 
 import styles from './ServiceOrderForm.module.scss';
 import { useGetGuestsQuery } from '@entities/guests';
@@ -88,7 +84,6 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
         await patchItem({ id: initialValues?.id, ...changedValues }).unwrap();
         message.success('Успешно обновлен');
       } else {
-        // Если выбрано несколько услуг через массив
         if (allSelectedServices.length > 0) {
           for (const service of allSelectedServices) {
             await createItem({
@@ -153,38 +148,40 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
           />
         </Form.Item>
 
-        <div className={styles.selectedServices}>
-          {allSelectedServices.map((service, index) => (
-            <div key={index} className={styles.serviceItem}>
-              <Input disabled value={service.service_name} />
-              <InputNumber
-                min={1}
-                value={Number(service.quantity)}
-                onChange={(value) => {
-                  setAllSelectedServices((prev) =>
-                    prev.map((el, i) =>
-                      i === index ? { ...el, quantity: value } : el,
-                    ),
-                  );
-                }}
-              />
-              <Input
-                disabled
-                value={Number(service.quantity) * Number(service.unit_amount)}
-              />
-              <Button
-                variant='outlined_danger'
-                onClick={() => {
-                  setAllSelectedServices((prev) =>
-                    prev.filter((_, i) => i !== index),
-                  );
-                }}
-              >
-                <DeleteRedIcon />
-              </Button>
-            </div>
-          ))}
-        </div>
+        {allSelectedServices.length ? (
+          <div className={styles.selectedServices}>
+            {allSelectedServices.map((service, index) => (
+              <div key={index} className={styles.serviceItem}>
+                <Input disabled value={service.service_name} />
+                <InputNumber
+                  min={1}
+                  value={Number(service.quantity)}
+                  onChange={(value) => {
+                    setAllSelectedServices((prev) =>
+                      prev.map((el, i) =>
+                        i === index ? { ...el, quantity: value } : el,
+                      ),
+                    );
+                  }}
+                />
+                <Input
+                  disabled
+                  value={Number(service.quantity) * Number(service.unit_amount)}
+                />
+                <Button
+                  variant='outlined_danger'
+                  onClick={() => {
+                    setAllSelectedServices((prev) =>
+                      prev.filter((_, i) => i !== index),
+                    );
+                  }}
+                >
+                  <DeleteRedIcon />
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         <Form.Item
           name={'created_by_id'}

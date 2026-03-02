@@ -271,11 +271,29 @@ export const StaffHistoryPage = Loadable(
 export const LaundryWashingsPage = Loadable(
   lazy(() => import('@pages/Laundry/Washings')),
 );
+export const LaundryWashingsCreatePage = Loadable(
+  lazy(() => import('@pages/Laundry/Washings/Create')),
+);
+export const LaundryWashingsEditPage = Loadable(
+  lazy(() => import('@pages/Laundry/Washings/Edit')),
+);
 export const LaundryItemsPage = Loadable(
   lazy(() => import('@pages/Laundry/Items')),
 );
+export const LaundryItemsCreatePage = Loadable(
+  lazy(() => import('@pages/Laundry/Items/Create/CreateItemPage')),
+);
+export const LaundryItemsEditPage = Loadable(
+  lazy(() => import('@pages/Laundry/Items/Edit/EditItemPage')),
+);
 export const LaundryOrdersPage = Loadable(
   lazy(() => import('@pages/Laundry/Orders')),
+);
+export const LaundryOrdersCreatePage = Loadable(
+  lazy(() => import('@pages/Laundry/Orders/CreateOrder/CreateOrder')),
+);
+export const LaundryOrdersEditPage = Loadable(
+  lazy(() => import('@pages/Laundry/Orders/EditOrder/EditOrder')),
 );
 
 // Admin

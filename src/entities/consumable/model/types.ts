@@ -16,7 +16,7 @@ export interface IConsumable {
   category: IConsumableCategory;
   category_id: number;
   hotel: IHotel;
-  image?: string;
+  consumable_image?: string;
 }
 
 export interface IConsumableUsage {
