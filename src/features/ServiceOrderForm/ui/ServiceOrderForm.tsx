@@ -4,7 +4,11 @@ import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import type { IServiceOrder } from '@entities/services/types';
-import { useCreateServiceOrderMutation, useGetServicesQuery, usePatchServiceOrderMutation, } from '@entities/services';
+import {
+  useCreateServiceOrderMutation,
+  useGetServicesQuery,
+  usePatchServiceOrderMutation,
+} from '@entities/services';
 
 import styles from './ServiceOrderForm.module.scss';
 import { useGetGuestsQuery } from '@entities/guests';

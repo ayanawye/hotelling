@@ -124,9 +124,9 @@ export const UpdateWashingForm: React.FC<UpdateWashingFormProps> = ({ id }) => {
                       <InputNumber
                         min={0}
                         placeholder='5 шт'
+                        prefix={'шт'}
                         style={{ width: '100%' }}
                         formatter={(value) => (value ? `${value} шт` : '')}
-                        parser={(value) => value!.replace(' шт', '')}
                       />
                     </Form.Item>
                   </div>
