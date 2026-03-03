@@ -6,13 +6,12 @@ import { setCredentials, setToken } from '@entities/user/model/slice';
 import type { LoginDto } from '@entities/user/types';
 import { loginHello, LoginHelloSVG, loginLogo } from '@shared/assets';
 import { useAppDispatch } from '@shared/hooks/redux';
-import { Button, Form, Input, Layout, message, Space, Typography } from 'antd';
+import { Form, Input, Layout, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
-import { useStyles } from './styled';
 import { Token } from '@shared/hooks/token.ts';
 
-const { Title } = Typography;
+import { useStyles } from './styled';
+import { Button } from '@shared/ui';
 
 export const LoginPage = () => {
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
@@ -22,12 +21,13 @@ export const LoginPage = () => {
   const {
     layoutStyle,
     leftSideStyle,
+    input,
     rightSideStyle,
     containerStyle,
-    headerStyle,
     titleStyle,
     formItemStyle,
     hotellingImgStyle,
+    submitButton,
     logoImgStyle,
     helloImgStyle,
   } = useStyles();
@@ -62,12 +62,11 @@ export const LoginPage = () => {
       </div>
 
       <div style={rightSideStyle}>
-        <Space orientation='vertical' size='large' style={containerStyle}>
-          <div style={headerStyle}>
-            <Title level={2} style={titleStyle}>
+        <div style={containerStyle}>
+          <div>
+            <h2 style={titleStyle}>
               Добро пожаловать <br /> в Hotelling.io
-            </Title>
-            <Title level={2} style={titleStyle}></Title>
+            </h2>
           </div>
 
           <Form
@@ -78,16 +77,17 @@ export const LoginPage = () => {
             requiredMark={false}
           >
             <Form.Item
-              label='Имя пользователя'
+              label='Логин'
               name='username'
               rules={[
                 {
                   required: true,
-                  message: 'Пожалуйста, введите имя пользователя',
+                  message: 'Пожалуйста, введите логин',
                 },
               ]}
+              style={formItemStyle}
             >
-              <Input size='large' placeholder='Введите имя пользователя' />
+              <Input style={input} size='large' placeholder='Введите логин' />
             </Form.Item>
 
             <Form.Item
@@ -95,22 +95,23 @@ export const LoginPage = () => {
               name='password'
               rules={[{ required: true, message: 'Введите ваш пароль' }]}
             >
-              <Input.Password size='large' placeholder='Ваш пароль' />
+              <Input.Password
+                style={input}
+                size='large'
+                placeholder='Ваш пароль'
+              />
             </Form.Item>
 
-            <Form.Item style={formItemStyle}>
-              <Button
-                type='primary'
-                htmlType='submit'
-                size='large'
-                block
-                loading={isLoading}
-              >
-                Войти
-              </Button>
-            </Form.Item>
+            <Button
+              style={submitButton}
+              variant='primary'
+              htmlType='submit'
+              isLoading={isLoading}
+            >
+              Войти
+            </Button>
           </Form>
-        </Space>
+        </div>
       </div>
     </Layout>
   );
