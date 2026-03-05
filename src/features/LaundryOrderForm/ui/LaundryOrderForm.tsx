@@ -9,11 +9,13 @@ import {
   usePatchLaundryOrderMutation,
 } from '@entities/laundry';
 import { useGetGuestsQuery } from '@entities/guests';
-import { Button } from '@shared/ui';
+import { Button, SelectWithSearch } from '@shared/ui';
 import { getErrorMessage, mapToOptions } from '@shared/lib';
 import styles from './LaundryOrderForm.module.scss';
 import { DeleteRedIcon } from '@shared/assets';
 import { useGetStaffsQuery } from '@entities/staff';
+import { useAppDispatch, useAppSelector } from '@shared/hooks/redux.ts';
+import { serviceSelector, setOrderUserService } from '@entities/services';
 
 interface LaundryOrderFormProps {
   initialValues?: ILaundryOrder;
@@ -26,12 +28,16 @@ export const LaundryOrderForm: React.FC<LaundryOrderFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const dispatch = useAppDispatch();
+
   const [form] = Form.useForm();
+  const selectedLaundryPersonal = Form.useWatch('laundry_personal_id', form);
 
   const { data: guestsData, isLoading: isGuestsLoading } = useGetGuestsQuery();
   const { data: staff = [], isLoading: isStaffLoading } =
     useGetStaffsQuery('laundry');
   const { data: items, isLoading: isItemsLoading } = useGetLaundryItemsQuery();
+  const { orderUserService } = useAppSelector(serviceSelector);
 
   const [createOrder, { isLoading: isCreating }] =
     useCreateLaundryOrderMutation();
@@ -52,10 +58,13 @@ export const LaundryOrderForm: React.FC<LaundryOrderFormProps> = ({
         comment: initialValues.comment,
         time: initialValues.created_at ? dayjs(initialValues.created_at) : null,
       });
-    } else {
-      form.resetFields();
     }
-  }, [initialValues, form]);
+    if (orderUserService) {
+      form.setFieldsValue({
+        guest_id: orderUserService?.id || 1,
+      });
+    }
+  }, [initialValues, orderUserService, form]);
 
   const handleSelectItem = (value: number) => {
     const serviceInfo = items?.find((s) => s.id === value);
@@ -96,6 +105,7 @@ export const LaundryOrderForm: React.FC<LaundryOrderFormProps> = ({
         await createOrder(payload).unwrap();
         message.success('Заказ успешно создан');
       }
+      dispatch(setOrderUserService(null));
       onSuccess?.();
     } catch (error) {
       message.error(getErrorMessage(error));
@@ -111,19 +121,34 @@ export const LaundryOrderForm: React.FC<LaundryOrderFormProps> = ({
         className={styles.form}
         requiredMark={false}
       >
-        <Form.Item
-          label='Гость'
-          name='guest_id'
-          className={styles.select}
-          rules={[{ required: true, message: 'Выберите гостя' }]}
-        >
-          <Select
-            placeholder='Выберите гостя'
-            options={mapToOptions(guestsData?.results)}
-            loading={isGuestsLoading}
-            size='large'
-          />
-        </Form.Item>
+        {orderUserService ? (
+          <>
+            <Form.Item name='guest_id' hidden>
+              <Input />
+            </Form.Item>
+
+            <Form.Item label='Гость'>
+              <Input
+                value={`${orderUserService?.first_name} ${orderUserService?.last_name}`}
+                disabled
+              />
+            </Form.Item>
+          </>
+        ) : (
+          <Form.Item
+            name='guest_id'
+            label='Гость'
+            className={styles.select}
+            rules={[{ required: true, message: 'Выберите гостя' }]}
+          >
+            <SelectWithSearch
+              placeholder='Выберите гостя'
+              options={mapToOptions(guestsData?.results)}
+              variant='borderless'
+              loading={isGuestsLoading}
+            />
+          </Form.Item>
+        )}
 
         <Form.Item
           label='Клининг персонал'
@@ -142,9 +167,16 @@ export const LaundryOrderForm: React.FC<LaundryOrderFormProps> = ({
         <Form.Item
           label='Предметы'
           className={styles.select}
-          validateStatus={allSelectedWashingItems.length === 0 ? 'error' : ''}
-          help={allSelectedWashingItems.length === 0 ? 'Выберите предметы' : ''}
-          rules={[{ required: true, message: 'Выберите предметы' }]}
+          validateStatus={
+            selectedLaundryPersonal && allSelectedWashingItems.length === 0
+              ? 'error'
+              : ''
+          }
+          help={
+            selectedLaundryPersonal && allSelectedWashingItems.length === 0
+              ? 'Выберите предметы'
+              : ''
+          }
         >
           <Select
             placeholder='Выберите предметы'

@@ -19,8 +19,6 @@ import { setupStore } from './store/store';
 import { Token } from '@shared/hooks/token.ts';
 import { useLazyGetMeQuery } from '@entities/user/api/authApi.ts';
 
-const store = setupStore();
-
 // eslint-disable-next-line react-refresh/only-export-components
 const AppContent = () => {
   const dispatch = useAppDispatch();
@@ -82,7 +80,7 @@ const AppContent = () => {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <Provider store={store}>
+      <Provider store={setupStore}>
         <ThemeProvider>
           <App>
             <AppContent />

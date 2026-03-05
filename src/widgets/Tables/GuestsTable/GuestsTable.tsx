@@ -18,10 +18,14 @@ import type { GuestLanguage, GuestTitle, IGuest } from '@entities/guests/types';
 
 import s from './GuestsTable.module.scss';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 export const GuestsTable = () => {
   const { bookingStatusTagStyle } = useStyles();
-  const { data } = useGetGuestsQuery();
+
+  const navigate = useNavigate();
+
+  const { data, isLoading } = useGetGuestsQuery();
 
   const [filter, setFilter] = useState({
     search: '',
@@ -131,7 +135,11 @@ export const GuestsTable = () => {
       title={TableHeader}
       data={data?.results}
       columns={columns}
-      loading={false}
+      loading={isLoading}
+      onRow={(record: IGuest) => ({
+        onClick: () => navigate(`${record.id}`),
+        style: { cursor: 'pointer' },
+      })}
     />
   );
 };

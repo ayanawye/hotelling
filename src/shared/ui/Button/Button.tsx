@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import s from './Button.module.scss';
@@ -18,6 +18,7 @@ interface Props {
     | 'danger_modal';
   onClick?: () => void;
   className?: string;
+  style?: CSSProperties;
   htmlType?: 'button' | 'submit' | 'reset' | undefined;
   icon?: ReactNode;
   isLoading?: boolean;
@@ -31,6 +32,7 @@ export const Button: FC<Props> = (props) => {
     htmlType,
     className,
     icon,
+    style,
     disabled,
     variant,
     isLoading,
@@ -38,6 +40,7 @@ export const Button: FC<Props> = (props) => {
 
   return (
     <button
+      style={style}
       className={clsx(s.button, s[`button_${variant}`], className, {
         [s.button_disable]: disabled,
       })}

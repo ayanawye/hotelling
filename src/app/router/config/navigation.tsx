@@ -79,6 +79,14 @@ export const navigationConfig: NavItem[] = [
     icon: <NavGuestsIcon />,
     path: '/guests',
     menu: true,
+    children: [
+      {
+        key: 'guests/detail',
+        label: 'Детали',
+        path: '/guests/:id',
+        menu: false,
+      },
+    ],
   },
   {
     key: 'rooms',
@@ -614,6 +622,20 @@ export const navigationConfig: NavItem[] = [
         label: 'Заказы', //от клиентов
         path: '/laundry/orders',
         menu: true,
+        children: [
+          {
+            key: 'laundry-orders-create',
+            label: 'Создать заказы',
+            path: '/laundry/orders/create',
+            menu: false,
+          },
+          {
+            key: 'laundry-orders-edit',
+            label: 'Изменить заказ',
+            path: '/laundry/orders/edit/:id',
+            menu: false,
+          },
+        ],
       },
     ],
   },

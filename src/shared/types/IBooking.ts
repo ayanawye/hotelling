@@ -1,17 +1,4 @@
-export type IGuestShort = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  middle_name?: string;
-  language?: string;
-  title?: string;
-  email?: string;
-  citizenship?: string;
-  vip_code?: string | null;
-  guest_category?: string | null;
-  phone?: string;
-  comment?: string;
-};
+import type { IGuest } from '@entities/guests/types';
 
 export type IOrganizationShort = {
   id: number;
@@ -27,10 +14,26 @@ export type IReservationStatus =
   | 'cancelled'
   | 'no_show';
 
-export type IReservation = {
+export interface IFolioTransaction {
+  id: number;
+  reservation_id: number;
+  kind: string;
+  status: string;
+  service_id: number;
+  title: string;
+  description: string;
+  quantity: number;
+  unit_amount: number;
+  amount: number;
+  currency_code: string;
+  occurred_at: string;
+  created_at: string;
+}
+
+export interface IReservation {
   id: number;
   hotel: number;
-  guest: IGuestShort | null;
+  guest: IGuest | null;
   organization?: IOrganizationShort | null;
   room?: number | null;
   rooms?: number[];
@@ -43,4 +46,5 @@ export type IReservation = {
   infants?: number | null;
   status: IReservationStatus;
   group_id: string;
-};
+  folio_transactions: IFolioTransaction[];
+}

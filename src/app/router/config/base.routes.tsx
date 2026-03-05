@@ -34,7 +34,16 @@ export const baseRoutes: IAccessRouteObject[] = [
   },
   {
     path: '/guests',
-    element: <Pages.GuestsPage />,
+    children: [
+      {
+        path: '',
+        element: <Pages.GuestsPage />,
+      },
+      {
+        path: ':id',
+        element: <Pages.GuestDetailPage />,
+      },
+    ],
   },
   {
     path: '/rooms',

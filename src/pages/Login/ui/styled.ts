@@ -56,27 +56,37 @@ export const useStyles = () => {
 
   const containerStyle: CSSProperties = {
     width: '100%',
-    maxWidth: '360px',
-  };
-
-  const headerStyle: CSSProperties = {
-    marginBottom: '32px',
+    maxWidth: '372px',
   };
 
   const titleStyle: CSSProperties = {
-    marginBottom: 8,
+    color: '#1A1A1A',
+    fontSize: 32,
+    fontWeight: 600,
+    lineHeight: '130%',
+    marginBottom: 40,
   };
 
   const formItemStyle: CSSProperties = {
-    marginBottom: 0,
+    marginBottom: '20px',
+  };
+
+  const input: CSSProperties = {
+    height: 48,
+  };
+  const submitButton: CSSProperties = {
+    maxHeight: 52,
+    width: '100%',
+    minHeight: 52,
   };
 
   return {
+    submitButton,
     layoutStyle,
     leftSideStyle,
     rightSideStyle,
     containerStyle,
-    headerStyle,
+    input,
     titleStyle,
     formItemStyle,
     hotellingImgStyle,

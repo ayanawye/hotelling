@@ -1,39 +1,28 @@
-import {
-  useDeleteBookingMutation,
-  useFetchAllBookingsQuery,
-} from '@entities/booking/api/bookingApi.ts';
+import { useDeleteBookingMutation, useFetchAllBookingsQuery, } from '@entities/booking/api/bookingApi.ts';
 import { useGetHotelRoomsTypesQuery } from '@entities/rooms/api/roomsTypeApi';
 import { useGetHotelRoomsStatusQuery } from '@entities/rooms/api/roomsStatus.ts';
 import {
+  CloseIcon,
   DeleteIcon,
   DotsIcon,
   EditIcon,
+  FilerIcon2,
   PlusIcon,
   RefreshIcon,
   SearchIcon,
-  FilerIcon2,
-  CloseIcon,
 } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import type {
-  IReservation,
-  IReservationStatus,
-} from '@shared/types/IBooking.ts';
+import type { IReservation, IReservationStatus, } from '@shared/types/IBooking.ts';
 import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import {
-  DatePicker,
-  Dropdown,
-  Select,
-  type MenuProps,
-  message,
-  Tag,
-} from 'antd';
+import { DatePicker, Dropdown, type MenuProps, message, Select, Tag, } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { dateFormat, RESERVATION_STATUS_CONFIG } from '@shared/lib';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@shared/hooks/redux.ts';
+import { setOrderUserService } from '@entities/services';
 
 import './BoardingListTable.scss';
 
@@ -49,6 +38,8 @@ export const BoardingListTable = () => {
         }
       : undefined,
   );
+  const dispatch = useAppDispatch();
+
   const [deleteBooking, { isLoading: isDeleting }] = useDeleteBookingMutation();
   const navigate = useNavigate();
   const { bookingStatusTagStyle } = useStyles();
@@ -126,10 +117,7 @@ export const BoardingListTable = () => {
       if (!fullName.includes(filter.search.toLowerCase())) return false;
     }
     // Booking status filter
-    if (filterBookingStatus && booking.status !== filterBookingStatus) {
-      return false;
-    }
-    return true;
+    return !(filterBookingStatus && booking.status !== filterBookingStatus);
   });
 
   const [deleteModalState, setDeleteModalState] = useState<{
@@ -157,13 +145,19 @@ export const BoardingListTable = () => {
       key: 'add-service',
       label: 'Добавить услугу',
       icon: <PlusIcon />,
-      onClick: () => console.log('Add service', record),
+      onClick: () => {
+        navigate('/services/orders/create');
+        dispatch(setOrderUserService(record.guest));
+      },
     },
     {
       key: 'laundry-order',
       label: 'Заказ в прачку',
       icon: <RefreshIcon />,
-      onClick: () => console.log('Laundry order', record),
+      onClick: () => {
+        navigate('/laundry/orders/create');
+        dispatch(setOrderUserService(record.guest));
+      },
     },
     {
       key: 'edit',

@@ -27,6 +27,9 @@ export const HotelSettingPage = Loadable(
 
 // Guests
 export const GuestsPage = Loadable(lazy(() => import('@pages/Guests')));
+export const GuestDetailPage = Loadable(
+  lazy(() => import('@pages/Guests/DetailPage')),
+);
 
 // Rooms (Settings)
 export const RoomsEnclosuresPage = Loadable(
