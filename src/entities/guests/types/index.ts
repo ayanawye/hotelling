@@ -1,4 +1,4 @@
-import type { Room } from '@entities/booking/model/types.ts';
+import type { IReservation } from '@shared/types/IBooking.ts';
 
 export type GuestLanguage = 'en' | 'ru' | 'de';
 
@@ -28,5 +28,22 @@ export interface IGuest {
   guest_category?: GuestCategory | null;
   phone: string;
   comment: string;
-  bookings?: Room[];
+  reservations: IReservation[];
+}
+
+export interface IPassport {
+  series: string;
+  number: string;
+  issued_by: string;
+  personal_number: string;
+  sex: 'M' | 'F';
+  issue_date?: string | null;
+  expiry_date?: string | null;
+  birth_date?: string | null;
+  birth_place: string;
+  nationality: string;
+  document_type: string;
+  mrz_raw: string;
+  photo_front?: string | null;
+  photo_back?: string | null;
 }

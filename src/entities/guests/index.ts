@@ -1,1 +1,5 @@
-export { useGetGuestsQuery } from './api/guestsApi';
+export {
+  useGetGuestsQuery,
+  useGetGuestByIdQuery,
+  useGetGuestPassportQuery,
+} from './api/guestsApi';

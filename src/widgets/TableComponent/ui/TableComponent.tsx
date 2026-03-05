@@ -28,7 +28,7 @@ interface ComponentProps<T> extends Omit<TableProps<T>, 'title' | 'footer'> {
   size?: SizeType;
   loading: boolean;
   title?: React.ReactNode | (() => React.ReactNode);
-  rowClickHandler?: TableProps<T>['onRow'];
+  onRow?: TableProps<T>['onRow'];
   footer?: React.ReactNode | (() => React.ReactNode);
 }
 
@@ -41,7 +41,7 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
     onChange,
     size,
     title,
-    rowClickHandler,
+    onRow,
     footer,
   } = props;
 
@@ -72,9 +72,7 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
         dataSource={data}
         scroll={scroll}
         columns={columns}
-        onRow={(record) => ({
-          onClick: () => rowClickHandler && rowClickHandler(record),
-        })}
+        onRow={onRow}
         rowKey='id'
         locale={locale}
         onChange={onChange}
