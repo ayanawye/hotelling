@@ -1,0 +1,243 @@
+.container {
+  padding: 24px;
+  background-color: var(--bg-container, #fff);
+  border-radius: var(--border-radius, 12px);
+
+  :global {
+    .ant-select, .ant-input-number {
+      height: 50px;
+      background: #0000000A;
+    }
+  }
+
+  textarea {
+    min-height: 80px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #E5E5E5;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.collapse {
+  border: none;
+  overflow: hidden;
+  background: var(--white-color);
+  margin-bottom: 32px;
+
+  :global {
+    .ant-collapse-header {
+      border-radius: 360px !important;
+      background: #EEF1F8;
+    }
+
+    .ant-collapse-panel {
+      margin-top: 16px;
+      border-radius: 24px !important;
+      border: 1px solid #D7D7D7;
+      padding: 12px 16px;
+    }
+
+    .ant-collapse-body {
+      padding: 0 !important;
+    }
+
+    .ant-table-wrapper .ant-table-thead > tr > th {
+      background: none;
+      color: var(--text-tertiary-color);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      padding: 0 9px;
+
+      &:before {
+        background: none !important;
+      }
+    }
+
+    .ant-table-expanded-row {
+      & > td {
+        padding: 8px 0 0 !important;
+        background: var(--white-color) !important;
+        border: none !important;
+      }
+    }
+
+    .ant-typography {
+      line-height: 20px;
+    }
+  }
+}
+
+.collapse_passport {
+  border: none;
+  overflow: hidden;
+  background: var(--white-color);
+
+  :global {
+    .ant-collapse-header {
+      border-radius: 360px !important;
+      background: #EEF1F8;
+    }
+
+    .ant-collapse-panel {
+      margin-top: 32px;
+      border-radius: 24px !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .ant-collapse-body {
+      padding: 0 !important;
+    }
+
+    .ant-typography {
+      line-height: 20px;
+    }
+  }
+}
+
+.folioDetails {
+  border-radius: 16px;
+  border: 1px solid #F2F2F2;
+  background: #FCFCFC;
+  padding: 24px 16px;
+}
+
+.folioSection {
+  margin-bottom: 24px;
+}
+
+.folioLabel {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--neutral-black);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.folioInfo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  gap: 8px;
+  color: var(--black-color);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+
+  p:first-child {
+    color: var(--black-color);
+  }
+
+  p:nth-child(2) {
+    color: var(--neutral-black);
+  }
+
+  span {
+    color: var(--black-color);
+  }
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #D7D7D7;
+  margin: 16px 0;
+}
+
+.folioFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.servicesTable {
+  :global {
+    .ant-table {
+      background: #f5f5f5 !important;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .ant-table-content {
+      background: transparent !important;
+    }
+
+    .ant-table-cell {
+      background: transparent !important;
+      border: none !important;
+      padding: 8px 16px !important;
+      font-size: 16px;
+      color: #1a1a1a;
+      height: 48px;
+    }
+
+    .ant-table-row:hover > td {
+      background: transparent !important;
+    }
+  }
+}
+
+.totalPrice {
+  text-align: right;
+}
+
+.priceValue {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.passport {
+  display: flex;
+  gap: 42px;
+}
+
+
+.passportContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passportImages {
+  width: 400px;
+  padding: 16px 24px;
+  border: 1px solid #f2f2f2;
+  border-radius: var(--border-radius);
+}
+
+.passportImageContainer {
+  border-radius: 24px;
+
+  p {
+    color: var(--neutral-black);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-bottom: 8px;
+  }
+
+  img {
+    width: 352px;
+    height: 241px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+}
+
+.passportForm {
+  border: 1px solid #f2f2f2;
+  border-radius: 24px;
+  padding: 16px 24px;
+  width: 450px;
+}

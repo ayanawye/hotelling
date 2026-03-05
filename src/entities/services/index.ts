@@ -22,4 +22,6 @@ export {
   useDeleteServiceOrderMutation,
 } from './api/serviceOrders';
 
+export { setOrderUserService, serviceSelector } from './model/serviceSlice';
+
 export * from '@entities/finance/types';

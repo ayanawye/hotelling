@@ -5,6 +5,8 @@ import { getErrorMessage, mapToOptions } from '@shared/lib';
 import { getChangedFields } from '@shared/utils';
 import type { IServiceOrder } from '@entities/services/types';
 import {
+  serviceSelector,
+  setOrderUserService,
   useCreateServiceOrderMutation,
   useGetServicesQuery,
   usePatchServiceOrderMutation,
@@ -13,6 +15,7 @@ import {
 import styles from './ServiceOrderForm.module.scss';
 import { useGetGuestsQuery } from '@entities/guests';
 import { DeleteRedIcon } from '@shared/assets';
+import { useAppDispatch, useAppSelector } from '@shared/hooks/redux.ts';
 
 interface ComponentProps {
   initialValues?: IServiceOrder;
@@ -25,11 +28,14 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const dispatch = useAppDispatch();
+
   const [form] = Form.useForm();
   const selectedGuestId = Form.useWatch('guest_id', form);
 
   const { data: guests } = useGetGuestsQuery();
   const { data: allServices } = useGetServicesQuery();
+  const { orderUserService } = useAppSelector(serviceSelector);
 
   const [createItem, { isLoading: isCreating }] =
     useCreateServiceOrderMutation();
@@ -71,11 +77,16 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
     if (initialValues) {
       form.setFieldsValue({
         ...initialValues,
+        guest_id: orderUserService?.id || 1,
       });
-    } else {
-      form.resetFields();
     }
-  }, [initialValues, form]);
+
+    if (orderUserService) {
+      form.setFieldsValue({
+        guest_id: orderUserService?.id || 1,
+      });
+    }
+  }, [initialValues, orderUserService, form]);
 
   const onFinish = async (values: any) => {
     try {
@@ -100,6 +111,7 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
         }
         message.success('Успешно создано');
       }
+      dispatch(setOrderUserService(null));
       onSuccess?.();
     } catch (error) {
       message.error(getErrorMessage(error));
@@ -116,17 +128,32 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
         requiredMark={false}
       >
         <div className={styles.row}>
-          <Form.Item
-            name='guest_id'
-            label='Гость'
-            rules={[{ required: true, message: 'Выберите гостя' }]}
-          >
-            <SelectWithSearch
-              placeholder='Выберите гостя'
-              options={mapToOptions(guests?.results)}
-              variant='borderless'
-            />
-          </Form.Item>
+          {orderUserService ? (
+            <>
+              <Form.Item name='guest_id' hidden>
+                <Input />
+              </Form.Item>
+
+              <Form.Item label='Гость'>
+                <Input
+                  value={`${orderUserService?.first_name} ${orderUserService?.last_name}`}
+                  disabled
+                />
+              </Form.Item>
+            </>
+          ) : (
+            <Form.Item
+              name='guest_id'
+              label='Гость'
+              rules={[{ required: true, message: 'Выберите гостя' }]}
+            >
+              <SelectWithSearch
+                placeholder='Выберите гостя'
+                options={mapToOptions(guests?.results)}
+                variant='borderless'
+              />
+            </Form.Item>
+          )}
 
           {selectedGuestId && (
             <Form.Item
@@ -136,7 +163,7 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
             >
               <SelectWithSearch
                 placeholder='Выберите бронирование'
-                options={mapToOptions(selectedGuest?.bookings)}
+                options={mapToOptions(selectedGuest?.reservations)}
                 variant='borderless'
               />
             </Form.Item>
@@ -207,7 +234,14 @@ export const ServiceOrderForm: React.FC<ComponentProps> = ({
           >
             {isEdit ? 'Сохранить' : 'Создать'}
           </Button>
-          <Button htmlType='button' variant='outlined_big' onClick={onCancel}>
+          <Button
+            htmlType='button'
+            variant='outlined_big'
+            onClick={() => {
+              dispatch(setOrderUserService(null));
+              onCancel?.();
+            }}
+          >
             Отменить
           </Button>
         </div>
