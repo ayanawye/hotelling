@@ -1,12 +1,29 @@
-import { Collapse, Form, Input, Select, Table, Tag, Typography } from 'antd';
+import {
+  Alert,
+  Collapse,
+  Form,
+  Input,
+  Select,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
 import styles from './DetailPage.module.scss';
 import { useParams } from 'react-router-dom';
-import { useGetGuestByIdQuery, useGetGuestPassportQuery, } from '@entities/guests';
-import { GUESTS_LANGUAGE, GUESTS_TITLE, RESERVATION_STATUS_CONFIG, } from '@shared/lib';
+import {
+  useGetGuestByIdQuery,
+  useGetGuestPassportQuery,
+} from '@entities/guests';
+import {
+  GUESTS_LANGUAGE,
+  GUESTS_TITLE,
+  RESERVATION_STATUS_CONFIG,
+} from '@shared/lib';
 import type { ColumnsType } from 'antd/es/table';
 import type { IReservation } from '@shared/types/IBooking';
 import { useState } from 'react';
 import dayjs from 'dayjs';
+import { PageLoader } from '@shared/ui';
 
 const { Text } = Typography;
 
@@ -19,8 +36,13 @@ const DetailPage = () => {
     useGetGuestPassportQuery(Number(id));
   const [expandedFolio, setExpandedFolio] = useState<number | null>(null);
 
-  if (isGuestLoading || isPassportLoading) return <div>Loading...</div>;
-  if (!guest) return <div>Guest not found</div>;
+  if (isGuestLoading || isPassportLoading) {
+    return <PageLoader />;
+  }
+
+  if (!guest) {
+    return <Alert title='Ошибка загрузки гостей' type='error' />;
+  }
 
   const columns: ColumnsType<IReservation> = [
     {

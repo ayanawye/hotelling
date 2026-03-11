@@ -15,3 +15,10 @@
 .label {
   flex-grow: 1;
 }
+
+.filter {
+  :global(.ant-select) {
+    max-width: 260px !important;
+    min-width: 200px !important;
+  }
+}

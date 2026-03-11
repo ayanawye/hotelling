@@ -9,7 +9,7 @@ interface SelectWithSearchProps extends Omit<SelectProps, 'options'> {
 }
 
 export const SelectWithSearch = (props: SelectWithSearchProps) => {
-  const { options, size, ...restProps } = props;
+  const { options, size, searchPlaceholder, ...restProps } = props;
 
   return (
     <Select

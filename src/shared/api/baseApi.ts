@@ -11,6 +11,21 @@ import { setToken } from '@entities/user/model/slice.ts';
 
 const { VITE_API_MAIN_URL } = import.meta.env;
 
+const paramsSerializer = (params: Record<string, any>) => {
+  return Object.entries(params)
+    .map(([key, value]) => {
+      if (Array.isArray(value)) {
+        return value
+          .map((v) => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`)
+          .join('&');
+      }
+      if (value === undefined || value === null || value === '') return '';
+      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+    })
+    .filter(Boolean)
+    .join('&');
+};
+
 const baseQuery = fetchBaseQuery({
   baseUrl: VITE_API_MAIN_URL,
   prepareHeaders: (headers, { getState }) => {
@@ -22,6 +37,7 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  paramsSerializer,
 });
 
 const baseQueryWithReauth: BaseQueryFn<

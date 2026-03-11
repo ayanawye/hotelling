@@ -4,10 +4,11 @@ import type { IFinanceTax } from '@entities/finance/types';
 
 export const taxApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getFinanceTaxes: builder.query<IFinanceTax[], void>({
-      query: () => ({
+    getFinanceTaxes: builder.query<IFinanceTax[], string | void>({
+      query: (search) => ({
         url: 'finance/tax/',
         method: 'GET',
+        params: { search: search },
       }),
       providesTags: ['FINANCE_TAX'],
     }),

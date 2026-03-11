@@ -1,101 +1,93 @@
-import {
-  DeleteIcon,
-  EditIcon,
-  FilterIcon,
-  PlusIcon,
-  RefreshIcon,
-  SearchIcon,
-} from '@shared/assets';
+import { SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { InputTextField } from '@shared/ui';
+import { InputTextField, PageLoader, SelectWithSearch } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Dropdown, Tag } from 'antd';
+import { Alert, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { useGetGuestsQuery } from '@entities/guests';
-import { GUESTS_LANGUAGE, GUESTS_TITLE } from '@shared/lib';
-import type { GuestLanguage, GuestTitle, IGuest } from '@entities/guests/types';
+import { GUEST_STATUS, GUESTS_LANGUAGE, GUESTS_TITLE } from '@shared/lib';
+import type {
+  GuestLanguage,
+  GuestTitle,
+  IGuest,
+  IGuestStatus,
+} from '@entities/guests/types';
 
-import s from './GuestsTable.module.scss';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
+
+import s from './GuestsTable.module.scss';
 
 export const GuestsTable = () => {
   const { bookingStatusTagStyle } = useStyles();
 
   const navigate = useNavigate();
 
-  const { data, isLoading } = useGetGuestsQuery();
-
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{ search: string; status: string[] }>({
     search: '',
+    status: [],
   });
 
-  const getActionItems = [
-    {
-      key: 'add-service',
-      label: 'Добавить услугу',
-      icon: <PlusIcon />,
-    },
-    {
-      key: 'laundry-order',
-      label: 'Заказ в прачку',
-      icon: <RefreshIcon />,
-    },
-    {
-      key: 'edit',
-      label: 'Изменить',
-      icon: <EditIcon />,
-    },
-    {
-      key: 'delete',
-      label: 'Удалить',
-      icon: <DeleteIcon />,
-      danger: true,
-    },
-  ];
+  const debouncedSearch = useDebounce(filter.search, 500);
+
+  const { data, isLoading, isError } = useGetGuestsQuery({
+    search: debouncedSearch,
+    status: filter.status,
+  });
 
   const columns: ColumnsType<IGuest> = [
-    { title: 'Имя', dataIndex: 'first_name', key: 'first_name', width: '13%' },
+    {
+      title: 'Имя',
+      dataIndex: 'first_name',
+      key: 'first_name',
+      className: 'noWrapColumn',
+    },
     {
       title: 'Фамилия',
       dataIndex: 'last_name',
       key: 'last_name',
-      width: '13%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Отчество',
       dataIndex: 'middle_name',
       key: 'middle_name',
-      width: '13%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Язык',
       dataIndex: 'language',
       key: 'language',
-      width: '10%',
+      className: 'noWrapColumn',
       render: (lang: GuestLanguage) => GUESTS_LANGUAGE[lang],
     },
     {
       title: 'Титул',
       dataIndex: 'title',
       key: 'title',
-      width: '10%',
+      className: 'noWrapColumn',
       render: (title: GuestTitle) => GUESTS_TITLE[title],
     },
-    { title: 'Номер телефона', dataIndex: 'phone', key: 'phone', width: '18%' },
+    {
+      title: 'Номер телефона',
+      dataIndex: 'phone',
+      key: 'phone',
+      className: 'noWrapColumn',
+    },
     {
       title: 'Гражданство',
       dataIndex: 'citizenship',
       key: 'citizenship',
-      width: '11%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
-      width: '12%',
-      render: (status) => (
+      className: 'noWrapColumn',
+      render: (status: IGuestStatus) => (
         <Tag
           style={{
             ...bookingStatusTagStyle,
@@ -104,7 +96,7 @@ export const GuestsTable = () => {
             border: 'none',
           }}
         >
-          {status}
+          {GUEST_STATUS[status]}
         </Tag>
       ),
     },
@@ -118,22 +110,37 @@ export const GuestsTable = () => {
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <Dropdown
-        menu={{ items: getActionItems }}
-        placement='bottomRight'
-        trigger={['click']}
-      >
-        <div className={s.dropdown}>
-          <FilterIcon /> Фильтр
-        </div>
-      </Dropdown>
+      <SelectWithSearch
+        mode='multiple'
+        placement={'bottomRight'}
+        maxTagCount={1}
+        allowClear
+        placeholder='Статус'
+        options={[
+          { value: 'DRAFT', label: 'Отменен' },
+          { value: 'ACTIVE', label: 'Проживает' },
+          { value: 'ARCHIVED', label: 'Завершен' },
+        ]}
+        onChange={(value) =>
+          setFilter({ ...filter, status: value as string[] })
+        }
+      />
     </div>
   );
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки гостей' type='error' />;
+  }
 
   return (
     <TableComponent
       title={TableHeader}
       data={data?.results}
+      tableLayout={'auto'}
       columns={columns}
       loading={isLoading}
       onRow={(record: IGuest) => ({

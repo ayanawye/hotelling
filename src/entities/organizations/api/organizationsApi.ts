@@ -3,10 +3,14 @@ import { type IOrganization } from '@entities/organizations/types';
 
 export const organizationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrganizations: builder.query<IOrganization[], void>({
-      query: () => ({
+    getOrganizations: builder.query<
+      IOrganization[],
+      { type_id?: string[]; search?: string } | void
+    >({
+      query: (params) => ({
         url: 'organizations/organizations/',
         method: 'GET',
+        params: params ?? {},
       }),
       providesTags: ['ORGANIZATION'],
     }),

@@ -1,8 +1,14 @@
 import { BottomArrowIcon, SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  PageLoader,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, message, Tag } from 'antd';
+import { Alert, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -15,25 +21,32 @@ import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
 
 import s from './RoomTypesTable.module.scss';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
+import clsx from 'clsx';
 
 export const RoomTypesTable = () => {
   const { bookingStatusTagStyle } = useStyles();
   const navigate = useNavigate();
 
-  const { data, isLoading } = useGetHotelRoomsTypesQuery();
-  const [deleteHotelRoomsType, { isLoading: isUpdate }] =
-    useDeleteHotelRoomsTypeMutation();
-
   const [filter, setFilter] = useState<{
     search: string;
-    color: string[] | null;
+    color: string;
   }>({
     search: '',
-    color: [],
+    color: '',
   });
+  const debouncedSearch = useDebounce(filter.search, 500);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedType, setSelectedType] = useState<IRoomType | null>(null);
+
+  const { data, isLoading, isError } = useGetHotelRoomsTypesQuery({
+    search: debouncedSearch,
+    color: filter.color,
+  });
+
+  const [deleteHotelRoomsType, { isLoading: isUpdate }] =
+    useDeleteHotelRoomsTypeMutation();
 
   const handleDelete = async () => {
     try {
@@ -104,7 +117,7 @@ export const RoomTypesTable = () => {
   ];
 
   const TableHeader = (
-    <div className='table-header'>
+    <div className={clsx(s.filter, 'table-header')}>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
@@ -113,17 +126,11 @@ export const RoomTypesTable = () => {
       />
       <div className='table-header-filter'>
         <SelectWithSearch
-          mode='multiple'
-          maxTagCount={0}
-          maxTagPlaceholder={() => 'Цвет типа номера'}
           allowClear
           suffixIcon={<BottomArrowIcon />}
           className={s.filter}
-          size={'large'}
           placeholder='Цвет типа номера'
-          onChange={(value) =>
-            setFilter({ ...filter, color: value as string[] })
-          }
+          onChange={(value) => setFilter({ ...filter, color: value })}
           options={Object.entries(ROOMS_COLOR_CONFIG).map(([key, config]) => ({
             value: key,
             label: (
@@ -137,23 +144,20 @@ export const RoomTypesTable = () => {
             ),
           }))}
         />
-        <Button
-          type='primary'
-          onClick={() => navigate('create')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2B63D9',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           <span>Создать</span>
         </Button>
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки гостей' type='error' />;
+  }
 
   return (
     <>
