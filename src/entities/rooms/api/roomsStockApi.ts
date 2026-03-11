@@ -4,10 +4,19 @@ import type { IRoomStock } from '../types';
 
 export const roomsStockApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelRoomStocks: builder.query<IRoomStock[], void>({
-      query: () => ({
+    getHotelRoomStocks: builder.query<
+      IRoomStock[],
+      {
+        search?: string;
+        enclosure?: string;
+        floor?: string;
+        roomType?: string;
+      } | void
+    >({
+      query: (params) => ({
         url: 'hotel/room-stocks/',
         method: 'GET',
+        params: params ?? {},
       }),
       providesTags: ['HOTEL_ROOM_STOCK'],
     }),

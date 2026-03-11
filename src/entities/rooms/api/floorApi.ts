@@ -4,10 +4,14 @@ import type { IHotelFloor } from '../types';
 
 export const floorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelFloors: builder.query<IHotelFloor[], void>({
-      query: () => ({
+    getHotelFloors: builder.query<
+      IHotelFloor[],
+      { search?: string; hull_id?: number } | void
+    >({
+      query: (params) => ({
         url: 'hotel/floors/',
         method: 'GET',
+        params: params ?? {},
       }),
       providesTags: ['HOTEL_FLOOR'],
     }),

@@ -1,7 +1,7 @@
 import { SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField, PageLoader } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, message, Tag } from 'antd';
+import { Alert, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
@@ -10,25 +10,35 @@ import { TableActions } from '@widgets/TableActions';
 import {
   type IRoomStock,
   useDeleteHotelRoomStockMutation,
+  useGetHotelEnclosuresQuery,
+  useGetHotelFloorsQuery,
   useGetHotelRoomStocksQuery,
+  useGetHotelRoomsTypesQuery,
 } from '@entities/rooms';
 
 export const RoomStockTable = () => {
   const navigate = useNavigate();
-  const { data } = useGetHotelRoomStocksQuery();
-  const [deleteHotelRoomStock, { isLoading }] =
-    useDeleteHotelRoomStockMutation();
 
   const [filter, setFilter] = useState({
     search: '',
     enclosure: undefined as string | undefined,
     floor: undefined as string | undefined,
     roomType: undefined as string | undefined,
-    status: undefined as string | undefined,
   });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedStock, setSelectedStock] = useState<IRoomStock | null>(null);
+
+  const {
+    data,
+    isLoading: isDataLoading,
+    isError,
+  } = useGetHotelRoomStocksQuery(filter);
+  const { data: hulls } = useGetHotelEnclosuresQuery();
+  const { data: floors } = useGetHotelFloorsQuery();
+  const { data: roomTypes } = useGetHotelRoomsTypesQuery();
+  const [deleteHotelRoomStock, { isLoading }] =
+    useDeleteHotelRoomStockMutation();
 
   const handleDelete = async () => {
     try {
@@ -44,19 +54,19 @@ export const RoomStockTable = () => {
       title: 'Корпус',
       dataIndex: ['hull', 'name'],
       key: 'hull',
-      width: '12%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Этаж',
       dataIndex: ['floor', 'floor'],
       key: 'floor',
-      width: '12%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Тип номера',
       dataIndex: ['room_type', 'id'],
       key: 'room_type',
-      width: '16%',
+      className: 'noWrapColumn',
       render: (_, record) => {
         return (
           <Tag
@@ -77,7 +87,7 @@ export const RoomStockTable = () => {
       title: 'Номер комнаты',
       dataIndex: 'room',
       key: 'room',
-      width: '12%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Примечание',
@@ -89,7 +99,7 @@ export const RoomStockTable = () => {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
-      width: '16%',
+      className: 'noWrapColumn',
       render: (status) => {
         return (
           <Tag
@@ -137,6 +147,9 @@ export const RoomStockTable = () => {
             floor: filter.floor,
             roomType: filter.roomType,
           }}
+          enclosure={hulls}
+          floors={floors}
+          roomTypes={roomTypes}
           onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
           onResetAll={() =>
             setFilter({
@@ -147,21 +160,20 @@ export const RoomStockTable = () => {
             })
           }
         />
-        <Button
-          type='primary'
-          onClick={() => navigate('create')}
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           Создать
         </Button>
       </div>
     </div>
   );
+
+  if (isDataLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки фондов' type='error' />;
+  }
 
   return (
     <>
@@ -170,6 +182,7 @@ export const RoomStockTable = () => {
         data={data}
         columns={columns}
         loading={false}
+        tableLayout={'auto'}
       />
       <DeleteModal
         isOpen={deleteModalOpen}

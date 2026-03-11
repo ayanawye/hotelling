@@ -1,7 +1,13 @@
 import { BottomArrowIcon, SearchIcon } from '@shared/assets';
-import { DeleteModal, InputTextField, SelectWithSearch } from '@shared/ui';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  PageLoader,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, message, Tag } from 'antd';
+import { Alert, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -14,25 +20,37 @@ import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
 
 import s from './RoomsStatusTable.module.scss';
+import clsx from 'clsx';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
 
 export const RoomStatusTable = () => {
   const navigate = useNavigate();
-  const { data } = useGetHotelRoomsStatusQuery();
-  const [deleteHotelRoomStatus, { isLoading }] =
-    useDeleteHotelRoomStatusMutation();
 
   const [filter, setFilter] = useState<{
     search: string;
-    color: string[] | null;
+    color: string[];
   }>({
     search: '',
     color: [],
   });
+  const debouncedSearch = useDebounce(filter.search, 500);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<IRoomStatus | null>(
     null,
   );
+
+  const {
+    data,
+    isLoading: isDataLoading,
+    isError,
+  } = useGetHotelRoomsStatusQuery({
+    search: debouncedSearch,
+    color_id: filter.color,
+  });
+
+  const [deleteHotelRoomStatus, { isLoading }] =
+    useDeleteHotelRoomStatusMutation();
 
   const handleDelete = async () => {
     try {
@@ -94,7 +112,7 @@ export const RoomStatusTable = () => {
   ];
 
   const TableHeader = (
-    <div className='table-header'>
+    <div className={clsx(s.filter, 'table-header')}>
       <div style={{ display: 'flex', gap: '16px' }}>
         <InputTextField
           value={filter.search}
@@ -106,8 +124,7 @@ export const RoomStatusTable = () => {
       <div className='table-header-filter'>
         <SelectWithSearch
           mode='multiple'
-          maxTagCount={0}
-          maxTagPlaceholder={() => 'Цвет статуса номера'}
+          maxTagCount={1}
           allowClear
           size={'large'}
           suffixIcon={<BottomArrowIcon />}
@@ -128,21 +145,20 @@ export const RoomStatusTable = () => {
             ),
           }))}
         />
-        <Button
-          type='primary'
-          onClick={() => navigate('create')}
-          style={{
-            height: '40px',
-            borderRadius: '20px',
-            padding: '0 24px',
-            backgroundColor: '#2563EB',
-          }}
-        >
+        <Button variant='primary' onClick={() => navigate('create')}>
           Создать
         </Button>
       </div>
     </div>
   );
+
+  if (isDataLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки статуса' type='error' />;
+  }
 
   return (
     <>

@@ -1,4 +1,7 @@
-import { useDeleteBookingMutation, useFetchAllBookingsQuery, } from '@entities/booking/api/bookingApi.ts';
+import {
+  useDeleteBookingMutation,
+  useFetchAllBookingsQuery,
+} from '@entities/booking/api/bookingApi.ts';
 import { useGetHotelRoomsTypesQuery } from '@entities/rooms/api/roomsTypeApi';
 import { useGetHotelRoomsStatusQuery } from '@entities/rooms/api/roomsStatus.ts';
 import {
@@ -12,10 +15,20 @@ import {
   SearchIcon,
 } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import type { IReservation, IReservationStatus, } from '@shared/types/IBooking.ts';
+import type {
+  IReservation,
+  IReservationStatus,
+} from '@shared/types/IBooking.ts';
 import { Button, DeleteModal, InputTextField } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { DatePicker, Dropdown, type MenuProps, message, Select, Tag, } from 'antd';
+import {
+  DatePicker,
+  Dropdown,
+  type MenuProps,
+  message,
+  Select,
+  Tag,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
@@ -103,22 +116,6 @@ export const BoardingListTable = () => {
 
   const roomStatusOptions =
     roomStatuses?.map((rs) => ({ value: rs.id!, label: rs.name || '' })) || [];
-
-  // Apply client-side filters
-  const filteredData = (data || []).filter((booking) => {
-    // Search filter
-    if (filter.search) {
-      const guest = booking.guest;
-      if (!guest) return false;
-      const fullName = [guest.last_name, guest.first_name, guest.middle_name]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      if (!fullName.includes(filter.search.toLowerCase())) return false;
-    }
-    // Booking status filter
-    return !(filterBookingStatus && booking.status !== filterBookingStatus);
-  });
 
   const [deleteModalState, setDeleteModalState] = useState<{
     isOpen: boolean;
@@ -417,8 +414,9 @@ export const BoardingListTable = () => {
   return (
     <>
       <TableComponent
+        childrenColumnName='antdChildren'
         title={TableHeader}
-        data={filteredData}
+        data={data ?? []}
         columns={reservationColumns}
         loading={isLoading}
       />

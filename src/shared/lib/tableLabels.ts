@@ -2,9 +2,14 @@ import type {
   IGuaranteeType,
   IReservationStatus,
 } from '@shared/types/IBooking.ts';
-import type { GuestLanguage, GuestTitle } from '@entities/guests/types';
+import type {
+  GuestLanguage,
+  GuestTitle,
+  IGuestStatus,
+} from '@entities/guests/types';
 import type { RoomsColor } from '@entities/rooms';
 import type { PersonalRole } from '@entities/staff';
+import type { PaymentType } from '@entities/finance';
 
 export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
   none: 'Без гарантии',
@@ -91,4 +96,16 @@ export const colorMap: Record<RoomsColor, { name: string; hex: string }> = {
   orange: { name: 'Оранжевый', hex: '#FA8C16' },
   purple: { name: 'Фиолетовый', hex: '#722ED1' },
   brown: { name: 'Коричневый', hex: '#873800' },
+};
+
+export const PAYMENT_TYPE: Record<PaymentType, string> = {
+  cash: 'Наличные',
+  card: 'Карта',
+  transfer: 'Перевод',
+};
+
+export const GUEST_STATUS: Record<IGuestStatus, string> = {
+  DRAFT: 'Отменен',
+  ACTIVE: 'Проживает',
+  ARCHIVED: 'Завершен',
 };

@@ -7,6 +7,8 @@ export {
   colorMap,
   GUARANTEE_TYPE_LABELS,
   STAFF_ROLE,
+  PAYMENT_TYPE,
+  GUEST_STATUS,
 } from './tableLabels';
 export { mapToOptions } from './mapToOptions';
 export { getErrorMessage } from './getErrorMessage';

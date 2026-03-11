@@ -3,6 +3,7 @@ import {
   Button,
   DeleteModal,
   InputTextField,
+  PageLoader,
   SelectWithSearch,
 } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
@@ -10,26 +11,38 @@ import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
   useDeleteHotelFloorMutation,
+  useGetHotelEnclosuresQuery,
   useGetHotelFloorsQuery,
 } from '@entities/rooms';
 import type { IHotelFloor } from '@entities/rooms/types';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
-import { getErrorMessage } from '@shared/lib';
+import { Alert, message } from 'antd';
+import { getErrorMessage, mapToOptions } from '@shared/lib';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
 
 export const FloorsTable = () => {
   const navigate = useNavigate();
-
-  const { data } = useGetHotelFloorsQuery();
-  const [deleteHotelFloor, { isLoading }] = useDeleteHotelFloorMutation();
 
   const [filter, setFilter] = useState({
     search: '',
     enclosure: undefined,
   });
+  const debouncedSearch = useDebounce(filter.search, 500);
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedFloor, setSelectedFloor] = useState<IHotelFloor | null>(null);
+
+  const {
+    data,
+    isLoading: isDataLoading,
+    isError,
+  } = useGetHotelFloorsQuery({
+    search: debouncedSearch,
+    hull_id: filter.enclosure,
+  });
+  const { data: allHulls } = useGetHotelEnclosuresQuery();
+  const [deleteHotelFloor, { isLoading }] = useDeleteHotelFloorMutation();
 
   const handleDelete = async () => {
     try {
@@ -81,9 +94,10 @@ export const FloorsTable = () => {
       <div className='table-header-filter'>
         <SelectWithSearch
           placeholder='Корпус'
+          allowClear
           maxTagPlaceholder={() => 'Цвет статуса номера'}
           onChange={(value) => setFilter({ ...filter, enclosure: value })}
-          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
+          options={mapToOptions(allHulls)}
         />
         <Button variant='primary' onClick={() => navigate('create')}>
           <span>Создать</span>
@@ -91,6 +105,14 @@ export const FloorsTable = () => {
       </div>
     </div>
   );
+
+  if (isDataLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки гостей' type='error' />;
+  }
 
   return (
     <>

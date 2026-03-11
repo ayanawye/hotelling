@@ -1,5 +1,5 @@
 import { SearchIcon } from '@shared/assets';
-import { Button, DeleteModal, InputTextField } from '@shared/ui';
+import { Button, DeleteModal, InputTextField, PageLoader } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -10,23 +10,27 @@ import {
 import { TableActions } from '@widgets/TableActions';
 import type { IHotelEnclosure } from '@entities/rooms/types';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { Alert, message } from 'antd';
 import { getErrorMessage } from '@shared/lib';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
 
 export const EnclosuresTable = () => {
   const navigate = useNavigate();
 
-  const { data } = useGetHotelEnclosuresQuery();
-  const [deleteHotelEnclosure, { isLoading }] =
-    useDeleteHotelEnclosureMutation();
-
-  const [filter, setFilter] = useState({
-    search: '',
-  });
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedEnclosure, setSelectedEnclosure] =
     useState<IHotelEnclosure | null>(null);
+
+  const {
+    data,
+    isLoading: isDataLoading,
+    isError,
+  } = useGetHotelEnclosuresQuery(debouncedSearch);
+  const [deleteHotelEnclosure, { isLoading }] =
+    useDeleteHotelEnclosureMutation();
 
   const handleDelete = async () => {
     try {
@@ -64,8 +68,8 @@ export const EnclosuresTable = () => {
   const TableHeader = (
     <div className='table-header'>
       <InputTextField
-        value={filter.search}
-        onChange={(e) => setFilter({ ...filter, search: e.target.value })}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
@@ -74,6 +78,14 @@ export const EnclosuresTable = () => {
       </Button>
     </div>
   );
+
+  if (isDataLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки' type='error' />;
+  }
 
   return (
     <>
