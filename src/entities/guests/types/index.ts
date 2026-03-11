@@ -15,6 +15,8 @@ export type VipCode = 'middle_manager' | 'top_manager' | 'special_guest';
 
 export type GuestCategory = 'undesirable' | 'non_payer' | 'regular';
 
+export type IGuestStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
+
 export interface IGuest {
   id: number;
   first_name: string;
@@ -28,6 +30,7 @@ export interface IGuest {
   guest_category?: GuestCategory | null;
   phone: string;
   comment: string;
+  status: IGuestStatus;
   reservations: IReservation[];
 }
 

@@ -4,10 +4,14 @@ import type { IRoomStatus } from '../types';
 
 export const roomsStatus = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHotelRoomsStatus: builder.query<IRoomStatus[], void>({
-      query: () => ({
+    getHotelRoomsStatus: builder.query<
+      IRoomStatus[],
+      { color_id?: string[]; search?: string } | void
+    >({
+      query: (params) => ({
         url: 'hotel/room-statuses/',
         method: 'GET',
+        params: params ?? {},
       }),
       providesTags: ['HOTEL_ROOM_STATUS'],
     }),

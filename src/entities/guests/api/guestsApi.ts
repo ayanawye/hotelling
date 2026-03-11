@@ -5,10 +5,14 @@ import type { IPagination } from '@shared/types';
 
 export const guestsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getGuests: builder.query<IPagination<IGuest>, void>({
-      query: () => ({
+    getGuests: builder.query<
+      IPagination<IGuest>,
+      { search?: string; status: string[] } | void
+    >({
+      query: (params) => ({
         url: 'guests/',
         method: 'GET',
+        params: params ?? {},
       }),
     }),
     getGuestById: builder.query<IGuest, number>({

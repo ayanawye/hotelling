@@ -10,4 +10,10 @@
     font-weight: 500;
     line-height: 20px;
   }
+
+  :global(.ant-select) {
+    height: 40px;
+    max-width: max-content !important;
+    min-width: 120px;
+  }
 }

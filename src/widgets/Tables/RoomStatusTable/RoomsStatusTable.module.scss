@@ -1,11 +1,8 @@
 .filter {
-  max-width: 204px;
-  width: 100% !important;
-  min-width: 204px;
-  max-height: 40px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 0 16px;
+  :global(.ant-select) {
+    max-width: 260px !important;
+    min-width: 200px !important;
+  }
 }
 
 .optionWrapper {

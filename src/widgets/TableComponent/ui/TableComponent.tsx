@@ -30,6 +30,8 @@ interface ComponentProps<T> extends Omit<TableProps<T>, 'title' | 'footer'> {
   title?: React.ReactNode | (() => React.ReactNode);
   onRow?: TableProps<T>['onRow'];
   footer?: React.ReactNode | (() => React.ReactNode);
+  tableLayout?: TableProps<T>['tableLayout'];
+  childrenColumnName?: string;
 }
 
 export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
@@ -43,6 +45,8 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
     title,
     onRow,
     footer,
+    tableLayout,
+    childrenColumnName,
   } = props;
 
   const { tableStyles, tableThemeConfig, emptyStyles } = useStyles();
@@ -62,6 +66,7 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
       }}
     >
       <Table
+        childrenColumnName={childrenColumnName}
         title={
           title
             ? typeof title === 'function'
@@ -78,7 +83,7 @@ export const TableComponent = <T extends object>(props: ComponentProps<T>) => {
         onChange={onChange}
         size={size}
         loading={loading}
-        tableLayout='fixed'
+        tableLayout={tableLayout ?? 'fixed'}
         pagination={false}
         style={tableStyles}
         footer={

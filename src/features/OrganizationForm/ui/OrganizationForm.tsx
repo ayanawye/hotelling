@@ -167,7 +167,14 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({
         <div className={styles.section}>
           <h3>Контактные данные</h3>
           <div className={styles.row}>
-            <Form.Item name='gmail' label='Email'>
+            <Form.Item
+              name='gmail'
+              label='Email'
+              rules={[
+                { required: true, message: 'Введите email' },
+                { type: 'email', message: 'Введите корректный email' },
+              ]}
+            >
               <Input placeholder='Email' variant='borderless' />
             </Form.Item>
             <Form.Item name='website' label='Веб сайт'>

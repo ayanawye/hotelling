@@ -146,10 +146,24 @@ span {
 
 .ant-table-cell {
   padding-left: 0 !important;
+  padding-right: 30px !important;
+  background: var(--white-color) !important;
 }
 
 .ant-table-title {
   padding: 0 !important;
+}
+
+.ant-select-content {
+  flex-wrap: nowrap !important;
+}
+
+.ant-select-selection-item-content {
+  color: var(--black-color);
+}
+
+.noWrapColumn {
+  white-space: nowrap;
 }
 
 thead > tr > th {

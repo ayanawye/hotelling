@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { CloseIcon, FilerIcon2, FilterIcon } from '@shared/assets';
 import { SelectWithSearch } from '@shared/ui';
 import s from './FilterRooms.module.scss';
+import type { IHotelEnclosure, IHotelFloor, IRoomType } from '@entities/rooms';
+import { mapToOptions } from '@shared/lib';
 
 interface FilterRoomsProps {
   onApply: (filters: {
@@ -11,6 +13,9 @@ interface FilterRoomsProps {
     roomType?: string;
   }) => void;
   onResetAll: () => void;
+  enclosure?: IHotelEnclosure[];
+  floors?: IHotelFloor[];
+  roomTypes?: IRoomType[];
   initialFilters: { enclosure?: string; floor?: string; roomType?: string };
 }
 
@@ -18,6 +23,9 @@ export const FilterRooms = ({
   onApply,
   onResetAll,
   initialFilters,
+  enclosure,
+  roomTypes,
+  floors,
 }: FilterRoomsProps) => {
   const [open, setOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(initialFilters);
@@ -39,12 +47,6 @@ export const FilterRooms = ({
   };
 
   const handleResetAll = () => {
-    const resetFilters = {
-      enclosure: undefined,
-      floor: undefined,
-      roomType: undefined,
-    };
-    setTempFilters(resetFilters);
     onResetAll();
     setOpen(false);
   };
@@ -62,85 +64,77 @@ export const FilterRooms = ({
         />
       </div>
 
-      <div className={s.fieldWrapper}>
-        <div className={s.fieldLabelRow}>
-          <span className={s.fieldLabel}>Выберите корпус</span>
-          <Button
-            type='link'
-            size='small'
-            onClick={() => handleResetField('enclosure')}
-            className={s.resetLink}
-          >
-            Сбросить
-          </Button>
+      <div className={s.fields}>
+        <div className={s.fieldWrapper}>
+          <div className={s.fieldLabelRow}>
+            <span className={s.fieldLabel}>Выберите корпус</span>
+            <Button
+              type='link'
+              size='small'
+              onClick={() => handleResetField('enclosure')}
+              className={s.resetLink}
+            >
+              Сбросить
+            </Button>
+          </div>
+          <SelectWithSearch
+            placeholder='Корпус'
+            className={s.select}
+            value={tempFilters.enclosure}
+            onChange={(val) =>
+              setTempFilters((prev) => ({ ...prev, enclosure: val as string }))
+            }
+            options={mapToOptions(enclosure)}
+          />
         </div>
-        <SelectWithSearch
-          placeholder='Корпус'
-          className={s.select}
-          value={tempFilters.enclosure}
-          onChange={(val) =>
-            setTempFilters((prev) => ({ ...prev, enclosure: val as string }))
-          }
-          options={[
-            { value: 'Корпус 1', label: 'Корпус 1' },
-            { value: 'Корпус 2', label: 'Корпус 2' },
-            { value: 'Корпус 3', label: 'Корпус 3' },
-          ]}
-        />
-      </div>
 
-      <div className={s.fieldWrapper}>
-        <div className={s.fieldLabelRow}>
-          <span className={s.fieldLabel}>Выберите этаж</span>
-          <Button
-            type='link'
-            size='small'
-            onClick={() => handleResetField('floor')}
-            className={s.resetLink}
-          >
-            Сбросить
-          </Button>
+        <div className={s.fieldWrapper}>
+          <div className={s.fieldLabelRow}>
+            <span className={s.fieldLabel}>Выберите этаж</span>
+            <Button
+              type='link'
+              size='small'
+              onClick={() => handleResetField('floor')}
+              className={s.resetLink}
+            >
+              Сбросить
+            </Button>
+          </div>
+          <SelectWithSearch
+            placeholder='Этаж'
+            className={s.select}
+            value={tempFilters.floor}
+            onChange={(val) =>
+              setTempFilters((prev) => ({ ...prev, floor: val as string }))
+            }
+            options={mapToOptions(
+              floors?.map((el) => ({ ...el, name: el.floor })),
+            )}
+          />
         </div>
-        <SelectWithSearch
-          placeholder='Этаж'
-          className={s.select}
-          value={tempFilters.floor}
-          onChange={(val) =>
-            setTempFilters((prev) => ({ ...prev, floor: val as string }))
-          }
-          options={[
-            { value: '1', label: '1' },
-            { value: '2', label: '2' },
-            { value: '3', label: '3' },
-          ]}
-        />
-      </div>
 
-      <div className={s.fieldWrapper}>
-        <div className={s.fieldLabelRow}>
-          <span className={s.fieldLabel}>Выберите тип номера</span>
-          <Button
-            type='link'
-            size='small'
-            onClick={() => handleResetField('roomType')}
-            className={s.resetLink}
-          >
-            Сбросить
-          </Button>
+        <div className={s.fieldWrapper}>
+          <div className={s.fieldLabelRow}>
+            <span className={s.fieldLabel}>Выберите тип номера</span>
+            <Button
+              type='link'
+              size='small'
+              onClick={() => handleResetField('roomType')}
+              className={s.resetLink}
+            >
+              Сбросить
+            </Button>
+          </div>
+          <SelectWithSearch
+            placeholder='Тип номера'
+            className={s.select}
+            value={tempFilters.roomType}
+            onChange={(val) =>
+              setTempFilters((prev) => ({ ...prev, roomType: val as string }))
+            }
+            options={mapToOptions(roomTypes)}
+          />
         </div>
-        <SelectWithSearch
-          placeholder='Тип номера'
-          className={s.select}
-          value={tempFilters.roomType}
-          onChange={(val) =>
-            setTempFilters((prev) => ({ ...prev, roomType: val as string }))
-          }
-          options={[
-            { value: 'Стандарт', label: 'Стандарт' },
-            { value: 'Люкс', label: 'Люкс' },
-            { value: 'Делюкс', label: 'Делюкс' },
-          ]}
-        />
       </div>
 
       <Divider className={s.divider} />

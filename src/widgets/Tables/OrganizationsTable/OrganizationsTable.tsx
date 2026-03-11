@@ -1,26 +1,45 @@
-import { SearchIcon } from '@shared/assets';
-import { Button, DeleteModal, InputTextField, SelectWithSearch, } from '@shared/ui';
+import { BottomArrowIcon, SearchIcon } from '@shared/assets';
+import {
+  Button,
+  DeleteModal,
+  InputTextField,
+  SelectWithSearch,
+} from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { type IOrganization, useDeleteOrganizationMutation, useGetOrganizationsQuery, } from '@entities/organizations';
+import {
+  type IOrganization,
+  useDeleteOrganizationMutation,
+  useGetOrganizationsQuery,
+} from '@entities/organizations';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
-import { getErrorMessage } from '@shared/lib';
+import { getErrorMessage, PAYMENT_TYPE } from '@shared/lib';
+import { useDebounce } from '@shared/hooks/useDebounce.ts';
+import { ROOMS_COLOR_CONFIG } from '@entities/rooms';
+import s from '@widgets/Tables/RoomStatusTable/RoomsStatusTable.module.scss';
+import type { PaymentType } from '@entities/finance';
 
 export const OrganizationsTable = () => {
   const navigate = useNavigate();
 
-  const { data } = useGetOrganizationsQuery();
-  const [deleteOrganization, { isLoading }] = useDeleteOrganizationMutation();
-
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{ search: string; type_id: string[] }>({
     search: '',
-    type: undefined,
+    type_id: [],
   });
+
+  const debouncedSearch = useDebounce(filter.search, 500);
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedOrg, setSelectedOrg] = useState<IOrganization | null>(null);
+
+  const { data } = useGetOrganizationsQuery({
+    search: debouncedSearch,
+    type_id: filter.type_id,
+  });
+  const [deleteOrganization, { isLoading }] = useDeleteOrganizationMutation();
 
   const handleDelete = async () => {
     try {
@@ -31,31 +50,64 @@ export const OrganizationsTable = () => {
     }
   };
 
+  console.log(data);
+
   const columns: ColumnsType<IOrganization> = [
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
+      className: 'noWrapColumn',
+      fixed: 'left',
     },
     {
       title: 'Тип клиента',
       dataIndex: ['organization_type', 'name'],
       key: 'organization_type',
+      className: 'noWrapColumn',
     },
     {
       title: 'ИНН',
       dataIndex: 'inn',
       key: 'inn',
+      className: 'noWrapColumn',
     },
     {
       title: 'Банк',
       dataIndex: 'bank',
       key: 'bank',
+      className: 'noWrapColumn',
     },
     {
-      title: 'Расч-ь',
-      dataIndex: 'account',
+      title: 'Расчетные счета',
+      dataIndex: 'settlement',
       key: 'account',
+      className: 'noWrapColumn',
+    },
+    {
+      title: 'Вид платежа',
+      dataIndex: ['payment_type', 'type'],
+      key: 'payment_type_name',
+      className: 'noWrapColumn',
+      render: (type: PaymentType) => PAYMENT_TYPE[type],
+    },
+    {
+      title: 'Цвет брони по умолчанию',
+      dataIndex: 'armor_color',
+      key: 'armor_color',
+      className: 'noWrapColumn',
+    },
+    {
+      title: 'Почта',
+      dataIndex: 'gmail',
+      key: 'gmail',
+      className: 'noWrapColumn',
+    },
+    {
+      title: 'Первый телефон',
+      dataIndex: 'first_phone',
+      key: 'first_phone',
+      className: 'noWrapColumn',
     },
     {
       title: 'Действия',
@@ -82,9 +134,27 @@ export const OrganizationsTable = () => {
       </div>
       <div className='table-header-filter'>
         <SelectWithSearch
-          placeholder='Search'
-          onChange={() => setFilter({ ...filter })}
-          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
+          mode='multiple'
+          maxTagCount={1}
+          allowClear
+          size={'large'}
+          suffixIcon={<BottomArrowIcon />}
+          placeholder='Select'
+          onChange={(value) =>
+            setFilter({ ...filter, type_id: value as string[] })
+          }
+          options={Object.entries(ROOMS_COLOR_CONFIG).map(([key, config]) => ({
+            value: key,
+            label: (
+              <div className={s.optionWrapper}>
+                <div
+                  className={s.colorDot}
+                  style={{ backgroundColor: config.backgroundColor }}
+                />
+                <span className={s.label}>{config.label}</span>
+              </div>
+            ),
+          }))}
         />
         <Button variant='primary' onClick={() => navigate('create')}>
           Создать
@@ -100,6 +170,7 @@ export const OrganizationsTable = () => {
         data={data}
         columns={columns}
         loading={false}
+        tableLayout={'auto'}
       />
       <DeleteModal
         isOpen={deleteModalOpen}
