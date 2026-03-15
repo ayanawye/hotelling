@@ -1,4 +1,5 @@
 import { type SelectOption } from '@shared/types';
+import { PAYMENT_TYPE } from '@shared/lib/tableLabels.ts';
 
 interface MapToOptionsItem {
   id?: string | number;
@@ -24,9 +25,10 @@ export const mapToOptions = (
           item.description ||
           (item.first_name && `${item.first_name} ${item.last_name}`) ||
           (item.room && `Комната №: ${item.room}`) ||
+          PAYMENT_TYPE[item.type] ||
           item.full_name,
       ),
-      value: item.id ?? '',
+      value: item.id || item.type || '',
     })) || []
   );
 };

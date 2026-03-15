@@ -1,13 +1,20 @@
 import { baseApi } from '@shared/api/baseApi';
 
-import type { IFinanceCurrency } from '@entities/finance/types';
+import type {
+  IFinanceCurrency,
+  IFinanceCurrencyFilter,
+} from '@entities/finance/types';
 
 export const currencyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getFinanceCurrencies: builder.query<IFinanceCurrency[], void>({
-      query: () => ({
+    getFinanceCurrencies: builder.query<
+      IFinanceCurrency[],
+      IFinanceCurrencyFilter | void
+    >({
+      query: (params) => ({
         url: 'finance/currency/',
         method: 'GET',
+        params: params ?? {},
       }),
       providesTags: ['FINANCE_CURRENCY'],
     }),

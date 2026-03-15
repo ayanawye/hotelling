@@ -1,13 +1,20 @@
 import { baseApi } from '@shared/api/baseApi';
 
-import type { IFinancePaymentType } from '@entities/finance/types';
+import type {
+  IFinancePaymentType,
+  IFinancePaymentTypeFilter,
+} from '@entities/finance/types';
 
 export const paymentTypeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getFinancePaymentTypes: builder.query<IFinancePaymentType[], void>({
-      query: () => ({
+    getFinancePaymentTypes: builder.query<
+      IFinancePaymentType[],
+      IFinancePaymentTypeFilter | void
+    >({
+      query: (params) => ({
         url: 'finance/payment_type/',
         method: 'GET',
+        params: params || {},
       }),
       providesTags: ['FINANCE_PAYMENT_TYPE'],
     }),

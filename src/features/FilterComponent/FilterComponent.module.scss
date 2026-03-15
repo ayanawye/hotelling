@@ -84,6 +84,19 @@
   margin-bottom: 8px;
 }
 
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-gray-1);
+
+  span {
+    line-height: 20px;
+  }
+}
+
 .fieldLabel {
   font-size: 14px;
   color: #898989;

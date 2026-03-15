@@ -4,7 +4,7 @@ import { TableComponent } from '@widgets/TableComponent';
 import { Alert, message, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { FilterRooms } from '@features/FilterRooms/FilterRooms.tsx';
+import { FilterComponent } from '@features/FilterComponent/FilterComponent.tsx';
 import { useNavigate } from 'react-router-dom';
 import { TableActions } from '@widgets/TableActions';
 import {
@@ -15,15 +15,16 @@ import {
   useGetHotelRoomStocksQuery,
   useGetHotelRoomsTypesQuery,
 } from '@entities/rooms';
+import { mapToOptions } from '@shared/lib';
 
 export const RoomStockTable = () => {
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState({
     search: '',
-    enclosure: undefined as string | undefined,
-    floor: undefined as string | undefined,
-    roomType: undefined as string | undefined,
+    enclosure: '',
+    floor: '',
+    roomType: '',
   });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -130,6 +131,27 @@ export const RoomStockTable = () => {
     },
   ];
 
+  const filterConfigs = [
+    {
+      name: 'enclosure',
+      label: 'Выберите корпус',
+      placeholder: 'Корпус',
+      options: mapToOptions(hulls),
+    },
+    {
+      name: 'floor',
+      label: 'Выберите этаж',
+      placeholder: 'Этаж',
+      options: mapToOptions(floors?.map((el) => ({ ...el, name: el.floor }))),
+    },
+    {
+      name: 'roomType',
+      label: 'Выберите тип номера',
+      placeholder: 'Тип номера',
+      options: mapToOptions(roomTypes),
+    },
+  ];
+
   const TableHeader = (
     <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
@@ -141,22 +163,20 @@ export const RoomStockTable = () => {
         />
       </div>
       <div className='table-header-filter'>
-        <FilterRooms
+        <FilterComponent
           initialFilters={{
             enclosure: filter.enclosure,
             floor: filter.floor,
             roomType: filter.roomType,
           }}
-          enclosure={hulls}
-          floors={floors}
-          roomTypes={roomTypes}
+          configs={filterConfigs}
           onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
           onResetAll={() =>
             setFilter({
               ...filter,
-              enclosure: undefined,
-              floor: undefined,
-              roomType: undefined,
+              enclosure: '',
+              floor: '',
+              roomType: '',
             })
           }
         />

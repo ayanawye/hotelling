@@ -15,7 +15,9 @@ interface Props {
     | 'outlined_modal'
     | 'outlined_big'
     | 'outlined_danger'
-    | 'danger_modal';
+    | 'danger_modal'
+    | 'filter_unchecked'
+    | 'filter_active';
   onClick?: () => void;
   className?: string;
   style?: CSSProperties;
