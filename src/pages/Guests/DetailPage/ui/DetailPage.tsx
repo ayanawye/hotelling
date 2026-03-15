@@ -76,10 +76,10 @@ const DetailPage = () => {
         const config = RESERVATION_STATUS_CONFIG[status];
         return (
           <Tag
-            color={config.bgColor}
-            style={{ color: config.textColor, border: 'none' }}
+            color={config?.bgColor}
+            style={{ color: config?.textColor, border: 'none' }}
           >
-            {config.label}
+            {config?.label}
           </Tag>
         );
       },

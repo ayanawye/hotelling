@@ -1,6 +1,6 @@
 import { SearchIcon } from '@shared/assets';
 import { useStyles } from '@shared/styles';
-import { InputTextField, PageLoader, SelectWithSearch } from '@shared/ui';
+import { InputTextField, PageLoader } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
 import { Alert, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -17,6 +17,10 @@ import type {
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '@shared/hooks/useDebounce.ts';
+import {
+  FilterComponent,
+  type FilterConfig,
+} from '@features/FilterComponent/FilterComponent.tsx';
 
 import s from './GuestsTable.module.scss';
 
@@ -25,16 +29,25 @@ export const GuestsTable = () => {
 
   const navigate = useNavigate();
 
-  const [filter, setFilter] = useState<{ search: string; status: string[] }>({
+  const [filter, setFilter] = useState<{
+    search: string;
+    status: string[];
+    guest_category: string | null;
+    language: string | null;
+  }>({
     search: '',
     status: [],
+    guest_category: null,
+    language: null,
   });
 
   const debouncedSearch = useDebounce(filter.search, 500);
 
+  const { search, ...restFilters } = filter;
+
   const { data, isLoading, isError } = useGetGuestsQuery({
     search: debouncedSearch,
-    status: filter.status,
+    ...restFilters,
   });
 
   const columns: ColumnsType<IGuest> = [
@@ -102,6 +115,40 @@ export const GuestsTable = () => {
     },
   ];
 
+  const filterConfigs: FilterConfig[] = [
+    {
+      name: 'language',
+      label: 'Выберите язык',
+      placeholder: 'Язык',
+      options: [
+        { label: 'Русский', value: 'ru' },
+        { label: 'Английский', value: 'en' },
+        { label: 'Немецкий', value: 'de' },
+      ],
+    },
+    {
+      name: 'guest_category',
+      label: 'Выберите категорию',
+      placeholder: 'Категория гостя',
+      options: [
+        { label: 'Нежелательный', value: 'undesirable' },
+        { label: 'Неплательщик', value: 'non_payer' },
+        { label: 'Постоянный', value: 'regular' },
+      ],
+    },
+    {
+      name: 'status',
+      label: 'Выберите статус',
+      placeholder: 'Статус гостя',
+      options: [
+        { label: 'Черновик', value: 'DRAFT' },
+        { label: 'Активный', value: 'ACTIVE' },
+        { label: 'Архивный', value: 'ARCHIVED' },
+      ],
+      mode: 'multiple',
+    },
+  ];
+
   const TableHeader = (
     <div className={clsx(s.tableHeader, 'table-header')}>
       <InputTextField
@@ -110,19 +157,21 @@ export const GuestsTable = () => {
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <SelectWithSearch
-        mode='multiple'
-        placement={'bottomRight'}
-        maxTagCount={1}
-        allowClear
-        placeholder='Статус'
-        options={[
-          { value: 'DRAFT', label: 'Отменен' },
-          { value: 'ACTIVE', label: 'Проживает' },
-          { value: 'ARCHIVED', label: 'Завершен' },
-        ]}
-        onChange={(value) =>
-          setFilter({ ...filter, status: value as string[] })
+      <FilterComponent
+        initialFilters={{
+          language: filter.language,
+          guest_category: filter.guest_category,
+          status: filter.status,
+        }}
+        configs={filterConfigs}
+        onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
+        onResetAll={() =>
+          setFilter({
+            ...filter,
+            status: [],
+            guest_category: null,
+            language: null,
+          })
         }
       />
     </div>

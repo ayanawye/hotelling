@@ -1,7 +1,7 @@
 import { SearchIcon } from '@shared/assets';
-import { Button, InputTextField, SelectWithSearch } from '@shared/ui';
+import { Button, InputTextField, PageLoader } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { message, Switch } from 'antd';
+import { Alert, message, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
@@ -11,16 +11,31 @@ import {
 } from '@entities/finance';
 import { useNavigate } from 'react-router-dom';
 import { getErrorMessage } from '@shared/lib';
+import {
+  FilterComponent,
+  type FilterConfig,
+} from '@features/FilterComponent/FilterComponent.tsx';
+
+const filterInitialState = {
+  is_base: null,
+  is_operational: null,
+  is_allowed_for_payment: null,
+  is_rate_static: null,
+  is_active: null,
+};
 
 export const CurrenciesTable = () => {
-  const { data, isLoading } = useGetFinanceCurrenciesQuery();
-  const [patchFinanceCurrency, { isLoading: patchLoading }] =
-    usePatchFinanceCurrencyMutation();
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState({
     search: '',
+    ...filterInitialState,
   });
+
+  const { data, isLoading, isError } = useGetFinanceCurrenciesQuery(filter);
+  console.log(filter);
+  const [patchFinanceCurrency, { isLoading: patchLoading }] =
+    usePatchFinanceCurrencyMutation();
 
   const handleUpdate = async (id: number, field: string, checked: boolean) => {
     try {
@@ -36,19 +51,31 @@ export const CurrenciesTable = () => {
       title: 'Код',
       dataIndex: 'code',
       key: 'code',
-      width: '12%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
-      width: '13%',
+      className: 'noWrapColumn',
+    },
+    {
+      title: 'Статичный курс',
+      dataIndex: 'is_rate_static',
+      key: 'is_rate_static',
+      className: 'noWrapColumn',
+      render: (checked, record) => (
+        <Switch
+          checked={checked}
+          onChange={() => handleUpdate(record.id, 'is_rate_static', !checked)}
+        />
+      ),
     },
     {
       title: 'Базовая',
       dataIndex: 'is_base',
       key: 'is_base',
-      width: '17%',
+      className: 'noWrapColumn',
       render: (checked, record) => (
         <Switch
           checked={checked}
@@ -60,7 +87,7 @@ export const CurrenciesTable = () => {
       title: 'Операционная',
       dataIndex: 'is_operational',
       key: 'is_operational',
-      width: '17%',
+      className: 'noWrapColumn',
       render: (checked, record) => (
         <Switch
           checked={checked}
@@ -72,7 +99,7 @@ export const CurrenciesTable = () => {
       title: 'Доступна для оплаты',
       dataIndex: 'is_allowed_for_payment',
       key: 'is_allowed_for_payment',
-      width: '17%',
+      className: 'noWrapColumn',
       render: (checked, record) => (
         <Switch
           checked={checked}
@@ -86,19 +113,47 @@ export const CurrenciesTable = () => {
       title: 'Курс к базовой валюте',
       dataIndex: 'rate_to_base',
       key: 'rate_to_base',
-      width: '17%',
+      className: 'noWrapColumn',
     },
     {
       title: 'Активна',
       dataIndex: 'is_active',
       key: 'is_active',
-      width: '7%',
+      className: 'noWrapColumn',
       render: (checked, record) => (
         <Switch
           checked={checked}
           onChange={() => handleUpdate(record.id, 'is_active', !checked)}
         />
       ),
+    },
+  ];
+
+  const filterConfigs: FilterConfig[] = [
+    {
+      name: 'is_active',
+      label: 'Активна',
+      type: 'checkbox',
+    },
+    {
+      name: 'is_rate_static',
+      label: 'Статический курс',
+      type: 'checkbox',
+    },
+    {
+      name: 'is_allowed_for_payment',
+      label: 'Доступна для оплаты',
+      type: 'checkbox',
+    },
+    {
+      name: 'is_operational',
+      label: 'Операционная валюта',
+      type: 'checkbox',
+    },
+    {
+      name: 'is_base',
+      label: 'Базовая валюта',
+      type: 'checkbox',
     },
   ];
 
@@ -113,10 +168,16 @@ export const CurrenciesTable = () => {
         />
       </div>
       <div className='table-header-filter'>
-        <SelectWithSearch
-          placeholder='Select'
-          onChange={() => setFilter({ ...filter })}
-          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
+        <FilterComponent
+          initialFilters={filter}
+          configs={filterConfigs}
+          onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
+          onResetAll={() =>
+            setFilter({
+              ...filter,
+              ...filterInitialState,
+            })
+          }
         />
         <Button variant='primary' onClick={() => navigate('create')}>
           Создать
@@ -125,12 +186,21 @@ export const CurrenciesTable = () => {
     </div>
   );
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки налогов' type='error' />;
+  }
+
   return (
     <TableComponent
       title={TableHeader}
       data={data}
       columns={columns}
       loading={isLoading || patchLoading}
+      tableLayout={'auto'}
     />
   );
 };

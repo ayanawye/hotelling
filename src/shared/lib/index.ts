@@ -10,5 +10,6 @@ export {
   PAYMENT_TYPE,
   GUEST_STATUS,
 } from './tableLabels';
+export { PaymentTypeOptions } from './tableOptions';
 export { mapToOptions } from './mapToOptions';
 export { getErrorMessage } from './getErrorMessage';
