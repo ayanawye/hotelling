@@ -64,6 +64,12 @@ export const CurrenciesForm: React.FC<CurrenciesFormProps> = ({
         <div className={styles.section}>
           <div className={styles.sectionTitle}>Использование валюты</div>
           <div className={styles.switchGroup}>
+            <Form.Item name='is_rate_static' valuePropName='checked'>
+              <div className={styles.switchRow}>
+                <Switch />
+                <span>Статический курс</span>
+              </div>
+            </Form.Item>
             <Form.Item name='is_base' valuePropName='checked'>
               <div className={styles.switchRow}>
                 <Switch />

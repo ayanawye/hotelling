@@ -1,11 +1,21 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@shared/assets';
-import { InputTextField, SelectWithSearch } from '@shared/ui';
+import { InputTextField, PageLoader } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
-import { Button, Tag } from 'antd';
+import { Alert, Button, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { type IPayment, useGetPaymentsQuery } from '@entities/finance';
+import {
+  type IPayment,
+  useGetFinanceCurrenciesQuery,
+  useGetFinancePaymentTypesQuery,
+  useGetPaymentsQuery,
+} from '@entities/finance';
+import {
+  FilterComponent,
+  type FilterConfig,
+} from '@features/FilterComponent/FilterComponent.tsx';
+import { mapToOptions } from '@shared/lib';
 
 const STATUS_CONFIG: Record<
   string,
@@ -17,11 +27,21 @@ const STATUS_CONFIG: Record<
 };
 
 export const PaymentsTable = () => {
-  const { data } = useGetPaymentsQuery();
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{
+    search: string;
+    status: string[];
+    guest_category: string | null;
+    language: string | null;
+  }>({
     search: '',
-    status: undefined,
+    status: [],
+    guest_category: null,
+    language: null,
   });
+
+  const { data, isLoading, isError } = useGetPaymentsQuery();
+  const { data: paymentTypes } = useGetFinancePaymentTypesQuery();
+  const { data: currencies } = useGetFinanceCurrenciesQuery();
 
   const columns: ColumnsType<IPayment> = [
     {
@@ -99,6 +119,32 @@ export const PaymentsTable = () => {
     },
   ];
 
+  const filterConfigs: FilterConfig[] = [
+    {
+      name: 'type',
+      label: 'Выберите вид оплаты',
+      placeholder: 'Вид оплаты',
+      options: mapToOptions(paymentTypes),
+    },
+    {
+      name: 'currency',
+      label: 'Выберите валюту',
+      placeholder: 'Валюту',
+      options: mapToOptions(currencies),
+    },
+    {
+      name: 'status',
+      label: 'Выберите статус',
+      placeholder: 'Статус гостя',
+      options: [
+        { label: 'Черновик', value: 'DRAFT' },
+        { label: 'Активный', value: 'ACTIVE' },
+        { label: 'Архивный', value: 'ARCHIVED' },
+      ],
+      mode: 'multiple',
+    },
+  ];
+
   const TableHeader = (
     <div className='table-header'>
       <div style={{ display: 'flex', gap: '16px' }}>
@@ -110,11 +156,22 @@ export const PaymentsTable = () => {
         />
       </div>
       <div className='table-header-filter'>
-        <SelectWithSearch
-          placeholder='Оплаты'
-          maxTagPlaceholder={() => 'Цвет статуса номера'}
-          onChange={() => setFilter({ ...filter })}
-          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
+        <FilterComponent
+          initialFilters={{
+            language: filter.language,
+            guest_category: filter.guest_category,
+            status: filter.status,
+          }}
+          configs={filterConfigs}
+          onApply={(newFilters) => setFilter({ ...filter, ...newFilters })}
+          onResetAll={() =>
+            setFilter({
+              ...filter,
+              status: [],
+              guest_category: null,
+              language: null,
+            })
+          }
         />
         <Button
           type='primary'
@@ -130,6 +187,14 @@ export const PaymentsTable = () => {
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки типов оплат' type='error' />;
+  }
 
   return (
     <TableComponent

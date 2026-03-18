@@ -50,6 +50,7 @@ export const HotelGeneralSettingsForm: React.FC<
 
     formData.append('name', values.name);
     formData.append('address', values.address);
+    formData.append('notifications_enabled', values.notifications_enabled);
 
     try {
       await updateSettings(formData).unwrap();

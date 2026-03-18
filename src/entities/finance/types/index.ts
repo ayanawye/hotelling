@@ -42,12 +42,26 @@ export interface IFinanceCurrency {
   updated_at?: string;
 }
 
+export interface IFinanceCurrencyFilter {
+  search?: string;
+  is_base?: boolean | null;
+  is_operational?: boolean | null;
+  is_allowed_for_payment?: boolean | null;
+  is_rate_static?: boolean | null;
+  is_active?: boolean | null;
+}
+
 export interface IFinancePaymentType {
   id: number;
   hotel: string;
   type: PaymentType;
   code: string;
   operation: string;
+}
+
+export interface IFinancePaymentTypeFilter {
+  search?: string;
+  type?: string;
 }
 
 export interface IPaymentAllocation {

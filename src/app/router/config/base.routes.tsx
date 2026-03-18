@@ -386,6 +386,43 @@ export const baseRoutes: IAccessRouteObject[] = [
     ],
   },
   {
+    path: '/cash',
+    children: [
+      {
+        path: 'all-cash',
+        element: <Pages.CashPage />,
+      },
+      {
+        path: 'all-cash/create',
+        element: <Pages.CashCreatePage />,
+      },
+      {
+        path: 'all-cash/edit/:id',
+        element: <Pages.CashEditPage />,
+      },
+      {
+        path: 'balance',
+        element: <Pages.CashBalancePage />,
+      },
+      {
+        path: 'balance/:id',
+        element: <Pages.CashBalanceDetailPage />,
+      },
+      {
+        path: 'shift',
+        element: <Pages.CashShiftPage />,
+      },
+      {
+        path: 'shift/create',
+        element: <Pages.CashShiftCreatePage />,
+      },
+      {
+        path: 'shift/edit/:id',
+        element: <Pages.CashShiftEditPage />,
+      },
+    ],
+  },
+  {
     path: '*',
     element: <Pages.NotFoundPage />,
   },

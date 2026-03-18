@@ -19,6 +19,7 @@ export const TaxesTable = () => {
   const navigation = useNavigate();
 
   const [search, setSearch] = useState('');
+  const [checked, setChecked] = useState<boolean | null>(null);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedTax, setSelectedTax] = useState<IFinanceTax | null>(null);
@@ -29,7 +30,7 @@ export const TaxesTable = () => {
     data,
     isLoading: isDataLoading,
     isError,
-  } = useGetFinanceTaxesQuery(debouncedSearch);
+  } = useGetFinanceTaxesQuery({ search: debouncedSearch, status: checked });
   const [patchTax, { isLoading: patchLoading }] = usePatchFinanceTaxMutation();
   const [deleteFinanceTax, { isLoading }] = useDeleteFinanceTaxMutation();
 
@@ -109,9 +110,17 @@ export const TaxesTable = () => {
         placeholder='Поиск'
         prefixIcon={<SearchIcon />}
       />
-      <Button variant='primary' onClick={() => navigation('create')}>
-        Создать
-      </Button>
+      <div className='table-header-filter'>
+        <Button
+          variant={checked ? 'filter_active' : 'filter_unchecked'}
+          onClick={() => setChecked((prev) => (prev ? null : true))}
+        >
+          Включен в стоимость
+        </Button>
+        <Button variant='primary' onClick={() => navigation('create')}>
+          Создать
+        </Button>
+      </div>
     </div>
   );
 

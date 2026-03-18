@@ -3,6 +3,7 @@ import {
   Button,
   DeleteModal,
   InputTextField,
+  PageLoader,
   SelectWithSearch,
 } from '@shared/ui';
 import { TableComponent } from '@widgets/TableComponent';
@@ -10,27 +11,32 @@ import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import {
   type IFinancePaymentType,
+  type PaymentType,
   useDeleteFinancePaymentTypeMutation,
   useGetFinancePaymentTypesQuery,
 } from '@entities/finance';
 import { TableActions } from '@widgets/TableActions';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
-import { getErrorMessage } from '@shared/lib';
+import { Alert, message } from 'antd';
+import { getErrorMessage, PAYMENT_TYPE, PaymentTypeOptions } from '@shared/lib';
+import clsx from 'clsx';
+
+import s from './PaymentTypesTable.module.scss';
 
 export const PaymentTypesTable = () => {
   const navigation = useNavigate();
 
-  const { data, isLoading } = useGetFinancePaymentTypesQuery();
-  const [deleteFinancePaymentType, { isLoading: deleteLoading }] =
-    useDeleteFinancePaymentTypeMutation();
-
   const [filter, setFilter] = useState({
     search: '',
+    type: '',
   });
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedPaymentType, setSelectedPaymentType] =
     useState<IFinancePaymentType | null>(null);
+
+  const { data, isLoading, isError } = useGetFinancePaymentTypesQuery(filter);
+  const [deleteFinancePaymentType, { isLoading: deleteLoading }] =
+    useDeleteFinancePaymentTypeMutation();
 
   const handleDelete = async () => {
     try {
@@ -46,6 +52,7 @@ export const PaymentTypesTable = () => {
       title: 'Тип оплаты',
       dataIndex: 'type',
       key: 'type',
+      render: (type: PaymentType) => PAYMENT_TYPE[type],
     },
     {
       title: 'Код',
@@ -71,7 +78,7 @@ export const PaymentTypesTable = () => {
   ];
 
   const TableHeader = (
-    <div className='table-header'>
+    <div className={clsx(s.filter, 'table-header')}>
       <InputTextField
         value={filter.search}
         onChange={(e) => setFilter({ ...filter, search: e.target.value })}
@@ -80,10 +87,10 @@ export const PaymentTypesTable = () => {
       />
       <div className='table-header-filter'>
         <SelectWithSearch
-          placeholder='Тип оплаты'
-          maxTagPlaceholder={() => 'Цвет статуса номера'}
-          onChange={() => setFilter({ ...filter })}
-          options={[{ value: 'INV-1001', label: 'INV-1001' }]}
+          allowClear
+          placeholder={'Тип оплаты'}
+          onChange={(value) => setFilter({ ...filter, type: value })}
+          options={PaymentTypeOptions}
         />
         <Button variant='primary' onClick={() => navigation('create')}>
           Создать
@@ -91,6 +98,14 @@ export const PaymentTypesTable = () => {
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isError) {
+    return <Alert title='Ошибка загрузки типов оплат' type='error' />;
+  }
 
   return (
     <>

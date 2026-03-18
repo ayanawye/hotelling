@@ -9,7 +9,6 @@ import type {
 } from '@entities/guests/types';
 import type { RoomsColor } from '@entities/rooms';
 import type { PersonalRole } from '@entities/staff';
-import type { PaymentType } from '@entities/finance';
 
 export const GUARANTEE_TYPE_LABELS: Record<IGuaranteeType, string> = {
   none: 'Без гарантии',
@@ -98,10 +97,10 @@ export const colorMap: Record<RoomsColor, { name: string; hex: string }> = {
   brown: { name: 'Коричневый', hex: '#873800' },
 };
 
-export const PAYMENT_TYPE: Record<PaymentType, string> = {
-  cash: 'Наличные',
-  card: 'Карта',
-  transfer: 'Перевод',
+export const PAYMENT_TYPE: Record<string, string> = {
+  cash: 'Наличный расчет',
+  card: 'Кредитная карта',
+  transfer: 'Банковский перевод',
 };
 
 export const GUEST_STATUS: Record<IGuestStatus, string> = {

@@ -2,6 +2,7 @@ import type { UserRole } from './types';
 import React from 'react';
 import {
   NavCalendarIcon,
+  NavCashIcon,
   NavConsumablesIcon,
   NavGuestsIcon,
   NavHotelIcon,
@@ -633,6 +634,68 @@ export const navigationConfig: NavItem[] = [
             key: 'laundry-orders-edit',
             label: 'Изменить заказ',
             path: '/laundry/orders/edit/:id',
+            menu: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: 'cash',
+    label: 'Кассы',
+    icon: <NavCashIcon />,
+    menu: true,
+    children: [
+      {
+        key: 'cash-all',
+        label: 'Касса',
+        path: '/cash/all-cash',
+        menu: true,
+        children: [
+          {
+            key: 'cash-all-create',
+            label: 'Создать кассу',
+            path: '/cash/all-cash/create',
+            menu: false,
+          },
+          {
+            key: 'cash-all-edit',
+            label: 'Изменить кассу',
+            path: '/cash/all-cash/edit/:id',
+            menu: false,
+          },
+        ],
+      },
+      {
+        key: 'cash-balance',
+        label: 'Баланс касс',
+        path: '/cash/balance',
+        menu: true,
+        children: [
+          {
+            key: 'cash-balance-info',
+            label: 'Детали баланса кассы',
+            path: '/cash/balance/:id',
+            menu: false,
+          },
+        ],
+      },
+      {
+        key: 'cash-shift',
+        label: 'Смены',
+        path: '/cash/shift',
+        menu: true,
+        children: [
+          {
+            key: 'cash-shift-create',
+            label: 'Создать смену',
+            path: '/cash/shift/create',
+            menu: false,
+          },
+          {
+            key: 'cash-shift-edit',
+            label: 'Изменить смену',
+            path: '/cash/shift/edit/:id',
             menu: false,
           },
         ],
