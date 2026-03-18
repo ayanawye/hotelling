@@ -299,6 +299,32 @@ export const LaundryOrdersEditPage = Loadable(
   lazy(() => import('@pages/Laundry/Orders/EditOrder/EditOrder')),
 );
 
+// CASH
+export const CashPage = Loadable(
+  lazy(() => import('@pages/Cash/AllCash/AllCash')),
+);
+export const CashCreatePage = Loadable(
+  lazy(() => import('@pages/Cash/AllCash/CashCreate/CashCreate')),
+);
+export const CashEditPage = Loadable(
+  lazy(() => import('@pages/Cash/AllCash/CashEdit/CashEdit')),
+);
+export const CashBalancePage = Loadable(
+  lazy(() => import('@pages/Cash/CashBalance/CashBalance')),
+);
+export const CashBalanceDetailPage = Loadable(
+  lazy(() => import('@pages/Cash/CashBalance/CashBalanceDetail')),
+);
+export const CashShiftPage = Loadable(
+  lazy(() => import('@pages/Cash/CashShifts/CashShifts')),
+);
+export const CashShiftCreatePage = Loadable(
+  lazy(() => import('@pages/Cash/CashShifts/CashShiftCreate/CashShiftCreate')),
+);
+export const CashShiftEditPage = Loadable(
+  lazy(() => import('@pages/Cash/CashShifts/CashShiftEdit/CashShiftEdit.tsx')),
+);
+
 // Admin
 export const AdminPage = Loadable(
   lazy(() => import('@pages/Admin/ui/AdminPage')),

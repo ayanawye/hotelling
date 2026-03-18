@@ -26,3 +26,6 @@ export { WashingsTable } from './WashingsTable/WashingsTable';
 export { LaundryItemsTable } from './LaundryItemsTable/LaundryItemsTable';
 export { LaundryOrdersTable } from './LaundryOrdersTable/LaundryOrdersTable';
 export { ConsumableBreakdownsTable } from './ConsumableBreakdownsTable/ConsumableBreakdownsTable';
+export { CashTable } from './CashTable/CashTable';
+export { CashBalanceTable } from './CashBalanceTable/CashBalanceTable';
+export { CashShiftTable } from './CashShiftTable/CashShiftTable';

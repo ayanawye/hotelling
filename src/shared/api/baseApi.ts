@@ -126,6 +126,11 @@ export const baseApi = createApi({
     'WASHING',
     'LAUNDRY_ITEMS',
     'LAUNDRY_ORDER',
+    'CASH_CASH',
+    'CASH_BALANCE',
+    'CASH_SHIFTS',
+    'CASH_TRANSACTION',
+    'CASH_SHIFT_BALANCE',
   ],
   endpoints: () => ({}),
 });
