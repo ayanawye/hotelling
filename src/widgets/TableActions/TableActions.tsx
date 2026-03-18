@@ -7,37 +7,44 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   record: any;
-  setSelectedItem: (data: any) => void;
-  setDeleteModalOpen: (isOpen: boolean) => void;
+  readonly?: boolean;
+  setSelectedItem?: (data: any) => void;
+  setDeleteModalOpen?: (isOpen: boolean) => void;
 }
 
 export const TableActions: FC<Props> = ({
   record,
+  readonly,
   setSelectedItem,
   setDeleteModalOpen,
 }) => {
   const navigate = useNavigate();
 
-  const actions = useMemo(
-    () => [
+  const actions = useMemo(() => {
+    const editAction = {
+      label: readonly ? 'Детали' : 'Изменить',
+      color: 'black',
+      icon: <EditBlackIcon />,
+      onClick: () => navigate(`${readonly ? '' : 'edit/'}${record.id}`),
+    };
+
+    if (readonly) {
+      return [editAction];
+    }
+
+    return [
       {
         label: 'Удалить',
         color: 'red',
         icon: <DeleteRedIcon />,
         onClick: () => {
-          setSelectedItem(record);
-          setDeleteModalOpen(true);
+          setSelectedItem?.(record);
+          setDeleteModalOpen?.(true);
         },
       },
-      {
-        label: 'Изменить',
-        color: 'black',
-        icon: <EditBlackIcon />,
-        onClick: () => navigate(`edit/${record.id}`),
-      },
-    ],
-    [],
-  );
+      editAction,
+    ];
+  }, [record, navigate, setSelectedItem, setDeleteModalOpen, readonly]);
 
   return (
     <div className={s.actions}>

@@ -21,6 +21,7 @@ export { default as NavStaffIcon } from './icons/navStaffIcon.svg?react';
 export { default as NavStatisticsIcon } from './icons/navStatisticsIcon.svg?react';
 export { default as NavTariffIcon } from './icons/navTariffIcon.svg?react';
 export { default as NavWalletIcon } from './icons/navWalletIcon.svg?react';
+export { default as NavCashIcon } from './icons/navCashIcon.svg?react';
 export { default as RightArrow } from './icons/rightArrow.svg?react';
 export { default as BottomArrowIcon } from './icons/bottomArrow.svg?react';
 export { default as SearchIcon } from './icons/search-icon.svg?react';

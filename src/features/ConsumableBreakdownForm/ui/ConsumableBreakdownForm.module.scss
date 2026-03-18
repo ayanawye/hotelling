@@ -38,23 +38,6 @@
   }
 }
 
-.switch {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
-
-  div {
-    margin-bottom: 0 !important;
-  }
-
-  span {
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 400;
-  }
-}
-
 :global(.ant-form-item) {
   margin-bottom: 0;
 }
